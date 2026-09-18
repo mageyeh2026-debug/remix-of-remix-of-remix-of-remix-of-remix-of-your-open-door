@@ -1,11 +1,11 @@
 {
-  "asset_id": "d49e6480-dddf-4bdc-a6ec-b2dbf9cb956d",
-  "content_type": "image/jpeg",
-  "created_at": "2026-09-17T17:25:19Z",
+  "version": 1,
+  "asset_id": "02e641b4-e39a-44d5-95e3-dd7d4e614966",
+  "project_id": "925d5fa1-942d-41a6-ac85-b945b1c24cfb",
+  "url": "/__l5e/assets-v1/02e641b4-e39a-44d5-95e3-dd7d4e614966/behind-scene-directing.jpg",
+  "r2_key": "a/v1/925d5fa1-942d-41a6-ac85-b945b1c24cfb/02e641b4-e39a-44d5-95e3-dd7d4e614966/behind-scene-directing.jpg",
   "original_filename": "behind-scene-directing.jpg",
-  "project_id": "0a6e2fa9-9518-493f-bde2-20bb0e99c13c",
-  "r2_key": "a/v1/0a6e2fa9-9518-493f-bde2-20bb0e99c13c/d49e6480-dddf-4bdc-a6ec-b2dbf9cb956d/behind-scene-directing.jpg",
   "size": 374229,
-  "url": "/__l5e/assets-v1/d49e6480-dddf-4bdc-a6ec-b2dbf9cb956d/behind-scene-directing.jpg",
-  "version": 1
+  "content_type": "image/jpeg",
+  "created_at": "2026-09-18T13:22:47Z"
 }
