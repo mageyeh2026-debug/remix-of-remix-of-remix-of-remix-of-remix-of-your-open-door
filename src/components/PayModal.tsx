@@ -319,6 +319,12 @@ export function PayModal({
             ) : null}
 
             <div className={`pay-express${isMomo ? " pay-express-preload" : ""}`}>
+              {!whopReady ? (
+                <div className="pay-skeleton" role="status" aria-label="Loading payment button">
+                  <span className="pay-skeleton-bar" />
+                  <span className="pay-skeleton-line" />
+                </div>
+              ) : null}
               {sessionId ? (
                 <div className={whopReady && !isMomo ? "pay-express-ready" : "pay-express-hidden"}>
                   <WhopExpressCheckoutButton

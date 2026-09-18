@@ -10,7 +10,9 @@ async function proxy(request: Request, token: string, bodyless: boolean) {
   }
 
   const source =
-    payload.kind === "trailer" ? getTrailerSource(payload.slug) : getFilmSource(payload.slug);
+    payload.kind === "trailer"
+      ? await getTrailerSource(payload.slug)
+      : await getFilmSource(payload.slug);
 
   const range = request.headers.get("range");
   const upstream = await fetch(source.url, {
