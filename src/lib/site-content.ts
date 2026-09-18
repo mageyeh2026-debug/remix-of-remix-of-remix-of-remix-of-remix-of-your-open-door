@@ -401,7 +401,11 @@ export function mergeContent(stored: unknown): SiteContent {
     gallery: {
       ...base.gallery,
       ...(s.gallery ?? {}),
-      items: arr<GalleryItem>(s.gallery?.items).map((i) => ({ ...i, src: resolvePicture(i.src) })),
+      // Only pictures actually uploaded through the dashboard; old sample
+      // pictures must never reappear, not even while content is loading.
+      items: arr<GalleryItem>(s.gallery?.items)
+        .filter((i) => typeof i?.src === "string" && /^https?:\/\//i.test(i.src) && !i.src.includes("__l5e"))
+        .map((i) => ({ ...i, src: resolvePicture(i.src) })),
     },
     media: {
       ...base.media,
