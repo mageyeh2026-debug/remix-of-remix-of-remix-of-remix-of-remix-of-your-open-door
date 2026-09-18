@@ -353,28 +353,26 @@ export const defaultContent: SiteContent = {
  * site, whose asset links are not served here. Map those links back onto the
  * matching picture that ships with this project, by file name.
  */
-const bundledPictures: Record<string, string> = Object.fromEntries(
-  [
-    kimoteImage,
-    galzAboutImage,
-    kingsVirginImage,
-    bedroomChainImage,
-    devilsChestImage,
-    devilsChestBanner,
-    tinkasStoryImage,
-    upcomingSilence,
-    upcomingBullock,
-    upcomingModernRoad,
-    directorHeroImage,
-    directorHero2,
-    hassanImage,
-    behindCouple,
-    behindDirecting,
-    behindSet,
-    behindTailor,
-    behindWalk,
-  ].map((asset) => [asset.original_filename, asset.url]),
-);
+const bundledPictures: Record<string, string> = {
+  "kimote.jpg": kimoteImage,
+  "galz-about.jpg": galzAboutImage,
+  "kings-virgin.jpg": kingsVirginImage,
+  "bedroom-chain.jpg": bedroomChainImage,
+  "devils-chest-poster.jpg": devilsChestImage,
+  "devils-chest-banner.png": devilsChestBanner,
+  "tinkas-story.jpg": tinkasStoryImage,
+  "silence-we-flee.png": upcomingSilence,
+  "john-bullock.png": upcomingBullock,
+  "modern-road.png": upcomingModernRoad,
+  "director-hero.png": directorHeroImage,
+  "director-hero-2.png": directorHero2,
+  "hassan-mageye.png": hassanImage,
+  "behind-scene-couple.jpg": behindCouple,
+  "behind-scene-directing.jpg": behindDirecting,
+  "behind-scene-set.jpg": behindSet,
+  "behind-scene-tailor.jpg": behindTailor,
+  "behind-scene-walk.jpg": behindWalk,
+};
 
 for (const url of [
   filmsBanner,
