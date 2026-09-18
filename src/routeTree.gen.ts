@@ -10,33 +10,154 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as FilmsIndexRouteImport } from './routes/films.index'
+import { Route as FilmsSlugRouteImport } from './routes/films.$slug'
+import { Route as WatchSlugRouteImport } from './routes/watch.$slug'
+import { Route as ApiPublicStreamTokenRouteImport } from './routes/api/public/stream.$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FilmsIndexRoute = FilmsIndexRouteImport.update({
+  id: '/films/',
+  path: '/films/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FilmsSlugRoute = FilmsSlugRouteImport.update({
+  id: '/films/$slug',
+  path: '/films/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchSlugRoute = WatchSlugRouteImport.update({
+  id: '/watch/$slug',
+  path: '/watch/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicStreamTokenRoute = ApiPublicStreamTokenRouteImport.update({
+  id: '/api/public/stream/$token',
+  path: '/api/public/stream/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/films/$slug': typeof FilmsSlugRoute
+  '/watch/$slug': typeof WatchSlugRoute
+  '/films/': typeof FilmsIndexRoute
+  '/api/public/stream/$token': typeof ApiPublicStreamTokenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/films/$slug': typeof FilmsSlugRoute
+  '/watch/$slug': typeof WatchSlugRoute
+  '/films': typeof FilmsIndexRoute
+  '/api/public/stream/$token': typeof ApiPublicStreamTokenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/auth': typeof AuthRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/films/$slug': typeof FilmsSlugRoute
+  '/watch/$slug': typeof WatchSlugRoute
+  '/films/': typeof FilmsIndexRoute
+  '/api/public/stream/$token': typeof ApiPublicStreamTokenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/auth'
+    | '/contact'
+    | '/gallery'
+    | '/films/$slug'
+    | '/watch/$slug'
+    | '/films/'
+    | '/api/public/stream/$token'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/auth'
+    | '/contact'
+    | '/gallery'
+    | '/films/$slug'
+    | '/watch/$slug'
+    | '/films'
+    | '/api/public/stream/$token'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/auth'
+    | '/contact'
+    | '/gallery'
+    | '/films/$slug'
+    | '/watch/$slug'
+    | '/films/'
+    | '/api/public/stream/$token'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
+  AuthRoute: typeof AuthRoute
+  ContactRoute: typeof ContactRoute
+  GalleryRoute: typeof GalleryRoute
+  FilmsSlugRoute: typeof FilmsSlugRoute
+  WatchSlugRoute: typeof WatchSlugRoute
+  FilmsIndexRoute: typeof FilmsIndexRoute
+  ApiPublicStreamTokenRoute: typeof ApiPublicStreamTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +169,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/films/': {
+      id: '/films/'
+      path: '/films'
+      fullPath: '/films/'
+      preLoaderRoute: typeof FilmsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/films/$slug': {
+      id: '/films/$slug'
+      path: '/films/$slug'
+      fullPath: '/films/$slug'
+      preLoaderRoute: typeof FilmsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watch/$slug': {
+      id: '/watch/$slug'
+      path: '/watch/$slug'
+      fullPath: '/watch/$slug'
+      preLoaderRoute: typeof WatchSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/stream/$token': {
+      id: '/api/public/stream/$token'
+      path: '/api/public/stream/$token'
+      fullPath: '/api/public/stream/$token'
+      preLoaderRoute: typeof ApiPublicStreamTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
+  AuthRoute: AuthRoute,
+  ContactRoute: ContactRoute,
+  GalleryRoute: GalleryRoute,
+  FilmsSlugRoute: FilmsSlugRoute,
+  WatchSlugRoute: WatchSlugRoute,
+  FilmsIndexRoute: FilmsIndexRoute,
+  ApiPublicStreamTokenRoute: ApiPublicStreamTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
