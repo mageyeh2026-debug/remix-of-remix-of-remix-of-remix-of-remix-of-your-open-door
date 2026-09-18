@@ -348,6 +348,57 @@ export const defaultContent: SiteContent = {
  * lists that were emptied in the dashboard stay empty instead of falling back
  * to the original content (which made deleted items reappear on the site).
  */
+/**
+ * Pictures saved by the dashboard can still point at a previous copy of this
+ * site, whose asset links are not served here. Map those links back onto the
+ * matching picture that ships with this project, by file name.
+ */
+const bundledPictures: Record<string, string> = Object.fromEntries(
+  [
+    kimoteImage,
+    galzAboutImage,
+    kingsVirginImage,
+    bedroomChainImage,
+    devilsChestImage,
+    devilsChestBanner,
+    tinkasStoryImage,
+    upcomingSilence,
+    upcomingBullock,
+    upcomingModernRoad,
+    directorHeroImage,
+    directorHero2,
+    hassanImage,
+    behindCouple,
+    behindDirecting,
+    behindSet,
+    behindTailor,
+    behindWalk,
+  ].map((asset) => [asset.original_filename, asset.url]),
+);
+
+for (const url of [
+  filmsBanner,
+  projectEvent,
+  projectProduct,
+  projectStudio,
+  projectWedding,
+  upcomingLaneway,
+  upcomingLongway,
+  upcomingSaltstone,
+  videographerHero,
+]) {
+  const name = url.split("/").pop()?.replace(/-[A-Za-z0-9_]{6,}\./, ".");
+  if (name) bundledPictures[name] ??= url;
+}
+
+export function resolvePicture<T>(value: T): T {
+  if (typeof value !== "string") return value;
+  const match = /^\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
+  if (!match) return value;
+  const local = bundledPictures[decodeURIComponent(match[1]!)];
+  return (local ?? value) as unknown as T;
+}
+
 export function mergeContent(stored: unknown): SiteContent {
   const base = JSON.parse(JSON.stringify(defaultContent)) as SiteContent;
   if (!stored || typeof stored !== "object") return base;
@@ -357,17 +408,19 @@ export function mergeContent(stored: unknown): SiteContent {
     if (v && typeof v === "object") return Object.values(v).filter(Boolean) as T[];
     return [];
   };
+  const film = (f: FilmItem): FilmItem => ({
+    ...f,
+    cast: arr<string>(f.cast),
+    image: resolvePicture(f.image),
+  });
 
   return {
     integrations: { ...base.integrations, ...(s.integrations ?? {}) },
-    hero: { ...base.hero, ...(s.hero ?? {}) },
+    hero: { ...base.hero, ...(s.hero ?? {}), image: resolvePicture(s.hero?.image ?? base.hero.image) },
     moviesHeading: s.moviesHeading ?? base.moviesHeading,
-    films: arr<FilmItem>(s.films).map((f) => ({ ...f, cast: arr<string>(f.cast) })),
+    films: arr<FilmItem>(s.films).map(film),
     upcomingHeading: { ...base.upcomingHeading, ...(s.upcomingHeading ?? {}) },
-    upcoming: arr<FilmItem>(s.upcoming).map((f) => ({
-      ...f,
-      cast: arr<string>(f.cast),
-    })),
+    upcoming: arr<FilmItem>(s.upcoming).map(film),
     services: {
       ...base.services,
       ...(s.services ?? {}),
@@ -376,12 +429,12 @@ export function mergeContent(stored: unknown): SiteContent {
     gallery: {
       ...base.gallery,
       ...(s.gallery ?? {}),
-      items: arr<GalleryItem>(s.gallery?.items),
+      items: arr<GalleryItem>(s.gallery?.items).map((i) => ({ ...i, src: resolvePicture(i.src) })),
     },
     media: {
       ...base.media,
       ...(s.media ?? {}),
-      items: arr<MediaItem>(s.media?.items),
+      items: arr<MediaItem>(s.media?.items).map((i) => ({ ...i, src: resolvePicture(i.src) })),
     },
     contact: { ...base.contact, ...(s.contact ?? {}) },
     wallet: {
@@ -391,6 +444,7 @@ export function mergeContent(stored: unknown): SiteContent {
     },
   };
 }
+
 
 /** Every image URL used anywhere on the site, for warm-up preloading. */
 export function collectImageUrls(content: SiteContent): string[] {
