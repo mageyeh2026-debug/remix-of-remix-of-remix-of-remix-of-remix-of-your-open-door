@@ -9,3 +9,4 @@
 - [x] Remove the blocking site and checkout loading animation so pages appear immediately.
 - [x] Prioritize visible images and warm the remaining site images quietly in the browser cache.
 - [x] Confirm the app uses the Cloudflare-targeted TanStack server build.
+- [x] Make every built-in image load on a Cloudflare deployment (not just Lovable-hosted ones).

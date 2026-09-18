@@ -1,12 +1,12 @@
-import kimoteImage from "@/assets/kimote.jpg.asset.json";
-import galzAboutImage from "@/assets/galz-about.jpg.asset.json";
-import kingsVirginImage from "@/assets/kings-virgin.jpg.asset.json";
-import bedroomChainImage from "@/assets/bedroom-chain.jpg.asset.json";
-import devilsChestImage from "@/assets/devils-chest-poster.jpg.asset.json";
-import tinkasStoryImage from "@/assets/tinkas-story.jpg.asset.json";
-import upcomingSilence from "@/assets/silence-we-flee.png.asset.json";
-import upcomingBullock from "@/assets/john-bullock.png.asset.json";
-import upcomingModernRoad from "@/assets/modern-road.png.asset.json";
+import kimoteImage from "@/assets/kimote.jpg";
+import galzAboutImage from "@/assets/galz-about.jpg";
+import kingsVirginImage from "@/assets/kings-virgin.jpg";
+import bedroomChainImage from "@/assets/bedroom-chain.jpg";
+import devilsChestImage from "@/assets/devils-chest-poster.jpg";
+import tinkasStoryImage from "@/assets/tinkas-story.jpg";
+import upcomingSilence from "@/assets/silence-we-flee.png";
+import upcomingBullock from "@/assets/john-bullock.png";
+import upcomingModernRoad from "@/assets/modern-road.png";
 
 export type Film = {
   slug: string;
@@ -28,7 +28,7 @@ export const films: Film[] = [
     year: "",
     runtime: "Film",
     genre: "Drama",
-    image: kimoteImage.url,
+    image: kimoteImage,
     logline: "A cloth that tells our tale.",
     synopsis: "Kimote, written by Can Themba and directed by Darrell J. Roodt.",
     cast: ["Sbu Nkosi", "Kenneth Nkosi"],
@@ -39,7 +39,7 @@ export const films: Film[] = [
     year: "",
     runtime: "Film",
     genre: "Drama",
-    image: galzAboutImage.url,
+    image: galzAboutImage,
     logline: "A New Cinema Production film.",
     synopsis: "Galz About, presented by New Cinema Production.",
     cast: ["Bonzila", "Gaetsewe Kama", "Luthuli Faraga", "Denti"],
@@ -50,7 +50,7 @@ export const films: Film[] = [
     year: "",
     runtime: "Film",
     genre: "Drama",
-    image: kingsVirginImage.url,
+    image: kingsVirginImage,
     logline: "A Mageye Hassan film.",
     synopsis: "King's Virgin, written and directed by Mageye Hassan.",
     cast: ["Namikaga Pedro", "Prince Joe Nakibeni", "Nakanyike Joan", "Namwinge Sophian"],
@@ -61,7 +61,7 @@ export const films: Film[] = [
     year: "",
     runtime: "Film",
     genre: "Drama",
-    image: bedroomChainImage.url,
+    image: bedroomChainImage,
     logline: "Written and directed by Alan Uwadzi.",
     synopsis: "Bedroom Chain, a Kalmay production.",
     cast: ["Mima Kalmma", "Makenya Joanna Jozo", "Lewis Lukhon", "Jerry Roberts", "Sarah Isaac"],
@@ -72,7 +72,7 @@ export const films: Film[] = [
     year: "",
     runtime: "Film",
     genre: "Historical drama",
-    image: devilsChestImage.url,
+    image: devilsChestImage,
     logline: "The story of the Women's Army in the freedom struggle.",
     synopsis: "A Mageye Hassan film inspired by the true story of Joseph Kony (LRA) and the affliction of women.",
     cast: ["Musaba Samuel", "Nande Nakitende"],
@@ -83,7 +83,7 @@ export const films: Film[] = [
     year: "2022",
     runtime: "Film",
     genre: "Drama",
-    image: tinkasStoryImage.url,
+    image: tinkasStoryImage,
     logline: "Tinka the dead summoner.",
     synopsis: "Written and directed by Mageye Hassan. Official selection at The African Film Festival 2022.",
     cast: ["Kebirungi Agnes Knight", "Jeffroberts Walusimbi", "Tania S. Kankindi", "Jayant Maru", "Nakitende Hasifah"],
@@ -97,7 +97,7 @@ export const upcomingFilms: Film[] = [
     year: "",
     runtime: "Coming soon",
     genre: "Drama",
-    image: upcomingSilence.url,
+    image: upcomingSilence,
     status: "Coming soon",
     logline: "A woman on the run. A truth they will kill to bury.",
     synopsis: "An upcoming film by Hassan Mageye.",
@@ -109,7 +109,7 @@ export const upcomingFilms: Film[] = [
     year: "",
     runtime: "Coming soon",
     genre: "Drama",
-    image: upcomingModernRoad.url,
+    image: upcomingModernRoad,
     status: "Coming soon",
     logline: "Some journeys change a nation.",
     synopsis: "An upcoming film written and directed by Hassan Mageye.",
@@ -121,7 +121,7 @@ export const upcomingFilms: Film[] = [
     year: "",
     runtime: "Coming soon",
     genre: "Drama",
-    image: upcomingBullock.url,
+    image: upcomingBullock,
     status: "Coming soon",
     logline: "An upcoming Mageye Global Works film.",
     synopsis: "An upcoming film written and directed by Hassan Mageye.",

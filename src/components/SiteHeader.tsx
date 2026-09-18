@@ -5,12 +5,12 @@ import { Menu, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 
-import logoAsset from "@/assets/sanyuka-logo.png.asset.json";
+import logoAsset from "@/assets/sanyuka-logo.png";
 
 export function Brand() {
   return (
     <Link to="/" className="brand" aria-label="Mageye home">
-      <img src={logoAsset.url} alt="Mageye logo" className="brand-logo" />
+      <img src={logoAsset} alt="Mageye logo" className="brand-logo" />
       <span>Mageye</span>
     </Link>
   );

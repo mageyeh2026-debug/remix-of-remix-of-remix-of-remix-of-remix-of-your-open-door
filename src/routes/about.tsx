@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Award } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
-import hassanImage from "@/assets/hassan-mageye.png.asset.json";
-import hassanDesktopImage from "@/assets/director-hero-2.png.asset.json";
+import hassanImage from "@/assets/hassan-mageye.png";
+import hassanDesktopImage from "@/assets/director-hero-2.png";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -40,8 +40,8 @@ function AboutPage() {
 
       <section className="about-section" id="about">
         <div className="about-image">
-          <img className="about-img-desktop" src={hassanDesktopImage.url} alt="Hassan Mageye, writer, director and producer" />
-          <img className="about-img-mobile" src={hassanImage.url} alt="Hassan Mageye, writer, director and producer" width={1400} height={950} />
+          <img className="about-img-desktop" src={hassanDesktopImage} alt="Hassan Mageye, writer, director and producer" />
+          <img className="about-img-mobile" src={hassanImage} alt="Hassan Mageye, writer, director and producer" width={1400} height={950} />
         </div>
         <div className="about-copy">
           <p className="eyebrow">Hi, I’m Hassan</p>

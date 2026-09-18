@@ -1,21 +1,21 @@
-import kimoteImage from "@/assets/kimote.jpg.asset.json";
-import galzAboutImage from "@/assets/galz-about.jpg.asset.json";
-import kingsVirginImage from "@/assets/kings-virgin.jpg.asset.json";
-import bedroomChainImage from "@/assets/bedroom-chain.jpg.asset.json";
-import devilsChestImage from "@/assets/devils-chest-poster.jpg.asset.json";
-import devilsChestBanner from "@/assets/devils-chest-banner.png.asset.json";
-import tinkasStoryImage from "@/assets/tinkas-story.jpg.asset.json";
-import upcomingSilence from "@/assets/silence-we-flee.png.asset.json";
-import upcomingBullock from "@/assets/john-bullock.png.asset.json";
-import upcomingModernRoad from "@/assets/modern-road.png.asset.json";
-import directorHeroImage from "@/assets/director-hero.png.asset.json";
-import directorHero2 from "@/assets/director-hero-2.png.asset.json";
-import hassanImage from "@/assets/hassan-mageye.png.asset.json";
-import behindCouple from "@/assets/behind-scene-couple.jpg.asset.json";
-import behindDirecting from "@/assets/behind-scene-directing.jpg.asset.json";
-import behindSet from "@/assets/behind-scene-set.jpg.asset.json";
-import behindTailor from "@/assets/behind-scene-tailor.jpg.asset.json";
-import behindWalk from "@/assets/behind-scene-walk.jpg.asset.json";
+import kimoteImage from "@/assets/kimote.jpg";
+import galzAboutImage from "@/assets/galz-about.jpg";
+import kingsVirginImage from "@/assets/kings-virgin.jpg";
+import bedroomChainImage from "@/assets/bedroom-chain.jpg";
+import devilsChestImage from "@/assets/devils-chest-poster.jpg";
+import devilsChestBanner from "@/assets/devils-chest-banner.png";
+import tinkasStoryImage from "@/assets/tinkas-story.jpg";
+import upcomingSilence from "@/assets/silence-we-flee.png";
+import upcomingBullock from "@/assets/john-bullock.png";
+import upcomingModernRoad from "@/assets/modern-road.png";
+import directorHeroImage from "@/assets/director-hero.png";
+import directorHero2 from "@/assets/director-hero-2.png";
+import hassanImage from "@/assets/hassan-mageye.png";
+import behindCouple from "@/assets/behind-scene-couple.jpg";
+import behindDirecting from "@/assets/behind-scene-directing.jpg";
+import behindSet from "@/assets/behind-scene-set.jpg";
+import behindTailor from "@/assets/behind-scene-tailor.jpg";
+import behindWalk from "@/assets/behind-scene-walk.jpg";
 import filmsBanner from "@/assets/films-banner.jpg";
 import projectEvent from "@/assets/project-event.jpg";
 import projectProduct from "@/assets/project-product.jpg";
@@ -101,7 +101,7 @@ export const defaultContent: SiteContent = {
       "Hassan Mageye is a Ugandan/American writer, director and producer whose filmmaking career spans more than a decade. He studied Mass Communication at Makerere University and moved from an early interest in journalism toward filmmaking.",
     intro2:
       "His work has focused on African stories, cultural identity, social themes and character-driven drama. Hassan currently resides in California.",
-    image: directorHeroImage.url,
+    image: directorHeroImage,
     primaryLabel: "Watch the films",
     secondaryLabel: "More about Hassan",
     tertiaryLabel: "Contact",
@@ -114,7 +114,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Film",
       genre: "Drama",
-      image: kimoteImage.url,
+      image: kimoteImage,
       logline: "A cloth that tells our tale.",
       synopsis: "Kimote, written by Can Themba and directed by Darrell J. Roodt.",
       cast: ["Sbu Nkosi", "Kenneth Nkosi"],
@@ -126,7 +126,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Film",
       genre: "Drama",
-      image: galzAboutImage.url,
+      image: galzAboutImage,
       logline: "A New Cinema Production film.",
       synopsis: "Galz About, presented by New Cinema Production.",
       cast: ["Bonzila", "Gaetsewe Kama", "Luthuli Faraga", "Denti"],
@@ -138,7 +138,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Film",
       genre: "Drama",
-      image: kingsVirginImage.url,
+      image: kingsVirginImage,
       logline: "A Mageye Hassan film.",
       synopsis: "King's Virgin, written and directed by Mageye Hassan.",
       cast: ["Namikaga Pedro", "Prince Joe Nakibeni", "Nakanyike Joan", "Namwinge Sophian"],
@@ -150,7 +150,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Film",
       genre: "Drama",
-      image: bedroomChainImage.url,
+      image: bedroomChainImage,
       logline: "Written and directed by Alan Uwadzi.",
       synopsis: "Bedroom Chain, a Kalmay production.",
       cast: ["Mima Kalmma", "Makenya Joanna Jozo", "Lewis Lukhon", "Jerry Roberts", "Sarah Isaac"],
@@ -162,7 +162,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Film",
       genre: "Historical drama",
-      image: devilsChestImage.url,
+      image: devilsChestImage,
       logline: "The story of the Women's Army in the freedom struggle.",
       synopsis:
         "A Mageye Hassan film inspired by the true story of Joseph Kony (LRA) and the affliction of women.",
@@ -175,7 +175,7 @@ export const defaultContent: SiteContent = {
       year: "2022",
       runtime: "Film",
       genre: "Drama",
-      image: tinkasStoryImage.url,
+      image: tinkasStoryImage,
       logline: "Tinka the dead summoner.",
       synopsis:
         "Written and directed by Mageye Hassan. Official selection at The African Film Festival 2022.",
@@ -197,7 +197,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Coming soon",
       genre: "Drama",
-      image: upcomingSilence.url,
+      image: upcomingSilence,
       status: "Coming soon",
       logline: "A woman on the run. A truth they will kill to bury.",
       synopsis: "An upcoming film by Hassan Mageye.",
@@ -209,7 +209,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Coming soon",
       genre: "Drama",
-      image: upcomingModernRoad.url,
+      image: upcomingModernRoad,
       status: "Coming soon",
       logline: "Some journeys change a nation.",
       synopsis: "An upcoming film written and directed by Hassan Mageye.",
@@ -221,7 +221,7 @@ export const defaultContent: SiteContent = {
       year: "",
       runtime: "Coming soon",
       genre: "Drama",
-      image: upcomingBullock.url,
+      image: upcomingBullock,
       status: "Coming soon",
       logline: "An upcoming Mageye Global Works film.",
       synopsis: "An upcoming film written and directed by Hassan Mageye.",
@@ -266,23 +266,23 @@ export const defaultContent: SiteContent = {
     description: "Behind-the-scenes moments, film stills and production photography.",
     buttonLabel: "Open full gallery",
     items: [
-      { id: "g1", src: hassanImage.url, alt: "Hassan Mageye, writer, director and producer", title: "Hassan Mageye" },
-      { id: "g2", src: directorHero2.url, alt: "Hassan Mageye directing on location", title: "On location" },
-      { id: "g3", src: behindDirecting.url, alt: "Behind the scenes — directing a scene", title: "Directing" },
-      { id: "g4", src: behindSet.url, alt: "Behind the scenes — on set", title: "On set" },
-      { id: "g5", src: behindCouple.url, alt: "Behind the scenes — filming a couple", title: "Behind the scenes" },
-      { id: "g6", src: behindTailor.url, alt: "Behind the scenes — the tailor scene", title: "The tailor scene" },
-      { id: "g7", src: behindWalk.url, alt: "Behind the scenes — a walking shot", title: "Walking shot" },
-      { id: "g8", src: kimoteImage.url, alt: "Kimote — film still", title: "Kimote" },
-      { id: "g9", src: galzAboutImage.url, alt: "Galz About — film still", title: "Galz About" },
-      { id: "g10", src: kingsVirginImage.url, alt: "The King's Virgin — film still", title: "King's Virgin" },
-      { id: "g11", src: bedroomChainImage.url, alt: "Bedroom Chain — film still", title: "Bedroom Chain" },
-      { id: "g12", src: devilsChestImage.url, alt: "Devil's Chest — poster", title: "Devil's Chest" },
-      { id: "g13", src: devilsChestBanner.url, alt: "Devil's Chest — banner", title: "Devil's Chest" },
-      { id: "g14", src: tinkasStoryImage.url, alt: "Tinka's Story — film still", title: "Tinka's Story" },
-      { id: "g15", src: upcomingSilence.url, alt: "The Silence We Flee — still", title: "The Silence We Flee" },
-      { id: "g16", src: upcomingModernRoad.url, alt: "Modern Road — still", title: "Modern Road" },
-      { id: "g17", src: upcomingBullock.url, alt: "John Bullock — still", title: "John Bullock" },
+      { id: "g1", src: hassanImage, alt: "Hassan Mageye, writer, director and producer", title: "Hassan Mageye" },
+      { id: "g2", src: directorHero2, alt: "Hassan Mageye directing on location", title: "On location" },
+      { id: "g3", src: behindDirecting, alt: "Behind the scenes — directing a scene", title: "Directing" },
+      { id: "g4", src: behindSet, alt: "Behind the scenes — on set", title: "On set" },
+      { id: "g5", src: behindCouple, alt: "Behind the scenes — filming a couple", title: "Behind the scenes" },
+      { id: "g6", src: behindTailor, alt: "Behind the scenes — the tailor scene", title: "The tailor scene" },
+      { id: "g7", src: behindWalk, alt: "Behind the scenes — a walking shot", title: "Walking shot" },
+      { id: "g8", src: kimoteImage, alt: "Kimote — film still", title: "Kimote" },
+      { id: "g9", src: galzAboutImage, alt: "Galz About — film still", title: "Galz About" },
+      { id: "g10", src: kingsVirginImage, alt: "The King's Virgin — film still", title: "King's Virgin" },
+      { id: "g11", src: bedroomChainImage, alt: "Bedroom Chain — film still", title: "Bedroom Chain" },
+      { id: "g12", src: devilsChestImage, alt: "Devil's Chest — poster", title: "Devil's Chest" },
+      { id: "g13", src: devilsChestBanner, alt: "Devil's Chest — banner", title: "Devil's Chest" },
+      { id: "g14", src: tinkasStoryImage, alt: "Tinka's Story — film still", title: "Tinka's Story" },
+      { id: "g15", src: upcomingSilence, alt: "The Silence We Flee — still", title: "The Silence We Flee" },
+      { id: "g16", src: upcomingModernRoad, alt: "Modern Road — still", title: "Modern Road" },
+      { id: "g17", src: upcomingBullock, alt: "John Bullock — still", title: "John Bullock" },
       { id: "g18", src: filmsBanner, alt: "Mageye films banner", title: "Films" },
       { id: "g19", src: videographerHero, alt: "Camera work on location", title: "Production" },
       { id: "g20", src: projectStudio, alt: "Studio production", title: "Studio" },
@@ -309,14 +309,14 @@ export const defaultContent: SiteContent = {
       },
       {
         id: "m2",
-        src: behindWalk.url,
+        src: behindWalk,
         alt: "Special Mention — Mashariki African Film Festival",
         meta: "Mashariki African Film Festival · 2025",
         title: "Special Mention",
       },
       {
         id: "m3",
-        src: galzAboutImage.url,
+        src: galzAboutImage,
         alt: "Official selection — Silicon Valley African Film Festival",
         meta: "Silicon Valley African Film Festival",
         title: "Official selection",
@@ -353,28 +353,26 @@ export const defaultContent: SiteContent = {
  * site, whose asset links are not served here. Map those links back onto the
  * matching picture that ships with this project, by file name.
  */
-const bundledPictures: Record<string, string> = Object.fromEntries(
-  [
-    kimoteImage,
-    galzAboutImage,
-    kingsVirginImage,
-    bedroomChainImage,
-    devilsChestImage,
-    devilsChestBanner,
-    tinkasStoryImage,
-    upcomingSilence,
-    upcomingBullock,
-    upcomingModernRoad,
-    directorHeroImage,
-    directorHero2,
-    hassanImage,
-    behindCouple,
-    behindDirecting,
-    behindSet,
-    behindTailor,
-    behindWalk,
-  ].map((asset) => [asset.original_filename, asset.url]),
-);
+const bundledPictures: Record<string, string> = {
+  "kimote.jpg": kimoteImage,
+  "galz-about.jpg": galzAboutImage,
+  "kings-virgin.jpg": kingsVirginImage,
+  "bedroom-chain.jpg": bedroomChainImage,
+  "devils-chest-poster.jpg": devilsChestImage,
+  "devils-chest-banner.png": devilsChestBanner,
+  "tinkas-story.jpg": tinkasStoryImage,
+  "silence-we-flee.png": upcomingSilence,
+  "john-bullock.png": upcomingBullock,
+  "modern-road.png": upcomingModernRoad,
+  "director-hero.png": directorHeroImage,
+  "director-hero-2.png": directorHero2,
+  "hassan-mageye.png": hassanImage,
+  "behind-scene-couple.jpg": behindCouple,
+  "behind-scene-directing.jpg": behindDirecting,
+  "behind-scene-set.jpg": behindSet,
+  "behind-scene-tailor.jpg": behindTailor,
+  "behind-scene-walk.jpg": behindWalk,
+};
 
 for (const url of [
   filmsBanner,
@@ -393,7 +391,7 @@ for (const url of [
 
 export function resolvePicture<T>(value: T): T {
   if (typeof value !== "string") return value;
-  const match = /^\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
+  const match = /^(?:https?:\/\/[^/]+)?\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
   if (!match) return value;
   const local = bundledPictures[decodeURIComponent(match[1]!)];
   return (local ?? value) as unknown as T;
