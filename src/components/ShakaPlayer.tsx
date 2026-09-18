@@ -171,7 +171,7 @@ export default function ShakaPlayer({ src, poster, title, autoPlay = true, kind 
         ref={videoRef}
         poster={poster}
         playsInline
-        preload="metadata"
+        preload="auto"
         controlsList="nodownload noplaybackrate noremoteplayback nofullscreen"
         disablePictureInPicture
         disableRemotePlayback

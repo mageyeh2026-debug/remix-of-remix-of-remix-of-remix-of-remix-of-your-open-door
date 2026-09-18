@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Play } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
-import { PlayerModal } from "@/components/PlayerModal";
+import { PlayerModal, prefetchTrailer } from "@/components/PlayerModal";
 import { allFilms, getFilm } from "@/lib/films";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import type { FilmItem } from "@/lib/site-content";
@@ -58,6 +58,12 @@ function FilmDetail() {
   const all: FilmItem[] = [...content.films, ...content.upcoming];
   const film = all.find((f) => f.slug === loaderData.slug) ?? (loaderData.film as FilmItem | null);
   const [trailerOpen, setTrailerOpen] = useState(false);
+
+  // Warm the playback link while the page is being read, so the trailer starts
+  // as soon as the button is pressed.
+  useEffect(() => {
+    prefetchTrailer(film?.slug ?? null);
+  }, [film?.slug]);
 
   if (!film) {
     return loaded ? <FilmNotFound /> : null;
