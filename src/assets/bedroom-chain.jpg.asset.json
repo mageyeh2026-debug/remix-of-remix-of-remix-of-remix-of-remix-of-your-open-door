@@ -1,11 +1,11 @@
 {
-  "asset_id": "6068a6b6-6a9f-4100-825d-23b45843026b",
-  "content_type": "image/jpeg",
-  "created_at": "2026-09-17T17:25:12Z",
+  "version": 1,
+  "asset_id": "0d2e0f2f-6272-4bcc-8dcb-14aaa8247070",
+  "project_id": "925d5fa1-942d-41a6-ac85-b945b1c24cfb",
+  "url": "/__l5e/assets-v1/0d2e0f2f-6272-4bcc-8dcb-14aaa8247070/bedroom-chain.jpg",
+  "r2_key": "a/v1/925d5fa1-942d-41a6-ac85-b945b1c24cfb/0d2e0f2f-6272-4bcc-8dcb-14aaa8247070/bedroom-chain.jpg",
   "original_filename": "bedroom-chain.jpg",
-  "project_id": "0a6e2fa9-9518-493f-bde2-20bb0e99c13c",
-  "r2_key": "a/v1/0a6e2fa9-9518-493f-bde2-20bb0e99c13c/6068a6b6-6a9f-4100-825d-23b45843026b/bedroom-chain.jpg",
   "size": 208148,
-  "url": "/__l5e/assets-v1/6068a6b6-6a9f-4100-825d-23b45843026b/bedroom-chain.jpg",
-  "version": 1
+  "content_type": "image/jpeg",
+  "created_at": "2026-09-18T13:22:40Z"
 }
