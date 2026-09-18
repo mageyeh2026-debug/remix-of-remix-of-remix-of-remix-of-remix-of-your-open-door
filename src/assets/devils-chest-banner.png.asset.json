@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "616f5fe2-8133-466a-a9be-8fcbdd61e626",
-  "project_id": "925d5fa1-942d-41a6-ac85-b945b1c24cfb",
-  "url": "/__l5e/assets-v1/616f5fe2-8133-466a-a9be-8fcbdd61e626/devils-chest-banner.png",
-  "r2_key": "a/v1/925d5fa1-942d-41a6-ac85-b945b1c24cfb/616f5fe2-8133-466a-a9be-8fcbdd61e626/devils-chest-banner.png",
-  "original_filename": "devils-chest-banner.png",
-  "size": 2947323,
   "content_type": "image/png",
-  "created_at": "2026-09-18T13:23:02Z"
+  "created_at": "2026-09-18T13:23:02Z",
+  "original_filename": "devils-chest-banner.png",
+  "project_id": "d853b8f9-154f-4583-b18b-5b0e730a8baf",
+  "r2_key": "a/v1/d853b8f9-154f-4583-b18b-5b0e730a8baf/616f5fe2-8133-466a-a9be-8fcbdd61e626/devils-chest-banner.png",
+  "size": 2947323,
+  "url": "/__l5e/assets-v1/616f5fe2-8133-466a-a9be-8fcbdd61e626/devils-chest-banner.png",
+  "version": 1
 }
