@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
  */
 export function hideBrokenImage(event: { currentTarget: HTMLImageElement }) {
   const img = event.currentTarget;
-  img.dataset.failed = "true";
+  img.dataset["failed"] = "true";
   const figure = img.closest("figure");
   if (figure) figure.style.display = "none";
   else img.style.visibility = "hidden";
