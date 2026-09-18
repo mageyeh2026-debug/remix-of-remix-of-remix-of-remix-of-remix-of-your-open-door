@@ -44,9 +44,9 @@ function GalleryPage() {
             <img
               src={item.src}
               alt={item.alt}
-              loading={index < 8 ? "eager" : "lazy"}
+              loading="eager"
               decoding="async"
-              fetchPriority={index < 4 ? "high" : "low"}
+              fetchPriority={index < 6 ? "high" : "auto"}
               width={1200}
               height={800}
               onError={hideBrokenImage}
