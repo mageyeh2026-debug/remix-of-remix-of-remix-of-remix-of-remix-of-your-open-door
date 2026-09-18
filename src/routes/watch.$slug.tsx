@@ -54,8 +54,12 @@ function WatchPage() {
       if (kind === "trailer") {
         const source = await trailer({ data: { slug } });
         if (!cancelled) {
-          setSrc(source.url);
-          setState("ready");
+          if (source.url) {
+            setSrc(source.url);
+            setState("ready");
+          } else {
+            setState("locked");
+          }
         }
         return;
       }
