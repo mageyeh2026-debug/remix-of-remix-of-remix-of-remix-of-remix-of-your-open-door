@@ -1,0 +1,406 @@
+import kimoteImage from "@/assets/kimote.jpg.asset.json";
+import galzAboutImage from "@/assets/galz-about.jpg.asset.json";
+import kingsVirginImage from "@/assets/kings-virgin.jpg.asset.json";
+import bedroomChainImage from "@/assets/bedroom-chain.jpg.asset.json";
+import devilsChestImage from "@/assets/devils-chest-poster.jpg.asset.json";
+import devilsChestBanner from "@/assets/devils-chest-banner.png.asset.json";
+import tinkasStoryImage from "@/assets/tinkas-story.jpg.asset.json";
+import upcomingSilence from "@/assets/silence-we-flee.png.asset.json";
+import upcomingBullock from "@/assets/john-bullock.png.asset.json";
+import upcomingModernRoad from "@/assets/modern-road.png.asset.json";
+import directorHeroImage from "@/assets/director-hero.png.asset.json";
+import directorHero2 from "@/assets/director-hero-2.png.asset.json";
+import hassanImage from "@/assets/hassan-mageye.png.asset.json";
+import behindCouple from "@/assets/behind-scene-couple.jpg.asset.json";
+import behindDirecting from "@/assets/behind-scene-directing.jpg.asset.json";
+import behindSet from "@/assets/behind-scene-set.jpg.asset.json";
+import behindTailor from "@/assets/behind-scene-tailor.jpg.asset.json";
+import behindWalk from "@/assets/behind-scene-walk.jpg.asset.json";
+import filmsBanner from "@/assets/films-banner.jpg";
+import projectEvent from "@/assets/project-event.jpg";
+import projectProduct from "@/assets/project-product.jpg";
+import projectStudio from "@/assets/project-studio.jpg";
+import projectWedding from "@/assets/project-wedding.jpg";
+import upcomingLaneway from "@/assets/upcoming-laneway.jpg";
+import upcomingLongway from "@/assets/upcoming-longway.jpg";
+import upcomingSaltstone from "@/assets/upcoming-saltstone.jpg";
+import videographerHero from "@/assets/videographer-hero.jpg";
+
+export type FilmItem = {
+  slug: string;
+  name: string;
+  year: string;
+  runtime: string;
+  genre: string;
+  image: string;
+  logline: string;
+  synopsis: string;
+  cast: string[];
+  status?: string;
+  videoUrl?: string;
+  trailerUrl?: string;
+  price?: number;
+};
+
+export type GalleryItem = { id: string; src: string; alt: string; title: string };
+export type MediaItem = { id: string; src: string; alt: string; meta: string; title: string };
+export type ServiceItem = { id: string; icon: string; title: string; text: string };
+
+export type WalletTransaction = {
+  id: string;
+  date: string;
+  type: "sale" | "withdrawal" | "adjustment";
+  description: string;
+  amount: number;
+  status: "completed" | "pending" | "failed";
+};
+
+export type SiteContent = {
+  integrations: {
+    paymentBackendUrl: string;
+    uploadBackendUrl: string;
+  };
+  hero: {
+    eyebrow: string;
+    title: string;
+    intro1: string;
+    intro2: string;
+    image: string;
+    primaryLabel: string;
+    secondaryLabel: string;
+    tertiaryLabel: string;
+  };
+  moviesHeading: string;
+  films: FilmItem[];
+  upcomingHeading: { eyebrow: string; title: string };
+  upcoming: FilmItem[];
+  services: { eyebrow: string; title: string; lede: string; buttonLabel: string; items: ServiceItem[] };
+  gallery: { eyebrow: string; title: string; description: string; buttonLabel: string; items: GalleryItem[] };
+  media: { eyebrow: string; title: string; description: string; buttonLabel: string; items: MediaItem[] };
+  contact: {
+    eyebrow: string;
+    title: string;
+    lede: string;
+    email: string;
+    phone: string;
+    location: string;
+    buttonLabel: string;
+  };
+  wallet: { currency: string; balance: number; transactions: WalletTransaction[] };
+};
+
+export const defaultContent: SiteContent = {
+  integrations: {
+    paymentBackendUrl: "https://function-bun-production-e268.up.railway.app",
+    uploadBackendUrl: "https://function-bun-production-9a7c.up.railway.app",
+  },
+  hero: {
+    eyebrow: "Hassan Mageye",
+    title: "Ugandan/American writer, director and producer.",
+    intro1:
+      "Hassan Mageye is a Ugandan/American writer, director and producer whose filmmaking career spans more than a decade. He studied Mass Communication at Makerere University and moved from an early interest in journalism toward filmmaking.",
+    intro2:
+      "His work has focused on African stories, cultural identity, social themes and character-driven drama. Hassan currently resides in California.",
+    image: directorHeroImage.url,
+    primaryLabel: "Watch the films",
+    secondaryLabel: "More about Hassan",
+    tertiaryLabel: "Contact",
+  },
+  moviesHeading: "Watch movies here",
+  films: [
+    {
+      slug: "kimote",
+      name: "Kimote",
+      year: "",
+      runtime: "Film",
+      genre: "Drama",
+      image: kimoteImage.url,
+      logline: "A cloth that tells our tale.",
+      synopsis: "Kimote, written by Can Themba and directed by Darrell J. Roodt.",
+      cast: ["Sbu Nkosi", "Kenneth Nkosi"],
+      price: 5.99,
+    },
+    {
+      slug: "galz-about",
+      name: "Galz About",
+      year: "",
+      runtime: "Film",
+      genre: "Drama",
+      image: galzAboutImage.url,
+      logline: "A New Cinema Production film.",
+      synopsis: "Galz About, presented by New Cinema Production.",
+      cast: ["Bonzila", "Gaetsewe Kama", "Luthuli Faraga", "Denti"],
+      price: 5.99,
+    },
+    {
+      slug: "kings-virgin",
+      name: "King's Virgin",
+      year: "",
+      runtime: "Film",
+      genre: "Drama",
+      image: kingsVirginImage.url,
+      logline: "A Mageye Hassan film.",
+      synopsis: "King's Virgin, written and directed by Mageye Hassan.",
+      cast: ["Namikaga Pedro", "Prince Joe Nakibeni", "Nakanyike Joan", "Namwinge Sophian"],
+      price: 5.99,
+    },
+    {
+      slug: "bedroom-chain",
+      name: "Bedroom Chain",
+      year: "",
+      runtime: "Film",
+      genre: "Drama",
+      image: bedroomChainImage.url,
+      logline: "Written and directed by Alan Uwadzi.",
+      synopsis: "Bedroom Chain, a Kalmay production.",
+      cast: ["Mima Kalmma", "Makenya Joanna Jozo", "Lewis Lukhon", "Jerry Roberts", "Sarah Isaac"],
+      price: 5.99,
+    },
+    {
+      slug: "devils-chest",
+      name: "Devil's Chest",
+      year: "",
+      runtime: "Film",
+      genre: "Historical drama",
+      image: devilsChestImage.url,
+      logline: "The story of the Women's Army in the freedom struggle.",
+      synopsis:
+        "A Mageye Hassan film inspired by the true story of Joseph Kony (LRA) and the affliction of women.",
+      cast: ["Musaba Samuel", "Nande Nakitende"],
+      price: 5.99,
+    },
+    {
+      slug: "tinkas-story",
+      name: "Tinka's Story",
+      year: "2022",
+      runtime: "Film",
+      genre: "Drama",
+      image: tinkasStoryImage.url,
+      logline: "Tinka the dead summoner.",
+      synopsis:
+        "Written and directed by Mageye Hassan. Official selection at The African Film Festival 2022.",
+      cast: [
+        "Kebirungi Agnes Knight",
+        "Jeffroberts Walusimbi",
+        "Tania S. Kankindi",
+        "Jayant Maru",
+        "Nakitende Hasifah",
+      ],
+      price: 5.99,
+    },
+  ],
+  upcomingHeading: { eyebrow: "What’s next", title: "Upcoming projects" },
+  upcoming: [
+    {
+      slug: "the-silence-we-flee",
+      name: "The Silence We Flee",
+      year: "",
+      runtime: "Coming soon",
+      genre: "Drama",
+      image: upcomingSilence.url,
+      status: "Coming soon",
+      logline: "A woman on the run. A truth they will kill to bury.",
+      synopsis: "An upcoming film by Hassan Mageye.",
+      cast: ["Casting in progress"],
+    },
+    {
+      slug: "modern-road",
+      name: "Modern Road",
+      year: "",
+      runtime: "Coming soon",
+      genre: "Drama",
+      image: upcomingModernRoad.url,
+      status: "Coming soon",
+      logline: "Some journeys change a nation.",
+      synopsis: "An upcoming film written and directed by Hassan Mageye.",
+      cast: ["Casting in progress"],
+    },
+    {
+      slug: "john-bullock",
+      name: "John Bullock",
+      year: "",
+      runtime: "Coming soon",
+      genre: "Drama",
+      image: upcomingBullock.url,
+      status: "Coming soon",
+      logline: "An upcoming Mageye Global Works film.",
+      synopsis: "An upcoming film written and directed by Hassan Mageye.",
+      cast: ["Artists to be announced"],
+    },
+  ],
+  services: {
+    eyebrow: "What we do",
+    title: "Services",
+    lede: "Planning to shoot a film, documentary, commercial, music video or other production in Africa or Santa Rosa, California? We can help coordinate the local support you need to get your production moving.",
+    buttonLabel: "Plan your shoot",
+    items: [
+      {
+        id: "locations",
+        icon: "Building2",
+        title: "Locations",
+        text: "Scouting and access to filming locations across Africa and Santa Rosa, California.",
+      },
+      {
+        id: "crew",
+        icon: "Video",
+        title: "Local crew",
+        text: "Experienced local camera, sound and production crews on the ground.",
+      },
+      {
+        id: "permits",
+        icon: "MonitorPlay",
+        title: "Permit coordination",
+        text: "Permits, clearances and paperwork handled so your shoot runs smoothly.",
+      },
+      {
+        id: "support",
+        icon: "Play",
+        title: "Production support",
+        text: "Logistics, transport and on-the-ground support from prep to wrap.",
+      },
+    ],
+  },
+  gallery: {
+    eyebrow: "In pictures",
+    title: "Gallery",
+    description: "Behind-the-scenes moments, film stills and production photography.",
+    buttonLabel: "Open full gallery",
+    items: [
+      { id: "g1", src: hassanImage.url, alt: "Hassan Mageye, writer, director and producer", title: "Hassan Mageye" },
+      { id: "g2", src: directorHero2.url, alt: "Hassan Mageye directing on location", title: "On location" },
+      { id: "g3", src: behindDirecting.url, alt: "Behind the scenes — directing a scene", title: "Directing" },
+      { id: "g4", src: behindSet.url, alt: "Behind the scenes — on set", title: "On set" },
+      { id: "g5", src: behindCouple.url, alt: "Behind the scenes — filming a couple", title: "Behind the scenes" },
+      { id: "g6", src: behindTailor.url, alt: "Behind the scenes — the tailor scene", title: "The tailor scene" },
+      { id: "g7", src: behindWalk.url, alt: "Behind the scenes — a walking shot", title: "Walking shot" },
+      { id: "g8", src: kimoteImage.url, alt: "Kimote — film still", title: "Kimote" },
+      { id: "g9", src: galzAboutImage.url, alt: "Galz About — film still", title: "Galz About" },
+      { id: "g10", src: kingsVirginImage.url, alt: "The King's Virgin — film still", title: "King's Virgin" },
+      { id: "g11", src: bedroomChainImage.url, alt: "Bedroom Chain — film still", title: "Bedroom Chain" },
+      { id: "g12", src: devilsChestImage.url, alt: "Devil's Chest — poster", title: "Devil's Chest" },
+      { id: "g13", src: devilsChestBanner.url, alt: "Devil's Chest — banner", title: "Devil's Chest" },
+      { id: "g14", src: tinkasStoryImage.url, alt: "Tinka's Story — film still", title: "Tinka's Story" },
+      { id: "g15", src: upcomingSilence.url, alt: "The Silence We Flee — still", title: "The Silence We Flee" },
+      { id: "g16", src: upcomingModernRoad.url, alt: "Modern Road — still", title: "Modern Road" },
+      { id: "g17", src: upcomingBullock.url, alt: "John Bullock — still", title: "John Bullock" },
+      { id: "g18", src: filmsBanner, alt: "Mageye films banner", title: "Films" },
+      { id: "g19", src: videographerHero, alt: "Camera work on location", title: "Production" },
+      { id: "g20", src: projectStudio, alt: "Studio production", title: "Studio" },
+      { id: "g21", src: projectEvent, alt: "Event coverage", title: "Events" },
+      { id: "g22", src: projectProduct, alt: "Product shoot", title: "Product shoot" },
+      { id: "g23", src: projectWedding, alt: "Wedding film", title: "Wedding film" },
+      { id: "g24", src: upcomingLaneway, alt: "Laneway — production still", title: "Laneway" },
+      { id: "g25", src: upcomingLongway, alt: "Longway — production still", title: "Longway" },
+      { id: "g26", src: upcomingSaltstone, alt: "Saltstone — production still", title: "Saltstone" },
+    ],
+  },
+  media: {
+    eyebrow: "Recognition",
+    title: "Media and news",
+    description: "Awards and winnings from festivals across Africa and the United States.",
+    buttonLabel: "Press inquiries",
+    items: [
+      {
+        id: "m1",
+        src: projectEvent,
+        alt: "Best Film in an Indigenous Language — Uganda Film Festival",
+        meta: "Uganda Film Festival · 2025",
+        title: "Best Film in an Indigenous Language",
+      },
+      {
+        id: "m2",
+        src: behindWalk.url,
+        alt: "Special Mention — Mashariki African Film Festival",
+        meta: "Mashariki African Film Festival · 2025",
+        title: "Special Mention",
+      },
+      {
+        id: "m3",
+        src: galzAboutImage.url,
+        alt: "Official selection — Silicon Valley African Film Festival",
+        meta: "Silicon Valley African Film Festival",
+        title: "Official selection",
+      },
+      {
+        id: "m4",
+        src: filmsBanner,
+        alt: "Uganda's official submission — 98th Academy Awards",
+        meta: "98th Academy Awards",
+        title: "Uganda's official submission",
+      },
+    ],
+  },
+  contact: {
+    eyebrow: "Contact us",
+    title: "Let’s create something that matters.",
+    lede: "For film screenings, distribution, press, partnerships, and production inquiries.",
+    email: "mageyeglobalworks@gmail.com",
+    phone: "+61 400 000 000",
+    location: "California, USA · Available worldwide",
+    buttonLabel: "Contact us",
+  },
+  wallet: { currency: "USD", balance: 0, transactions: [] },
+};
+
+/**
+ * Merge a stored snapshot over the defaults.
+ * Once a snapshot exists in the database it is the single source of truth:
+ * lists that were emptied in the dashboard stay empty instead of falling back
+ * to the original content (which made deleted items reappear on the site).
+ */
+export function mergeContent(stored: unknown): SiteContent {
+  const base = JSON.parse(JSON.stringify(defaultContent)) as SiteContent;
+  if (!stored || typeof stored !== "object") return base;
+  const s = stored as any;
+  const arr = <T,>(v: unknown): T[] => {
+    if (Array.isArray(v)) return v.filter(Boolean) as T[];
+    if (v && typeof v === "object") return Object.values(v).filter(Boolean) as T[];
+    return [];
+  };
+
+  return {
+    integrations: { ...base.integrations, ...(s.integrations ?? {}) },
+    hero: { ...base.hero, ...(s.hero ?? {}) },
+    moviesHeading: s.moviesHeading ?? base.moviesHeading,
+    films: arr<FilmItem>(s.films).map((f) => ({ ...f, cast: arr<string>(f.cast) })),
+    upcomingHeading: { ...base.upcomingHeading, ...(s.upcomingHeading ?? {}) },
+    upcoming: arr<FilmItem>(s.upcoming).map((f) => ({
+      ...f,
+      cast: arr<string>(f.cast),
+    })),
+    services: {
+      ...base.services,
+      ...(s.services ?? {}),
+      items: arr<ServiceItem>(s.services?.items),
+    },
+    gallery: {
+      ...base.gallery,
+      ...(s.gallery ?? {}),
+      items: arr<GalleryItem>(s.gallery?.items),
+    },
+    media: {
+      ...base.media,
+      ...(s.media ?? {}),
+      items: arr<MediaItem>(s.media?.items),
+    },
+    contact: { ...base.contact, ...(s.contact ?? {}) },
+    wallet: {
+      ...base.wallet,
+      ...(s.wallet ?? {}),
+      transactions: arr<WalletTransaction>(s.wallet?.transactions),
+    },
+  };
+}
+
+/** Every image URL used anywhere on the site, for warm-up preloading. */
+export function collectImageUrls(content: SiteContent): string[] {
+  const urls = [
+    content.hero.image,
+    ...content.films.flatMap((f) => [f.image]),
+    ...content.upcoming.map((f) => f.image),
+    ...content.gallery.items.map((i) => i.src),
+    ...content.media.items.map((i) => i.src),
+  ];
+  return Array.from(new Set(urls.filter((u): u is string => typeof u === "string" && u.length > 0)));
+}
+
