@@ -59,6 +59,12 @@ function FilmDetail() {
   const film = all.find((f) => f.slug === loaderData.slug) ?? (loaderData.film as FilmItem | null);
   const [trailerOpen, setTrailerOpen] = useState(false);
 
+  // Warm the playback link while the page is being read, so the trailer starts
+  // as soon as the button is pressed.
+  useEffect(() => {
+    prefetchTrailer(film?.slug ?? null);
+  }, [film?.slug]);
+
   if (!film) {
     return loaded ? <FilmNotFound /> : null;
   }
