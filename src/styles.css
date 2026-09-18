@@ -446,6 +446,16 @@ footer > p:last-child { justify-self: end; }
 .pay-express-preload { position: absolute; width: 1px; height: 1px; min-height: 0; overflow: hidden; opacity: 0; pointer-events: none; }
 .pay-express-hidden { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
 .pay-express-ready { animation: checkout-reveal .2s ease-out; }
+.pay-skeleton { height: 48px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.pay-skeleton-bar, .pay-skeleton-line {
+  display: block; border-radius: 6px;
+  background: linear-gradient(90deg, rgb(128 128 128 / .18) 25%, rgb(128 128 128 / .34) 37%, rgb(128 128 128 / .18) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+.pay-skeleton-bar { height: 22px; width: 100%; }
+.pay-skeleton-line { height: 11px; width: 55%; }
+@keyframes skeleton-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
 @keyframes checkout-reveal { from { opacity: 0; } to { opacity: 1; } }
 .pay-currency { font-size: .72rem; color: #9ca3af; letter-spacing: .04em; }
 .pay-note { font-size: .78rem; color: #6b7280; line-height: 1.5; margin-top: 6px; }
