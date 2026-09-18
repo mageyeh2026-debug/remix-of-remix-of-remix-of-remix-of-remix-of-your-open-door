@@ -29,7 +29,9 @@ export function hideBrokenImage(event: { currentTarget: HTMLImageElement }) {
 
   void (async () => {
     try {
-      const response = await fetch(src, { mode: "cors" });
+      // "reload" avoids reusing the browser's non-CORS copy of the same file,
+      // which would otherwise make this fetch fail.
+      const response = await fetch(src, { mode: "cors", cache: "reload" });
       if (!response.ok) throw new Error(String(response.status));
       const blob = await response.blob();
       const { default: heic2any } = await import("heic2any");
