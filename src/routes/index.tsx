@@ -17,7 +17,7 @@ import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal } from "@/components/PlayerModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
-import contactBackground from "@/assets/hassan-mageye-coming-soon.avif.asset.json";
+import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -310,7 +310,7 @@ function Index() {
       <section
         className="contact-section"
         id="contact"
-        style={{ "--contact-bg": `url(${contactBackground.url})` } as React.CSSProperties}
+        style={{ "--contact-bg": `url(${contactBackground})` } as React.CSSProperties}
       >
         <BriefcaseBusiness size={28} strokeWidth={1.3} aria-hidden="true" />
         <p className="eyebrow">{content.contact.eyebrow}</p>

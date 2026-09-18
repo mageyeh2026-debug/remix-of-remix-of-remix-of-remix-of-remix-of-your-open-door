@@ -3,7 +3,7 @@ import { Play } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { useSiteContent } from "@/hooks/useSiteContent";
-import filmsBanner from "@/assets/devils-chest-banner.png.asset.json";
+import filmsBanner from "@/assets/devils-chest-banner.png";
 
 export const Route = createFileRoute("/films/")({
   head: () => ({
@@ -38,7 +38,7 @@ function FilmsPage() {
       <section className="films-hero" aria-labelledby="films-title">
         <img
           className="films-hero-image"
-          src={filmsBanner.url}
+          src={filmsBanner}
           alt="Devil's Chest film artwork"
           width={1920}
           height={912}
