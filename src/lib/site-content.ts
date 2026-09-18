@@ -391,7 +391,7 @@ for (const url of [
 
 export function resolvePicture<T>(value: T): T {
   if (typeof value !== "string") return value;
-  const match = /^\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
+  const match = /^(?:https?:\/\/[^/]+)?\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
   if (!match) return value;
   const local = bundledPictures[decodeURIComponent(match[1]!)];
   return (local ?? value) as unknown as T;
