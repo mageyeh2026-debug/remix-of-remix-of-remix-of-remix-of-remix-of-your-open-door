@@ -21,22 +21,16 @@ function warmImageCache(content: SiteContent) {
   if (!queue.length) return;
 
   const warmBatch = () => {
-    queue.splice(0, 3).forEach((url) => {
+    queue.splice(0, 8).forEach((url) => {
       warmedImages.add(url);
       const image = new Image();
       image.decoding = "async";
-      image.fetchPriority = "low";
       image.src = url;
     });
-    if (queue.length) globalThis.setTimeout(warmBatch, 120);
+    if (queue.length) globalThis.setTimeout(warmBatch, 40);
   };
 
-  const schedule = () => {
-    globalThis.setTimeout(warmBatch, 250);
-  };
-
-  if (document.readyState === "complete") schedule();
-  else window.addEventListener("load", schedule, { once: true });
+  warmBatch();
 }
 
 /** Only safe after hydration — reading storage during render breaks SSR matching. */
