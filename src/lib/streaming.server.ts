@@ -4,10 +4,6 @@ import { firebaseConfig, SITE_PATH } from "./firebase";
 
 export type Source = { url: string; type: "mp4" | "dash" | "hls" };
 
-// Used only when a film has no video uploaded in the dashboard yet.
-const FALLBACK =
-  "https://pub-eb00261df49f466a9e5efee154650b48.r2.dev/media/admin/6f42ad8e-0620-48d9-8928-62cc0d1ca170-TINKA_S_STORY_OFFICIAL_TRAILER__1_.mp4";
-
 type StoredFilm = { slug?: string; name?: string; videoUrl?: string; trailerUrl?: string };
 
 const CONTENT_URL = `${firebaseConfig.databaseURL}/${SITE_PATH}.json`;
@@ -64,17 +60,17 @@ function source(url: string): Source {
   return { url, type };
 }
 
-export async function getTrailerSource(slug: string): Promise<Source> {
+/** Only the trailer the admin uploaded for this exact film — never another film's. */
+export async function getTrailerSource(slug: string): Promise<Source | null> {
   const film = await findFilm(slug);
-  // A film with no separate trailer still previews from the full video.
-  const url = usable(film?.trailerUrl) ?? usable(film?.videoUrl) ?? FALLBACK;
-  return source(url);
+  const url = usable(film?.trailerUrl) ?? usable(film?.videoUrl);
+  return url ? source(url) : null;
 }
 
-export async function getFilmSource(slug: string): Promise<Source> {
+export async function getFilmSource(slug: string): Promise<Source | null> {
   const film = await findFilm(slug);
-  const url = usable(film?.videoUrl) ?? usable(film?.trailerUrl) ?? FALLBACK;
-  return source(url);
+  const url = usable(film?.videoUrl) ?? usable(film?.trailerUrl);
+  return url ? source(url) : null;
 }
 
 /** True when the dashboard has a real video (not just a trailer) for this film. */

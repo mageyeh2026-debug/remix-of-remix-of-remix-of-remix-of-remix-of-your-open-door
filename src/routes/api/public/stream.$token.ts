@@ -14,6 +14,11 @@ async function proxy(request: Request, token: string, bodyless: boolean) {
       ? await getTrailerSource(payload.slug)
       : await getFilmSource(payload.slug);
 
+  if (!source) {
+    return new Response("No video available for this film yet", { status: 404 });
+  }
+
+
   const range = request.headers.get("range");
   const upstream = await fetch(source.url, {
     headers: range ? { Range: range } : {},

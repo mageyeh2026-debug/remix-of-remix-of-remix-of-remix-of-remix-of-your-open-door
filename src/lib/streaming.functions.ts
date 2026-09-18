@@ -8,9 +8,15 @@ const slugInput = (data: unknown) => z.object({ slug: z.string().min(1) }).parse
 export const fetchTrailer = createServerFn({ method: "POST" })
   .inputValidator(slugInput)
   .handler(async ({ data }) => {
+    const { getTrailerSource } = await import("./streaming.server");
+    const real = await getTrailerSource(data.slug);
+    if (!real) {
+      return { available: false as const, url: null, type: "mp4" as const };
+    }
+
     const { signPlaybackToken } = await import("./stream-token.server");
     const token = await signPlaybackToken({ slug: data.slug, kind: "trailer" }, 60 * 30);
-    return { url: `/api/public/stream/${token}`, type: "mp4" as const };
+    return { available: true as const, url: `/api/public/stream/${token}`, type: real.type };
   });
 
 export const fetchSubscription = createServerFn({ method: "POST" })
