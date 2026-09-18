@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Play } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
-import { PlayerModal } from "@/components/PlayerModal";
+import { PlayerModal, prefetchTrailer } from "@/components/PlayerModal";
 import { allFilms, getFilm } from "@/lib/films";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import type { FilmItem } from "@/lib/site-content";
