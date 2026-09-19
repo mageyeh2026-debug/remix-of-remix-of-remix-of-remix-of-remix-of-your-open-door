@@ -365,9 +365,15 @@ for (const url of [
 
 export function resolvePicture<T>(value: T): T {
   if (typeof value !== "string") return value;
-  const match = /^(?:https?:\/\/[^/]+)?\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
-  if (!match) return value;
-  const local = bundledPictures[decodeURIComponent(match[1]!)];
+  const legacyMatch = /^(?:https?:\/\/[^/]+)?\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
+  const builtMatch = /(?:^|\/)assets\/([^/?#]+?)-[A-Za-z0-9_]{6,}(\.[A-Za-z0-9]+)(?:[?#].*)?$/.exec(value);
+  const filename = legacyMatch?.[1]
+    ? decodeURIComponent(legacyMatch[1])
+    : builtMatch?.[1] && builtMatch[2]
+      ? `${builtMatch[1]}${builtMatch[2]}`
+      : null;
+  if (!filename) return value;
+  const local = bundledPictures[filename];
   return (local ?? value) as unknown as T;
 }
 
