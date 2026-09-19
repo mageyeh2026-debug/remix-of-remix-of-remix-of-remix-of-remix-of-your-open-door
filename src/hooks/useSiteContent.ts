@@ -3,7 +3,7 @@ import { onValue, ref, set } from "firebase/database";
 
 import { firebaseDb, SITE_PATH } from "@/lib/firebase";
 import { uploadToR2, type UploadProgress } from "@/lib/r2-upload";
-import { collectImageUrls, defaultContent, mergeContent, type SiteContent } from "@/lib/site-content";
+import { collectImageUrls, mergeContent, type SiteContent } from "@/lib/site-content";
 
 const CACHE_KEY = "mageye-site-content";
 const EMPTY_LIVE_CONTENT = mergeContent({});
