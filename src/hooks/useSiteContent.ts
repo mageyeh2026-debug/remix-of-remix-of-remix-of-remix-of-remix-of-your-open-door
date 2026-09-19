@@ -60,6 +60,8 @@ export function useSiteContent() {
   // First client render must match the server render, so start from defaults
   // (or the in-memory snapshot kept from an earlier page in this session).
   const [content, setContent] = useState<SiteContent>(memoryCache ?? defaultContent);
+  const [loaded, setLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -76,12 +78,18 @@ export function useSiteContent() {
           const merged = mergeContent(raw);
           writeCache(raw, merged);
           setContent(merged);
+          setLoaded(true);
+          setLoadError(false);
           warmImageCache(merged);
         },
-        () => {},
+        () => {
+          if (!active) return;
+          setLoadError(true);
+        },
       );
     } catch {
       /* Keep the cached content visible when the live read is unavailable. */
+      setLoadError(true);
     }
     return () => {
       active = false;
@@ -89,7 +97,7 @@ export function useSiteContent() {
     };
   }, []);
 
-  return { content, loaded: true, ready: true };
+  return { content, loaded, ready: loaded, loadError };
 }
 
 export async function saveSection<K extends keyof SiteContent>(key: K, value: SiteContent[K]) {

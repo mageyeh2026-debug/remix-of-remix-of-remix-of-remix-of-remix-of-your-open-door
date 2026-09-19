@@ -865,7 +865,7 @@ function AdminPage() {
 }
 
 function Dashboard({ user }: { user: User }) {
-  const { content, loaded } = useSiteContent();
+  const { content, loaded, loadError } = useSiteContent();
   const [draft, setDraft] = useState<SiteContent | null>(null);
   const [section, setSection] = useState<SectionId>("overview");
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
@@ -922,7 +922,13 @@ function Dashboard({ user }: { user: User }) {
     }
   }
 
-  if (!draft) return <div className="admin-loading">Loading content…</div>;
+  if (!draft) {
+    return (
+      <div className="admin-loading">
+        {loadError ? "Could not load your saved content. Check the connection and refresh." : "Loading saved content…"}
+      </div>
+    );
+  }
 
   const patch = (p: Partial<SiteContent>) => setDraft({ ...draft, ...p });
 
@@ -1199,22 +1205,23 @@ function Dashboard({ user }: { user: User }) {
               />
               <MultiUpload
                 folder="gallery"
-                onUploaded={(urls) =>
-                  patch({
-                    gallery: {
-                      ...draft.gallery,
-                      items: [
-                        ...draft.gallery.items,
-                        ...urls.map((src, n) => ({
-                          id: `g-${Date.now()}-${n}`,
-                          src,
-                          alt: "Mageye photo",
-                          title: "New photo",
-                        })),
-                      ],
-                    },
-                  })
-                }
+                onUploaded={async (urls) => {
+                  const nextGallery = {
+                    ...draft.gallery,
+                    items: [
+                      ...draft.gallery.items,
+                      ...urls.map((src, n) => ({
+                        id: `g-${Date.now()}-${n}`,
+                        src,
+                        alt: "Mageye photo",
+                        title: "New photo",
+                      })),
+                    ],
+                  };
+                  const next = { ...draft, gallery: nextGallery };
+                  setDraft(next);
+                  await persist(next);
+                }}
               />
               <div className="admin-media-grid">
                 {draft.gallery.items.map((item, i) => (
@@ -1462,7 +1469,13 @@ function Dashboard({ user }: { user: User }) {
   );
 }
 
-function MultiUpload({ folder, onUploaded }: { folder: string; onUploaded: (urls: string[]) => void }) {
+function MultiUpload({
+  folder,
+  onUploaded,
+}: {
+  folder: string;
+  onUploaded: (urls: string[]) => void | Promise<void>;
+}) {
   const { upload, overlay, busy } = useUploader();
   const [error, setError] = useState<string | null>(null);
 
@@ -1471,7 +1484,7 @@ function MultiUpload({ folder, onUploaded }: { folder: string; onUploaded: (urls
     if (!files.length) return;
     setError(null);
     try {
-      onUploaded(await upload(folder, files));
+      await onUploaded(await upload(folder, files));
     } catch (err: any) {
       setError(err?.message ?? "Upload failed");
     } finally {
