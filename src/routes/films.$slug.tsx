@@ -4,36 +4,18 @@ import { ArrowLeft, Play } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal, prefetchTrailer } from "@/components/PlayerModal";
-import { allFilms, getFilm } from "@/lib/films";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import type { FilmItem } from "@/lib/site-content";
 
 export const Route = createFileRoute("/films/$slug")({
-  loader: ({ params }) => {
-    const film = getFilm(params.slug);
-    return { film: film ?? null, slug: params.slug };
-  },
-  head: ({ loaderData }) => {
-    if (!loaderData?.film) {
-      return {
-        meta: [
-          { title: "Film not found | Mageye" },
-          { name: "robots", content: "noindex" },
-        ],
-      };
-    }
-    const { film } = loaderData;
-    return {
-      meta: [
-        { title: `${film.name} (${film.year}) | Mageye` },
-        { name: "description", content: film.logline },
-        { property: "og:title", content: `${film.name} (${film.year})` },
-        { property: "og:description", content: film.logline },
-        { property: "og:type", content: "video.movie" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-    };
-  },
+  head: () => ({ meta: [
+    { title: "Film | Mageye" },
+    { name: "description", content: "Watch film details and trailers from Mageye." },
+    { property: "og:title", content: "Film | Mageye" },
+    { property: "og:description", content: "Watch film details and trailers from Mageye." },
+    { property: "og:type", content: "video.movie" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
   notFoundComponent: FilmNotFound,
   component: FilmDetail,
 });
@@ -53,10 +35,10 @@ function FilmNotFound() {
 }
 
 function FilmDetail() {
-  const loaderData = Route.useLoaderData();
+  const { slug } = Route.useParams();
   const { content, loaded } = useSiteContent();
   const all: FilmItem[] = [...content.films, ...content.upcoming];
-  const film = all.find((f) => f.slug === loaderData.slug) ?? (loaderData.film as FilmItem | null);
+  const film = all.find((f) => f.slug === slug) ?? null;
   const [trailerOpen, setTrailerOpen] = useState(false);
 
   // Warm the playback link while the page is being read, so the trailer starts
@@ -69,7 +51,7 @@ function FilmDetail() {
     return loaded ? <FilmNotFound /> : null;
   }
 
-  const related = (all.length ? all : allFilms).filter((item) => item.slug !== film.slug).slice(0, 4);
+  const related = all.filter((item) => item.slug !== film.slug).slice(0, 4);
 
   return (
     <main>

@@ -11,7 +11,7 @@ import {
   sendPasswordResetEmail,
   type User,
 } from "firebase/auth";
-import { get, ref, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 import {
   Clapperboard,
   CreditCard,
@@ -36,7 +36,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { firebaseAuth, firebaseDb, SITE_PATH } from "@/lib/firebase";
 import { createWhopPayout, getWhopWallet } from "@/lib/whop.functions";
 import { createMomoWithdrawal, getMomoWallet } from "@/lib/momo.functions";
-import { defaultContent, type FilmItem, type SiteContent } from "@/lib/site-content";
+import { type FilmItem, type SiteContent } from "@/lib/site-content";
 import { saveAll, saveSection, useSiteContent } from "@/hooks/useSiteContent";
 import { useUploader } from "@/components/UploadProgressOverlay";
 import { UPLOAD_BACKEND_STORAGE_KEY } from "@/lib/r2-upload";
@@ -874,7 +874,7 @@ function Dashboard({ user }: { user: User }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const seeded = useRef(false);
+  const autosaveReady = useRef(false);
 
   useEffect(() => {
     if (loaded && !draft) setDraft(content);
@@ -885,19 +885,30 @@ function Dashboard({ user }: { user: User }) {
     window.localStorage.setItem(UPLOAD_BACKEND_STORAGE_KEY, draft.integrations.uploadBackendUrl);
   }, [draft?.integrations.uploadBackendUrl]);
 
-  // Save whatever is already on the site into Firebase the first time.
+  // Uploads and edits must survive even when the separate save button is
+  // missed. Debounce changes so typing does not produce a write per keypress.
   useEffect(() => {
-    if (!loaded || seeded.current) return;
-    seeded.current = true;
-    (async () => {
+    if (!draft) return;
+    if (!autosaveReady.current) {
+      autosaveReady.current = true;
+      return;
+    }
+    const timer = window.setTimeout(async () => {
+      setSaving(true);
+      setSaved(false);
+      setError(null);
       try {
-        const snap = await get(ref(firebaseDb(), SITE_PATH));
-        if (!snap.exists()) await saveAll(defaultContent);
-      } catch {
-        /* rules may block until signed in */
+        await saveAll(draft);
+        setSaved(true);
+        window.setTimeout(() => setSaved(false), 2500);
+      } catch (err: any) {
+        setError(err?.message ?? "Could not save.");
+      } finally {
+        setSaving(false);
       }
-    })();
-  }, [loaded]);
+    }, 900);
+    return () => window.clearTimeout(timer);
+  }, [draft]);
 
   async function persist(next?: SiteContent) {
     const value = next ?? draft;
