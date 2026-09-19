@@ -112,7 +112,8 @@ img { display: block; max-width: 100%; }
 .portfolio-section { padding: 16px 0 18px; background: var(--secondary); overflow: hidden; }
 .portfolio-title { margin: 0 0 14px; padding-inline: clamp(18px, 2vw, 26px); color: var(--foreground); font-family: var(--font-display); font-size: clamp(17px, 1.7vw, 22px); font-weight: 500; letter-spacing: .01em; text-align: center; }
 .project-carousel { position: relative; }
-.project-grid { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 2 * 14px) / 3); gap: 14px; padding-inline: 18px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding-inline: 18px; }
+.project-carousel .carousel-arrow { display: none; }
 .project-grid::-webkit-scrollbar { display: none; }
 .project-card { min-width: 0; scroll-snap-align: start; }
 .carousel-arrow { position: absolute; top: calc((100% - 48px) / 2); z-index: 4; width: 50px; height: 50px; display: grid; place-items: center; padding: 0; border: 1px solid color-mix(in oklab, var(--primary-foreground) 20%, transparent); border-radius: 999px; color: var(--primary-foreground); background: color-mix(in oklab, var(--foreground) 82%, transparent); box-shadow: 0 10px 25px color-mix(in oklab, var(--foreground) 22%, transparent); cursor: pointer; transform: translateY(-50%); transition: transform .2s ease, background-color .2s ease; }
@@ -181,7 +182,7 @@ footer > p:last-child { justify-self: end; }
   .desktop-nav, .header-cta { display: none; }
   .nav-toggle { display: inline-flex; }
   .hero { min-height: 650px; }
-  .project-grid { grid-auto-columns: calc((100% - 2 * 14px) / 3.4); }
+  .project-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 720px) {
@@ -212,7 +213,7 @@ footer > p:last-child { justify-self: end; }
   .project-carousel .carousel-arrow { display: none; }
   .portfolio-section { padding: 22px 0 22px; }
   .portfolio-title { padding-inline: 12px; }
-  .project-grid { grid-auto-columns: calc((100% - 2 * 10px) / 3); padding-inline: 12px; gap: 10px; }
+  .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-inline: 12px; gap: 10px; }
   .project-thumb { aspect-ratio: 2 / 3; min-height: 0; border-radius: 4px; }
   .more-thumb { border-radius: 4px; }
   .project-overlay { display: flex; opacity: 1; padding: 20px 8px 8px; }

@@ -1338,6 +1338,18 @@ function Dashboard({ user }: { user: User }) {
                           }
                         />
                       </div>
+                      <Field
+                        label="Article link (https://...)"
+                        value={item.link ?? ""}
+                        onChange={(v) =>
+                          patch({
+                            media: {
+                              ...draft.media,
+                              items: draft.media.items.map((m, idx) => (idx === i ? { ...m, link: v } : m)),
+                            },
+                          })
+                        }
+                      />
                       <button
                         type="button"
                         className="admin-btn admin-btn-danger"
@@ -1361,7 +1373,7 @@ function Dashboard({ user }: { user: User }) {
                         ...draft.media,
                         items: [
                           ...draft.media.items,
-                          { id: `m-${Date.now()}`, src: "", alt: "", meta: "", title: "New award" },
+                          { id: `m-${Date.now()}`, src: "", alt: "", meta: "", title: "New award", link: "" },
                         ],
                       },
                     })
