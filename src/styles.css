@@ -213,7 +213,7 @@ footer > p:last-child { justify-self: end; }
   .project-carousel .carousel-arrow { display: none; }
   .portfolio-section { padding: 22px 0 22px; }
   .portfolio-title { padding-inline: 12px; }
-  .project-grid { grid-auto-columns: calc((100% - 2 * 10px) / 3); padding-inline: 12px; gap: 10px; }
+  .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-inline: 12px; gap: 10px; }
   .project-thumb { aspect-ratio: 2 / 3; min-height: 0; border-radius: 4px; }
   .more-thumb { border-radius: 4px; }
   .project-overlay { display: flex; opacity: 1; padding: 20px 8px 8px; }
