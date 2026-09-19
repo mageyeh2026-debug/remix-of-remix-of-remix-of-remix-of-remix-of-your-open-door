@@ -7,7 +7,6 @@ import { z } from "zod";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 
 import { PayModal } from "@/components/PayModal";
-import { getFilm } from "@/lib/films";
 import { fetchTrailer } from "@/lib/streaming.functions";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { redeemAccess } from "@/lib/access.functions";
@@ -35,8 +34,8 @@ export const Route = createFileRoute("/watch/$slug")({
 function WatchPage() {
   const { slug } = Route.useParams();
   const { kind } = Route.useSearch();
-  const film = getFilm(slug);
   const { content } = useSiteContent();
+  const film = [...content.films, ...content.upcoming].find((item) => item.slug === slug);
 
   const trailer = useServerFn(fetchTrailer);
   const redeem = useServerFn(redeemAccess);

@@ -379,8 +379,7 @@ export function resolvePicture<T>(value: T): T {
 
 export function mergeContent(stored: unknown): SiteContent {
   const base = JSON.parse(JSON.stringify(defaultContent)) as SiteContent;
-  if (!stored || typeof stored !== "object") return base;
-  const s = stored as any;
+  const s = stored && typeof stored === "object" ? stored as any : {};
   const arr = <T,>(v: unknown): T[] => {
     if (Array.isArray(v)) return v.filter(Boolean) as T[];
     if (v && typeof v === "object") return Object.values(v).filter(Boolean) as T[];
@@ -391,14 +390,20 @@ export function mergeContent(stored: unknown): SiteContent {
     cast: arr<string>(f.cast),
     image: resolvePicture(f.image),
   });
+  const dashboardFilm = (f: FilmItem) =>
+    [f.image, f.videoUrl, f.trailerUrl].some(
+      (value) => typeof value === "string" && /^https?:\/\//i.test(value) && !value.includes("__l5e"),
+    );
 
   return {
     integrations: { ...base.integrations, ...(s.integrations ?? {}) },
     hero: { ...base.hero, ...(s.hero ?? {}), image: resolvePicture(s.hero?.image ?? base.hero.image) },
     moviesHeading: s.moviesHeading ?? base.moviesHeading,
-    films: arr<FilmItem>(s.films).map(film),
+    // Public film lists only contain records with media uploaded or linked in
+    // the dashboard. This permanently excludes the bundled sample catalogue.
+    films: arr<FilmItem>(s.films).filter(dashboardFilm).map(film),
     upcomingHeading: { ...base.upcomingHeading, ...(s.upcomingHeading ?? {}) },
-    upcoming: arr<FilmItem>(s.upcoming).map(film),
+    upcoming: arr<FilmItem>(s.upcoming).filter(dashboardFilm).map(film),
     services: {
       ...base.services,
       ...(s.services ?? {}),

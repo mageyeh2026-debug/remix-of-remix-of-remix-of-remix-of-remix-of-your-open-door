@@ -3,9 +3,10 @@ import { onValue, ref, set } from "firebase/database";
 
 import { firebaseDb, SITE_PATH } from "@/lib/firebase";
 import { uploadToR2, type UploadProgress } from "@/lib/r2-upload";
-import { collectImageUrls, defaultContent, mergeContent, type SiteContent } from "@/lib/site-content";
+import { collectImageUrls, mergeContent, type SiteContent } from "@/lib/site-content";
 
 const CACHE_KEY = "mageye-site-content";
+const EMPTY_LIVE_CONTENT = mergeContent({});
 
 /** Keeps the last database snapshot so pages paint real content instantly. */
 let memoryCache: SiteContent | null = null;
@@ -59,7 +60,7 @@ function writeCache(raw: unknown, merged: SiteContent) {
 export function useSiteContent() {
   // First client render must match the server render, so start from defaults
   // (or the in-memory snapshot kept from an earlier page in this session).
-  const [content, setContent] = useState<SiteContent>(memoryCache ?? defaultContent);
+  const [content, setContent] = useState<SiteContent>(memoryCache ?? EMPTY_LIVE_CONTENT);
   const [loaded, setLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
 
@@ -68,7 +69,7 @@ export function useSiteContent() {
     let unsub = () => {};
     const stored = readStoredCache();
     if (stored) setContent(stored);
-    warmImageCache(stored ?? content);
+    warmImageCache(stored ?? EMPTY_LIVE_CONTENT);
     try {
       unsub = onValue(
         ref(firebaseDb(), SITE_PATH),
