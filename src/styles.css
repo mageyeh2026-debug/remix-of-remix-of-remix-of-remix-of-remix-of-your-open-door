@@ -182,7 +182,7 @@ footer > p:last-child { justify-self: end; }
   .desktop-nav, .header-cta { display: none; }
   .nav-toggle { display: inline-flex; }
   .hero { min-height: 650px; }
-  .project-grid { grid-auto-columns: calc((100% - 2 * 14px) / 3.4); }
+  .project-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 720px) {
