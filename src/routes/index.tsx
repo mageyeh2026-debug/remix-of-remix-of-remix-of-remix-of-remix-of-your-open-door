@@ -293,15 +293,30 @@ function Index() {
         <h2 id="media-title">{content.media.title}</h2>
         <p className="awards-text">{content.media.description}</p>
         <div className="media-grid">
-          {content.media.items.map((card) => (
-            <article className="media-card" key={card.id}>
-              <img src={card.src} alt={card.alt} loading="lazy" decoding="async" fetchPriority="low" onError={hideBrokenImage} />
-              <span className="media-card-overlay">
-                <span className="media-card-meta">{card.meta}</span>
-                <strong className="media-card-title">{card.title}</strong>
-              </span>
-            </article>
-          ))}
+          {content.media.items.map((card) => {
+            const body = (
+              <>
+                <img src={card.src} alt={card.alt} loading="lazy" decoding="async" fetchPriority="low" onError={hideBrokenImage} />
+                <span className="media-card-overlay">
+                  <span className="media-card-meta">{card.meta}</span>
+                  <strong className="media-card-title">{card.title}</strong>
+                </span>
+              </>
+            );
+            return card.link ? (
+              <a
+                className="media-card media-card-link"
+                key={card.id}
+                href={card.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {body}
+              </a>
+            ) : (
+              <article className="media-card" key={card.id}>{body}</article>
+            );
+          })}
         </div>
         <a className="button button-dark" href={`mailto:${content.contact.email}`}>{content.media.buttonLabel}</a>
       </section>
