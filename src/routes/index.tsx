@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BriefcaseBusiness,
   Building2,
@@ -152,6 +152,12 @@ function Index() {
   };
 
   const scrollProjects = (direction: -1 | 1) => scrollRail(projectRailRef.current, direction);
+
+  // The rail must always start at the first uploaded film. Scroll snapping can
+  // pull it sideways when films load in, so pin it back to the start.
+  useEffect(() => {
+    projectRailRef.current?.scrollTo({ left: 0 });
+  }, [films.length]);
 
   return (
 
