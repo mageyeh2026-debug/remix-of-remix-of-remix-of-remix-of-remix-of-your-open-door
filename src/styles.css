@@ -538,7 +538,7 @@ footer > p:last-child { justify-self: end; }
 .award-card strong { display: block; font-size: 14px; font-weight: 600; }
 .award-card span { display: block; margin-top: 8px; color: var(--muted-foreground); font-size: 12.5px; line-height: 1.65; }
 
-.media-grid { margin: 36px 0 0; max-width: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.media-grid { margin: 36px calc(-1 * clamp(24px, 5.2vw, 78px)) -74px; max-width: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
 .media-card { position: relative; border-radius: 0; overflow: hidden; aspect-ratio: 16 / 10; box-shadow: 0 14px 34px -14px rgba(0,0,0,.45); }
 .media-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .media-card-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px; background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 42%, transparent 72%); }
@@ -575,7 +575,7 @@ footer > p:last-child { justify-self: end; }
   .gallery-page-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding-inline: 8px; }
   .gallery-page-item { min-height: 0; border-radius: 8px; }
   .gallery-page-item figcaption { padding: 28px 9px 8px; font-size: 8px; }
-  .media-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 26px; }
+  .media-grid { grid-template-columns: 1fr; gap: 4px; margin: 26px -20px -50px; }
   .media-card { aspect-ratio: 16 / 11; border-radius: 6px; }
   .media-card-overlay { padding: 14px; }
   .media-card-meta { font-size: 9px; }
