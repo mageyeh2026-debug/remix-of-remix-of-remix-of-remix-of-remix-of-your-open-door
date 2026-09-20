@@ -1234,6 +1234,38 @@ function Dashboard({ user }: { user: User }) {
                   await persist(next);
                 }}
               />
+              <form
+                className="admin-link-add"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const input = e.currentTarget.elements.namedItem("galleryLink") as HTMLInputElement;
+                  const url = input.value.trim();
+                  if (!/^https?:\/\//i.test(url)) return;
+                  input.value = "";
+                  const next = {
+                    ...draft,
+                    gallery: {
+                      ...draft.gallery,
+                      items: [
+                        ...draft.gallery.items,
+                        { id: `g-${Date.now()}`, src: url, alt: "Mageye photo", title: "New photo" },
+                      ],
+                    },
+                  };
+                  setDraft(next);
+                  await persist(next);
+                }}
+              >
+                <input
+                  name="galleryLink"
+                  className="admin-input"
+                  type="url"
+                  placeholder="Or paste an image link (https://…)"
+                />
+                <button type="submit" className="admin-btn">
+                  <Plus size={13} /> Add by link
+                </button>
+              </form>
               <div className="admin-media-grid">
                 {draft.gallery.items.map((item, i) => (
                   <div className="admin-media-item" key={item.id}>
