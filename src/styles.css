@@ -903,3 +903,7 @@ footer > p:last-child { justify-self: end; }
   .lightbox-next { right: 8px; }
   .lightbox-figure img { max-height: 68vh; }
 }
+
+.media-card-link { display: block; cursor: pointer; }
+.media-card-link:hover img { transform: scale(1.04); }
+.media-card img { transition: transform .5s ease; }
