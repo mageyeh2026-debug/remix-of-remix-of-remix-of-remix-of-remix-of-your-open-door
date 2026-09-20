@@ -112,8 +112,7 @@ img { display: block; max-width: 100%; }
 .portfolio-section { padding: 16px 0 18px; background: var(--secondary); overflow: hidden; }
 .portfolio-title { margin: 0 0 14px; padding-inline: clamp(18px, 2vw, 26px); color: var(--foreground); font-family: var(--font-display); font-size: clamp(17px, 1.7vw, 22px); font-weight: 500; letter-spacing: .01em; text-align: center; }
 .project-carousel { position: relative; }
-.project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding-inline: 18px; }
-.project-carousel .carousel-arrow { display: none; }
+.project-grid { display: grid; grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: calc((100% - 2 * 14px) / 3); gap: 14px; padding-inline: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .project-grid::-webkit-scrollbar { display: none; }
 .project-card { min-width: 0; scroll-snap-align: start; }
 .carousel-arrow { position: absolute; top: calc((100% - 48px) / 2); z-index: 4; width: 50px; height: 50px; display: grid; place-items: center; padding: 0; border: 1px solid color-mix(in oklab, var(--primary-foreground) 20%, transparent); border-radius: 999px; color: var(--primary-foreground); background: color-mix(in oklab, var(--foreground) 82%, transparent); box-shadow: 0 10px 25px color-mix(in oklab, var(--foreground) 22%, transparent); cursor: pointer; transform: translateY(-50%); transition: transform .2s ease, background-color .2s ease; }
@@ -182,7 +181,6 @@ footer > p:last-child { justify-self: end; }
   .desktop-nav, .header-cta { display: none; }
   .nav-toggle { display: inline-flex; }
   .hero { min-height: 650px; }
-  .project-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 720px) {
@@ -213,7 +211,7 @@ footer > p:last-child { justify-self: end; }
   .project-carousel .carousel-arrow { display: none; }
   .portfolio-section { padding: 22px 0 22px; }
   .portfolio-title { padding-inline: 12px; }
-  .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-inline: 12px; gap: 10px; }
+  .project-grid { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-columns: unset; padding-inline: 12px; gap: 10px; overflow: visible; scroll-snap-type: none; }
   .project-thumb { aspect-ratio: 2 / 3; min-height: 0; border-radius: 4px; }
   .more-thumb { border-radius: 4px; }
   .project-overlay { display: flex; opacity: 1; padding: 20px 8px 8px; }
@@ -540,8 +538,8 @@ footer > p:last-child { justify-self: end; }
 .award-card strong { display: block; font-size: 14px; font-weight: 600; }
 .award-card span { display: block; margin-top: 8px; color: var(--muted-foreground); font-size: 12.5px; line-height: 1.65; }
 
-.media-grid { margin: 36px auto 0; max-width: 1180px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.media-card { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16 / 9; box-shadow: 0 14px 34px -14px rgba(0,0,0,.45); }
+.media-grid { margin: 36px 0 0; max-width: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.media-card { position: relative; border-radius: 0; overflow: hidden; aspect-ratio: 16 / 10; box-shadow: 0 14px 34px -14px rgba(0,0,0,.45); }
 .media-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .media-card-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px; background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 42%, transparent 72%); }
 .media-card-meta { color: rgba(255,255,255,.82); font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
