@@ -453,6 +453,7 @@ footer > p:last-child { justify-self: end; }
 /* ---------- Subscription modal ---------- */
 .pay-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; padding: 18px; z-index: 90; }
 .pay-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 720px; max-height: 92vh; overflow: auto; }
+.pay-modal-checkout { max-width: min(980px, 100%); }
 .pay-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 14px; border-bottom: 1px solid #eef0f3; }
 .pay-modal-head h2 { font-size: 1.32rem; font-weight: 500; margin: 0; }
 .pay-close { background: none; border: 0; cursor: pointer; color: #374151; }
@@ -472,6 +473,12 @@ footer > p:last-child { justify-self: end; }
 .pay-frame { margin-top: 14px; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #fff; animation: checkout-reveal .2s ease-out; }
 .pay-frame iframe { display: block; width: 100%; height: 520px; border: 0; }
 @media (max-width: 720px) { .pay-frame iframe { height: 440px; } }
+.pay-checkout-body { padding: 18px 24px 24px; }
+.pay-frame-standalone { margin-top: 0; }
+.pay-frame-standalone iframe { height: min(680px, calc(100dvh - 190px)); min-height: 480px; }
+.pay-checkout-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 12px; }
+.pay-cancel-button { border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; color: #374151; padding: 10px 14px; font-size: .88rem; font-weight: 600; cursor: pointer; }
+.pay-cancel-button:hover { background: #f9fafb; }
 .pay-express-preload { position: absolute; width: 1px; height: 1px; min-height: 0; overflow: hidden; opacity: 0; pointer-events: none; }
 .pay-express-hidden { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
 .pay-express-ready { animation: checkout-reveal .2s ease-out; }
@@ -501,11 +508,12 @@ footer > p:last-child { justify-self: end; }
 @media (max-width: 720px) {
   .pay-overlay { padding: 8px; align-items: center; }
   .pay-modal { max-width: 420px; border-radius: 14px; max-height: calc(100dvh - 16px); overflow: hidden; }
+  .pay-modal-checkout { max-width: calc(100vw - 16px); }
   .pay-modal-head { padding: 12px 14px 10px; }
   .pay-modal-head h2 { max-width: calc(100% - 38px); font-size: 1.08rem; line-height: 1.2; font-weight: 650; }
   .pay-modal-body { grid-template-columns: 1fr; gap: 8px; padding: 10px 12px 12px; }
   .pay-label, .pay-fineprint { display: none; }
-  .pay-methods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .pay-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .pay-method { min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 3px; margin-bottom: 0; text-align: center; }
   .pay-method input { position: absolute; opacity: 0; }
   .pay-logos { min-width: 0; height: 18px; gap: 3px; }
@@ -527,6 +535,11 @@ footer > p:last-child { justify-self: end; }
   .pay-total strong { font-size: 1.1rem; }
   .pay-button { padding: 10px; font-size: .92rem; }
   .pay-error { margin-top: 6px; font-size: .74rem; line-height: 1.3; }
+  .pay-checkout-body { padding: 10px 12px 12px; }
+  .pay-frame-standalone iframe { height: calc(100dvh - 150px); min-height: 420px; }
+  .pay-checkout-actions { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .pay-checkout-actions .pay-note { margin: 0; font-size: .72rem; }
+  .pay-cancel-button { width: 100%; padding: 9px 12px; font-size: .82rem; }
 }
 
 /* Home cover + new home sections */
