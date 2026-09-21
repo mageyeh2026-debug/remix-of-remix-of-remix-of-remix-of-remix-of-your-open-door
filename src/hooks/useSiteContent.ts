@@ -116,6 +116,7 @@ export function useSiteContent() {
         ref(firebaseDb(), SITE_PATH),
         (snap) => {
           if (!active) return;
+          live = true;
           const raw = snap.val();
           const merged = mergeContent(raw);
           writeCache(raw, merged);
