@@ -5,23 +5,28 @@ import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import hassanImage from "@/assets/hassan-mageye.png";
 import hassanDesktopImage from "@/assets/director-hero-2.png";
 
+const SITE_URL = "https://hassanmageye.com";
+
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Mageye | Hassan Mageye, Filmmaker" },
+      { title: "About Hassan Mageye | Ugandan/American Film Director" },
       {
         name: "description",
         content:
           "Meet Hassan Mageye, a Ugandan/American writer, director and producer telling African stories and character-driven drama.",
       },
-      { property: "og:title", content: "About Mageye | Hassan Mageye, Filmmaker" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: "About Hassan Mageye | Ugandan/American Film Director" },
       {
         property: "og:description",
         content: "The story, the approach and the awards behind the films.",
       },
-      { property: "og:type", content: "website" },
+      { property: "og:type", content: "profile" },
+      { property: "og:url", content: `${SITE_URL}/about` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/about` }],
   }),
   component: AboutPage,
 });

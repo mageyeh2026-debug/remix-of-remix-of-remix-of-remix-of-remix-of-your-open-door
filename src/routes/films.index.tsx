@@ -5,23 +5,28 @@ import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import filmsBanner from "@/assets/devils-chest-banner.png";
 
+const SITE_URL = "https://hassanmageye.com";
+
 export const Route = createFileRoute("/films/")({
   head: () => ({
     meta: [
-      { title: "Films | Mageye" },
+      { title: "Films by Hassan Mageye | Movies & Upcoming Projects" },
       {
         name: "description",
         content:
-          "A collection of films exploring stories, cultural identity and character-driven drama — feature films, documentaries and upcoming projects.",
+          "All films directed by Hassan Mageye — feature films, documentaries and upcoming projects exploring African stories, cultural identity and character-driven drama.",
       },
-      { property: "og:title", content: "Films | Mageye" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: "Films by Hassan Mageye | Movies & Upcoming Projects" },
       {
         property: "og:description",
-        content: "Feature films, documentaries and upcoming projects.",
+        content: "Feature films, documentaries and upcoming projects by Hassan Mageye.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/films` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/films` }],
   }),
   component: FilmsPage,
 });

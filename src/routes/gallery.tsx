@@ -6,22 +6,28 @@ import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { hideBrokenImage } from "@/lib/utils";
 
+const SITE_URL = "https://hassanmageye.com";
+
 export const Route = createFileRoute("/gallery")({
   head: () => ({
     meta: [
-      { title: "Gallery | Mageye" },
+      { title: "Gallery | Hassan Mageye Film Stills & Photos" },
       {
         name: "description",
-        content: "Photos, film stills, posters, production moments and upcoming-project images from Mageye.",
+        content:
+          "Photos, film stills, posters, production moments and upcoming-project images from Hassan Mageye's film work.",
       },
-      { property: "og:title", content: "Gallery | Mageye" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: "Gallery | Hassan Mageye Film Stills & Photos" },
       {
         property: "og:description",
-        content: "Browse Mageye film stills, posters and production photography.",
+        content: "Browse film stills, posters and production photography by Hassan Mageye.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/gallery` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/gallery` }],
   }),
   component: GalleryPage,
 });
