@@ -49,6 +49,14 @@ const iconMap: Record<string, typeof Play> = {
   Wrench,
 };
 
+const modernRoadCopy = {
+  genre: "Drama | Human Story | Contemporary",
+  synopsis:
+    "The Modern Road explores the lives, choices, and struggles of people navigating a rapidly changing world, where ambition, relationships, and survival collide. It is a human story about the roads we choose, the people we meet along the way, and the consequences that follow us.",
+  support:
+    "Help us bring The Modern Road to life. Your support helps move this story from vision to screen.",
+};
+
 const upcomingDetails: Record<
   string,
   { genre: string; synopsis: string; support: string }
@@ -60,13 +68,9 @@ const upcomingDetails: Record<
     support:
       "Help us complete the film and bring it to audiences worldwide. Your support helps us take this story from production to the screen.",
   },
-  "modern-road": {
-    genre: "Drama | Human Story | Contemporary",
-    synopsis:
-      "The Modern Road explores the lives, choices, and struggles of people navigating a rapidly changing world, where ambition, relationships, and survival collide. It is a human story about the roads we choose, the people we meet along the way, and the consequences that follow us.",
-    support:
-      "Help us bring The Modern Road to life. Your support helps move this story from vision to screen.",
-  },
+  // "mordern-road" is the slug saved in the dashboard for Modern Road.
+  "modern-road": modernRoadCopy,
+  "mordern-road": modernRoadCopy,
   "john-bullock": {
     genre: "Psychological Thriller | Drama",
     synopsis:

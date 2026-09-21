@@ -369,6 +369,19 @@ for (const url of [
   if (name) bundledPictures[name] ??= url;
 }
 
+/**
+ * Dashboard poster links that ship with the site as optimized bundled files,
+ * so visitors never re-download the heavy originals from remote storage.
+ */
+const bundledPosterUrls: Record<string, string> = {
+  "https://pub-eb00261df49f466a9e5efee154650b48.r2.dev/images/ff6c0f1c-559b-4204-8d34-386f97390993-ChatGPT_Image_Sep_15__2026__12_24_00_PM.png":
+    upcomingSilence,
+  "https://pub-eb00261df49f466a9e5efee154650b48.r2.dev/films/6ef3dbb1-6f0c-4331-a0a2-d5ad999a303a-ChatGPT_Image_Sep_19__2026__11_27_20_AM.png":
+    upcomingModernRoad,
+  "https://pub-eb00261df49f466a9e5efee154650b48.r2.dev/films/2c7e41f2-2624-467b-90fc-dc8053e9bd4a-ChatGPT_Image_Sep_19__2026__11_27_13_AM.png":
+    upcomingBullock,
+};
+
 export function resolvePicture<T>(value: T): T {
   if (typeof value !== "string") return value;
   const legacyMatch = /^(?:https?:\/\/[^/]+)?\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
