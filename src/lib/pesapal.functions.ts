@@ -188,7 +188,6 @@ export const checkPesapalSupportPayment = createServerFn({ method: "POST" })
     if (!res.ok) return { status: "pending" as const, message: "Waiting for confirmation" };
     if (res.data.status !== "success") return { status: res.data.status, message: res.data.message };
 
-    const expectedReferencePart = safeReferencePart(data.orderTrackingId, "");
     if (!res.data.reference.startsWith("MAGEYE-SUPPORT-") || !res.data.confirmationCode) {
       return { status: "failed" as const, message: "This support payment could not be verified." };
     }
