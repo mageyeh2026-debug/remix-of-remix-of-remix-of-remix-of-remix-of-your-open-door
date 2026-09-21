@@ -15,6 +15,7 @@ import {
 import { hideBrokenImage } from "@/lib/utils";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal } from "@/components/PlayerModal";
+import { SupportPayModal } from "@/components/PayModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
@@ -81,16 +82,10 @@ const upcomingDetails: Record<
 };
 
 const supportLevels = [
-  { amount: "$25", label: "Supporter", className: "support-tier-base" },
-  { amount: "$50", label: "Film Friend", className: "support-tier-friend" },
-  { amount: "$100", label: "Production Supporter", className: "support-tier-production" },
+  { amount: "$25", amountUsd: 25, label: "Supporter", className: "support-tier-base" },
+  { amount: "$50", amountUsd: 50, label: "Film Friend", className: "support-tier-friend" },
+  { amount: "$100", amountUsd: 100, label: "Production Supporter", className: "support-tier-production" },
 ] as const;
-
-function supportMailto(email: string, film: string, level: string) {
-  const subject = encodeURIComponent(`${level} — ${film}`);
-  const body = encodeURIComponent(`I would like to support ${film} as a ${level}. Please send me the next steps.`);
-  return `mailto:${email}?subject=${subject}&body=${body}`;
-}
 
 function ProjectCard({
   project,
@@ -178,6 +173,12 @@ function Index() {
   const upcomingRailRef = useRef<HTMLDivElement>(null);
   const [activeFilm, setActiveFilm] = useState<number | null>(null);
   const [trailerSlug, setTrailerSlug] = useState<string | null>(null);
+  const [supportIntent, setSupportIntent] = useState<{
+    slug: string;
+    title: string;
+    amountUsd: number;
+  } | null>(null);
+  const [followedProject, setFollowedProject] = useState<string | null>(null);
 
   const films = content.films;
   const projects = films.map((film) => ({
@@ -304,22 +305,24 @@ function Index() {
                     <p>{support}</p>
                     <div className="support-options">
                       {supportLevels.map((level) => (
-                        <a
+                        <button
+                          type="button"
                           className={`support-tier ${level.className}`}
-                          href={supportMailto(content.contact.email, project.name, `${level.amount} ${level.label}`)}
+                          onClick={() => setSupportIntent({ slug: project.slug, title: project.name, amountUsd: level.amountUsd })}
                           key={level.amount}
                         >
                           <strong>{level.amount}</strong>
                           <span>{level.label}</span>
-                        </a>
+                        </button>
                       ))}
-                      <a
+                      <button
+                        type="button"
                         className="support-tier support-tier-follow"
-                        href={supportMailto(content.contact.email, project.name, "Follow for free")}
+                        onClick={() => setFollowedProject(project.slug)}
                       >
-                        <strong>Follow for free</strong>
-                        <span>Get film updates</span>
-                      </a>
+                        <strong>{followedProject === project.slug ? "Following" : "Follow for free"}</strong>
+                        <span>{followedProject === project.slug ? "Updates on" : "Get film updates"}</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -422,6 +425,16 @@ function Index() {
         poster={trailerFilm?.image}
         onClose={() => setTrailerSlug(null)}
       />
+
+      {supportIntent ? (
+        <SupportPayModal
+          open={Boolean(supportIntent)}
+          slug={supportIntent.slug}
+          title={supportIntent.title}
+          amountUsd={supportIntent.amountUsd}
+          onClose={() => setSupportIntent(null)}
+        />
+      ) : null}
 
       <SiteFooter />
     </main>

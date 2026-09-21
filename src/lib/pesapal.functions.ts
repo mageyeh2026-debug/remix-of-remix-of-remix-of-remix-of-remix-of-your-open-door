@@ -3,11 +3,40 @@ import { z } from "zod";
 
 export const FILM_PRICE_UGX = 5000;
 export const FILM_PRICE_USD = 5.99;
+export const SUPPORT_PRICE_USD = [25, 50, 100] as const;
 
 function normalizeCountryCode(value?: string | null) {
   const country = value?.trim().toUpperCase();
   if (!country || country === "XX" || country === "T1") return null;
   return /^[A-Z]{2}$/.test(country) ? country : null;
+}
+
+function pesapalConfig() {
+  return {
+    baseUrl:
+      (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
+        ? "https://cybqa.pesapal.com/pesapalv3"
+        : "https://pay.pesapal.com/v3",
+    consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
+    consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
+  };
+}
+
+async function requestCountryCode() {
+  const { getRequest } = await import("@tanstack/react-start/server");
+  const request = getRequest() as Request & { cf?: { country?: string } };
+  return (
+    normalizeCountryCode(request.cf?.country) ??
+    normalizeCountryCode(request.headers.get("cf-ipcountry")) ??
+    normalizeCountryCode(request.headers.get("x-vercel-ip-country")) ??
+    normalizeCountryCode(request.headers.get("cloudfront-viewer-country")) ??
+    normalizeCountryCode(request.headers.get("x-country-code")) ??
+    "UG"
+  );
+}
+
+function safeReferencePart(value: string, fallback: string) {
+  return value.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || fallback;
 }
 
 /** Opens a real Pesapal order and returns the secure payment page to embed. */
@@ -26,28 +55,12 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { submitOrder, FILM_PRICE_UGX: ugx, FILM_PRICE_USD: usd } = await import("./pesapal.server");
-    const { getRequest } = await import("@tanstack/react-start/server");
 
     const isMomo = data.method === "mobile_money";
     const origin = data.origin.replace(/\/+$/, "");
-    const safeSlug = data.slug.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+    const safeSlug = safeReferencePart(data.slug, "film");
     const reference = `MAGEYE-${safeSlug || "film"}-${Date.now()}`;
-    const request = getRequest() as Request & { cf?: { country?: string } };
-    const countryCode =
-      normalizeCountryCode(request.cf?.country) ??
-      normalizeCountryCode(request.headers.get("cf-ipcountry")) ??
-      normalizeCountryCode(request.headers.get("x-vercel-ip-country")) ??
-      normalizeCountryCode(request.headers.get("cloudfront-viewer-country")) ??
-      normalizeCountryCode(request.headers.get("x-country-code")) ??
-      "UG";
-    const config = {
-      baseUrl:
-        (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
-          ? "https://cybqa.pesapal.com/pesapalv3"
-          : "https://pay.pesapal.com/v3",
-      consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
-      consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
-    };
+    const countryCode = await requestCountryCode();
 
     const result = await submitOrder({
       merchantReference: reference,
@@ -55,11 +68,12 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
       currency: isMomo ? "UGX" : "USD",
       description: data.title ? `Film: ${data.title}` : `Film: ${data.slug}`,
       callbackUrl: `${origin}/watch/${encodeURIComponent(data.slug)}?kind=film`,
+      cancellationUrl: `${origin}/watch/${encodeURIComponent(data.slug)}?kind=film&payment=cancelled`,
       ipnUrl: `${origin}/api/public/pesapal-ipn`,
       phone: data.phone,
       email: data.email,
       countryCode,
-    }, config);
+    }, pesapalConfig());
 
     if (!result.ok) return { ok: false as const, message: result.message };
 
@@ -87,15 +101,7 @@ export const checkPesapalPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { transactionStatus } = await import("./pesapal.server");
-    const config = {
-      baseUrl:
-        (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
-          ? "https://cybqa.pesapal.com/pesapalv3"
-          : "https://pay.pesapal.com/v3",
-      consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
-      consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
-    };
-    const res = await transactionStatus(data.orderTrackingId, config);
+    const res = await transactionStatus(data.orderTrackingId, pesapalConfig());
 
     if (!res.ok) {
       return { status: "pending" as const, message: "Waiting for confirmation" };
@@ -119,5 +125,72 @@ export const checkPesapalPayment = createServerFn({ method: "POST" })
       message: res.data.message || "Payment received",
       source: { url: `/api/public/stream/${token}`, type: "mp4" as const },
       entitlement,
+    };
+  });
+
+/** Opens a real Pesapal order for upcoming-film support tiers. */
+export const startPesapalSupportPayment = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) =>
+    z
+      .object({
+        slug: z.string().min(1),
+        title: z.string().min(1),
+        amountUsd: z.union([z.literal(25), z.literal(50), z.literal(100)]),
+        origin: z.string().url(),
+        email: z.string().email().optional(),
+      })
+      .parse(data),
+  )
+  .handler(async ({ data }) => {
+    const { submitOrder } = await import("./pesapal.server");
+    const origin = data.origin.replace(/\/+$/, "");
+    const safeSlug = safeReferencePart(data.slug, "support");
+    const reference = `MAGEYE-SUPPORT-${safeSlug}-${data.amountUsd}-${Date.now()}`;
+    const countryCode = await requestCountryCode();
+
+    const result = await submitOrder({
+      merchantReference: reference,
+      amount: data.amountUsd,
+      currency: "USD",
+      description: `Support: ${data.title} - $${data.amountUsd}`,
+      callbackUrl: `${origin}/?support=${encodeURIComponent(data.slug)}`,
+      cancellationUrl: `${origin}/?support=${encodeURIComponent(data.slug)}&payment=cancelled`,
+      ipnUrl: `${origin}/api/public/pesapal-ipn`,
+      email: data.email,
+      countryCode,
+    }, pesapalConfig());
+
+    if (!result.ok) return { ok: false as const, message: result.message };
+
+    return {
+      ok: true as const,
+      reference,
+      orderTrackingId: result.data.orderTrackingId,
+      redirectUrl: result.data.redirectUrl,
+      amount: data.amountUsd,
+      currency: "USD",
+      countryCode,
+    };
+  });
+
+/** Checks a support order without granting film playback access. */
+export const checkPesapalSupportPayment = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) =>
+    z.object({ orderTrackingId: z.string().min(1) }).parse(data),
+  )
+  .handler(async ({ data }) => {
+    const { transactionStatus } = await import("./pesapal.server");
+    const res = await transactionStatus(data.orderTrackingId, pesapalConfig());
+
+    if (!res.ok) return { status: "pending" as const, message: "Waiting for confirmation" };
+    if (res.data.status !== "success") return { status: res.data.status, message: res.data.message };
+
+    return {
+      status: "success" as const,
+      message: res.data.message || "Support payment received",
+      confirmationCode: res.data.confirmationCode,
+      amount: res.data.amount,
+      currency: res.data.currency,
+      method: res.data.method,
     };
   });
