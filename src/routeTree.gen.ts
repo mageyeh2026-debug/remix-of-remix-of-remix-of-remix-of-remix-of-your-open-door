@@ -15,6 +15,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as FilmsIndexRouteImport } from './routes/films.index'
 import { Route as FilmsSlugRouteImport } from './routes/films.$slug'
 import { Route as WatchSlugRouteImport } from './routes/watch.$slug'
@@ -51,6 +52,11 @@ const GalleryRoute = GalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FilmsIndexRoute = FilmsIndexRouteImport.update({
   id: '/films/',
   path: '/films/',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/films/$slug': typeof FilmsSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
   '/films/': typeof FilmsIndexRoute
@@ -97,6 +104,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/films/$slug': typeof FilmsSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
   '/films': typeof FilmsIndexRoute
@@ -111,6 +119,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/films/$slug': typeof FilmsSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
   '/films/': typeof FilmsIndexRoute
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/gallery'
+    | '/sitemap.xml'
     | '/films/$slug'
     | '/watch/$slug'
     | '/films/'
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/gallery'
+    | '/sitemap.xml'
     | '/films/$slug'
     | '/watch/$slug'
     | '/films'
@@ -152,6 +163,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/contact'
     | '/gallery'
+    | '/sitemap.xml'
     | '/films/$slug'
     | '/watch/$slug'
     | '/films/'
@@ -166,6 +178,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   GalleryRoute: typeof GalleryRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   FilmsSlugRoute: typeof FilmsSlugRoute
   WatchSlugRoute: typeof WatchSlugRoute
   FilmsIndexRoute: typeof FilmsIndexRoute
@@ -217,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/films/': {
       id: '/films/'
       path: '/films'
@@ -262,6 +282,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   GalleryRoute: GalleryRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   FilmsSlugRoute: FilmsSlugRoute,
   WatchSlugRoute: WatchSlugRoute,
   FilmsIndexRoute: FilmsIndexRoute,
