@@ -21,26 +21,65 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
 
+const SITE_URL = "https://hassanmageye.com";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mageye | Films by Hassan Mageye" },
+      { title: "Hassan Mageye | Film Director, Writer & Producer" },
       {
         name: "description",
         content:
-          "Cinematic films by Hassan Mageye, a Ugandan/American writer, director and producer telling African stories with heart.",
+          "Official site of Hassan Mageye, Ugandan/American film director, writer and producer. Watch his films, see upcoming projects, photos and press.",
       },
-      { property: "og:title", content: "Mageye | Films by Hassan Mageye" },
+      {
+        name: "keywords",
+        content:
+          "Hassan Mageye, Mageye films, Ugandan film director, African cinema, Tinka's Story, Kimote, The Silence We Flee, The Modern Road, John Bullock",
+      },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:site_name", content: "Hassan Mageye" },
+      { property: "og:title", content: "Hassan Mageye | Film Director, Writer & Producer" },
       {
         property: "og:description",
         content: "African stories, cultural identity and character-driven drama.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/` },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Hassan Mageye | Film Director, Writer & Producer" },
+    ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Person",
+              "@id": `${SITE_URL}/#hassan-mageye`,
+              name: "Hassan Mageye",
+              jobTitle: ["Film Director", "Writer", "Producer"],
+              nationality: "Ugandan/American",
+              url: SITE_URL,
+              sameAs: socialProfiles.map((p) => p.href),
+            },
+            {
+              "@type": "WebSite",
+              "@id": `${SITE_URL}/#website`,
+              url: SITE_URL,
+              name: "Hassan Mageye",
+              publisher: { "@id": `${SITE_URL}/#hassan-mageye` },
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: Index,
 });
+
 
 const iconMap: Record<string, typeof Play> = {
   Building2,
