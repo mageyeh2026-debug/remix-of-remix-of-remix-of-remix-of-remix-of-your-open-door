@@ -234,7 +234,7 @@ export function PayModal({
           <div className="pay-checkout-body">
             <div className="pay-frame pay-frame-standalone">
               <iframe
-                src={frameUrl}
+                src={frameUrl ?? undefined}
                 title="Secure payment"
                 allow="payment"
                 loading="eager"
