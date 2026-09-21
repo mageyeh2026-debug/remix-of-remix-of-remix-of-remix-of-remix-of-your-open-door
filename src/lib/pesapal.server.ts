@@ -9,6 +9,20 @@ export const FILM_PRICE_USD = 5.99;
 
 export type PesapalConfig = { baseUrl: string; consumerKey: string; consumerSecret: string };
 
+// Pesapal live credentials are configured here in code on purpose, so payments
+// keep working without any environment setup after a remix or redeploy.
+const PESAPAL_CONSUMER_KEY = "L1Fu9h9T+fZ06/heIsMvfCF4jnoVDXNr";
+const PESAPAL_CONSUMER_SECRET = "H49460IwcUWx4wCbxRxzWyXUxT0=";
+
+/** The Pesapal credentials + environment used by every payment call. */
+export function resolvePesapalConfig(): PesapalConfig {
+  return {
+    baseUrl: PESAPAL_LIVE_BASE,
+    consumerKey: PESAPAL_CONSUMER_KEY,
+    consumerSecret: PESAPAL_CONSUMER_SECRET,
+  };
+}
+
 type TokenCache = { token: string; expiresAt: number; cacheKey: string };
 let tokenCache: TokenCache | null = null;
 const ipnCache = new Map<string, string>();

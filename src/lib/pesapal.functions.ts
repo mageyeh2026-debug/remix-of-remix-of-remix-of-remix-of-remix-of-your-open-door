@@ -11,15 +11,9 @@ function normalizeCountryCode(value?: string | null) {
   return /^[A-Z]{2}$/.test(country) ? country : null;
 }
 
-function pesapalConfig() {
-  return {
-    baseUrl:
-      (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
-        ? "https://cybqa.pesapal.com/pesapalv3"
-        : "https://pay.pesapal.com/v3",
-    consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
-    consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
-  };
+async function pesapalConfig() {
+  const { resolvePesapalConfig } = await import("./pesapal.server");
+  return resolvePesapalConfig();
 }
 
 async function requestCountryCode() {
@@ -73,7 +67,7 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
       phone: data.phone,
       email: data.email,
       countryCode,
-    }, pesapalConfig());
+    }, await pesapalConfig());
 
     if (!result.ok) return { ok: false as const, message: result.message };
 
@@ -101,7 +95,7 @@ export const checkPesapalPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { transactionStatus } = await import("./pesapal.server");
-    const res = await transactionStatus(data.orderTrackingId, pesapalConfig());
+    const res = await transactionStatus(data.orderTrackingId, await pesapalConfig());
 
     if (!res.ok) {
       return { status: "pending" as const, message: "Waiting for confirmation" };
@@ -158,7 +152,7 @@ export const startPesapalSupportPayment = createServerFn({ method: "POST" })
       ipnUrl: `${origin}/api/public/pesapal-ipn`,
       email: data.email,
       countryCode,
-    }, pesapalConfig());
+    }, await pesapalConfig());
 
     if (!result.ok) return { ok: false as const, message: result.message };
 
@@ -180,7 +174,7 @@ export const checkPesapalSupportPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { transactionStatus } = await import("./pesapal.server");
-    const res = await transactionStatus(data.orderTrackingId, pesapalConfig());
+    const res = await transactionStatus(data.orderTrackingId, await pesapalConfig());
 
     if (!res.ok) return { status: "pending" as const, message: "Waiting for confirmation" };
     if (res.data.status !== "success") return { status: res.data.status, message: res.data.message };

@@ -25,15 +25,8 @@ async function handle(request: Request) {
     return Response.json({ status: 500, message: "Missing order tracking id" }, { status: 400 });
   }
 
-  const { transactionStatus } = await import("@/lib/pesapal.server");
-  const result = await transactionStatus(orderTrackingId, {
-    baseUrl:
-      (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
-        ? "https://cybqa.pesapal.com/pesapalv3"
-        : "https://pay.pesapal.com/v3",
-    consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
-    consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
-  });
+  const { transactionStatus, resolvePesapalConfig } = await import("@/lib/pesapal.server");
+  const result = await transactionStatus(orderTrackingId, resolvePesapalConfig());
 
   return Response.json({
     orderNotificationType: "IPNCHANGE",
