@@ -5,9 +5,9 @@ import bedroomChainImage from "@/assets/bedroom-chain.jpg";
 import devilsChestImage from "@/assets/devils-chest-poster.jpg";
 import devilsChestBanner from "@/assets/devils-chest-banner.png";
 import tinkasStoryImage from "@/assets/tinkas-story.jpg";
-import upcomingSilence from "@/assets/silence-we-flee.png";
-import upcomingBullock from "@/assets/john-bullock.png";
-import upcomingModernRoad from "@/assets/modern-road.png";
+import upcomingSilence from "@/assets/silence-we-flee.avif";
+import upcomingBullock from "@/assets/john-bullock.avif";
+import upcomingModernRoad from "@/assets/modern-road.avif";
 import directorHeroImage from "@/assets/director-hero.png";
 import directorHero2 from "@/assets/director-hero-2.png";
 import hassanImage from "@/assets/hassan-mageye.png";
@@ -113,7 +113,7 @@ export const defaultContent: SiteContent = {
       name: "Kimote",
       year: "",
       runtime: "Film",
-      genre: "Drama",
+      genre: "Drama | Thriller | International",
       image: kimoteImage,
       logline: "A cloth that tells our tale.",
       synopsis: "Kimote, written by Can Themba and directed by Darrell J. Roodt.",
@@ -200,7 +200,8 @@ export const defaultContent: SiteContent = {
       image: upcomingSilence,
       status: "Coming soon",
       logline: "A woman on the run. A truth they will kill to bury.",
-      synopsis: "An upcoming film by Hassan Mageye.",
+      synopsis:
+        "After fleeing her homeland with evidence connected to her father’s murder, a young woman seeks safety in America—only to discover that distance cannot silence the forces hunting her. The Silence We Flee is a tense drama about survival, displacement, truth, and the price of carrying a secret across borders.",
       cast: ["Casting in progress"],
     },
     {
@@ -208,11 +209,12 @@ export const defaultContent: SiteContent = {
       name: "Modern Road",
       year: "",
       runtime: "Coming soon",
-      genre: "Drama",
+      genre: "Drama | Human Story | Contemporary",
       image: upcomingModernRoad,
       status: "Coming soon",
       logline: "Some journeys change a nation.",
-      synopsis: "An upcoming film written and directed by Hassan Mageye.",
+      synopsis:
+        "The Modern Road explores the lives, choices, and struggles of people navigating a rapidly changing world, where ambition, relationships, and survival collide. It is a human story about the roads we choose, the people we meet along the way, and the consequences that follow us.",
       cast: ["Casting in progress"],
     },
     {
@@ -220,11 +222,12 @@ export const defaultContent: SiteContent = {
       name: "John Bullock",
       year: "",
       runtime: "Coming soon",
-      genre: "Drama",
+      genre: "Psychological Thriller | Drama",
       image: upcomingBullock,
       status: "Coming soon",
       logline: "An upcoming Mageye Global Works film.",
-      synopsis: "An upcoming film written and directed by Hassan Mageye.",
+      synopsis:
+        "A young African student takes a caregiving job inside a quiet family home, where locked doors, strange routines, and a mother’s obsessive control begin to reveal something deeply unsettling. John Bullock is a psychological thriller about family, control, memory, and the terrifying things people can justify in the name of love.",
       cast: ["Artists to be announced"],
     },
   ],
@@ -336,8 +339,11 @@ const bundledPictures: Record<string, string> = {
   "devils-chest-banner.png": devilsChestBanner,
   "tinkas-story.jpg": tinkasStoryImage,
   "silence-we-flee.png": upcomingSilence,
+  "silence-we-flee.avif": upcomingSilence,
   "john-bullock.png": upcomingBullock,
+  "john-bullock.avif": upcomingBullock,
   "modern-road.png": upcomingModernRoad,
+  "modern-road.avif": upcomingModernRoad,
   "director-hero.png": directorHeroImage,
   "director-hero-2.png": directorHero2,
   "hassan-mageye.png": hassanImage,

@@ -4,9 +4,9 @@ import kingsVirginImage from "@/assets/kings-virgin.jpg";
 import bedroomChainImage from "@/assets/bedroom-chain.jpg";
 import devilsChestImage from "@/assets/devils-chest-poster.jpg";
 import tinkasStoryImage from "@/assets/tinkas-story.jpg";
-import upcomingSilence from "@/assets/silence-we-flee.png";
-import upcomingBullock from "@/assets/john-bullock.png";
-import upcomingModernRoad from "@/assets/modern-road.png";
+import upcomingSilence from "@/assets/silence-we-flee.avif";
+import upcomingBullock from "@/assets/john-bullock.avif";
+import upcomingModernRoad from "@/assets/modern-road.avif";
 
 export type Film = {
   slug: string;
