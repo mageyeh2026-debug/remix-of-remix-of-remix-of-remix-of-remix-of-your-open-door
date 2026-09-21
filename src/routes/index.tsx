@@ -17,6 +17,7 @@ import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal } from "@/components/PlayerModal";
 import { SupportPayModal } from "@/components/PayModal";
 import { SocialProfiles, socialProfiles } from "@/components/SocialLinks";
+import { FollowModal } from "@/components/FollowModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
@@ -219,6 +220,7 @@ function Index() {
     amountUsd: number;
   } | null>(null);
   const [followedProject, setFollowedProject] = useState<string | null>(null);
+  const [followIntent, setFollowIntent] = useState<{ slug: string; title: string } | null>(null);
 
   const films = content.films;
   const projects = films.map((film) => ({
@@ -358,7 +360,7 @@ function Index() {
                       <button
                         type="button"
                         className="support-tier support-tier-follow"
-                        onClick={() => setFollowedProject(project.slug)}
+                        onClick={() => setFollowIntent({ slug: project.slug, title: project.name })}
                       >
                         <strong>{followedProject === project.slug ? "Following" : "Follow for free"}</strong>
                         <span>{followedProject === project.slug ? "Updates on" : "Get film updates"}</span>
@@ -467,6 +469,14 @@ function Index() {
         title={trailerFilm?.name}
         poster={trailerFilm?.image}
         onClose={() => setTrailerSlug(null)}
+      />
+
+      <FollowModal
+        open={Boolean(followIntent)}
+        slug={followIntent?.slug ?? ""}
+        title={followIntent?.title}
+        onClose={() => setFollowIntent(null)}
+        onSubscribed={(slug) => setFollowedProject(slug)}
       />
 
       {supportIntent ? (

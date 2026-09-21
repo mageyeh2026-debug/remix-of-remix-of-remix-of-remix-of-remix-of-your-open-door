@@ -62,6 +62,34 @@ function writeCache(raw: unknown, merged: SiteContent) {
   }
 }
 
+/**
+ * The realtime connection needs a websocket handshake before the first value
+ * arrives. A plain HTTPS read of the same record answers much sooner, so we
+ * fire it the moment the app script loads and paint with whatever lands first.
+ */
+const REST_URL = "https://mageye-hassan-8a3ee-default-rtdb.firebaseio.com/site.json";
+let firstLoad: Promise<SiteContent | null> | null = null;
+
+function fetchSiteContentFast(): Promise<SiteContent | null> {
+  if (typeof window === "undefined") return Promise.resolve(null);
+  if (!firstLoad) {
+    firstLoad = fetch(REST_URL, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((raw) => {
+        if (!raw) return null;
+        const merged = mergeContent(raw);
+        writeCache(raw, merged);
+        warmImageCache(merged);
+        return merged;
+      })
+      .catch(() => null);
+  }
+  return firstLoad;
+}
+
+// Start the read before any component mounts.
+void fetchSiteContentFast();
+
 export function useSiteContent() {
   // First client render must match the server render, so start from defaults
   // (or the in-memory snapshot kept from an earlier page in this session).
@@ -75,11 +103,20 @@ export function useSiteContent() {
     const stored = readStoredCache();
     if (stored) setContent(stored);
     warmImageCache(stored ?? EMPTY_LIVE_CONTENT);
+    let live = false;
+    // Whichever read answers first paints; the realtime one always wins later.
+    void fetchSiteContentFast().then((fast) => {
+      if (!active || live || !fast) return;
+      setContent(fast);
+      setLoaded(true);
+      setLoadError(false);
+    });
     try {
       unsub = onValue(
         ref(firebaseDb(), SITE_PATH),
         (snap) => {
           if (!active) return;
+          live = true;
           const raw = snap.val();
           const merged = mergeContent(raw);
           writeCache(raw, merged);

@@ -109,6 +109,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://mageye-hassan-8a3ee.firebasestorage.app",
       },
       {
+        rel: "preload",
+        as: "fetch",
+        href: "https://mageye-hassan-8a3ee-default-rtdb.firebaseio.com/site.json",
+        crossOrigin: "anonymous",
+      },
+      {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700&display=swap",
       },

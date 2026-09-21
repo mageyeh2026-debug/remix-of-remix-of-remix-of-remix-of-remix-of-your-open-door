@@ -53,7 +53,12 @@ export async function verifyPlaybackToken(token: string): Promise<Payload | null
   const expected = new Uint8Array(
     await crypto.subtle.sign("HMAC", await hmacKey(), encoder.encode(body)),
   );
-  const given = fromB64url(signature);
+  let given: Uint8Array;
+  try {
+    given = fromB64url(signature);
+  } catch {
+    return null;
+  }
   if (given.length !== expected.length) return null;
 
   let diff = 0;
