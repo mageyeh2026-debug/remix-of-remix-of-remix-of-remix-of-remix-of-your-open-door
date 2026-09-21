@@ -994,3 +994,17 @@ footer > p:last-child { justify-self: end; }
   .pay-modal-checkout { height: calc(100dvh - 32px); max-height: calc(100dvh - 32px); }
   .pay-frame-standalone iframe { height: 100%; min-height: 0; }
 }
+
+/* Follow for free popup */
+.follow-modal { max-width: 430px; padding: 26px 24px 28px; position: relative; }
+.follow-modal .pay-close { position: absolute; top: 14px; right: 14px; }
+.follow-modal .pay-title { margin: 0 0 6px; font-size: 1.3rem; font-weight: 600; }
+.follow-modal .pay-sub { margin: 0 0 18px; color: #4b5563; font-size: .92rem; line-height: 1.45; }
+.follow-form { display: grid; gap: 12px; }
+.follow-field { display: grid; gap: 6px; font-size: .82rem; color: #374151; }
+.follow-field input { border: 1px solid #d5d8de; border-radius: 10px; padding: 11px 12px; font-size: .95rem; font-family: inherit; }
+.follow-field input:focus { outline: none; border-color: #5b53d6; }
+@media (max-width: 720px) {
+  .follow-modal { padding: 20px 16px 22px; }
+  .follow-modal .pay-title { font-size: 1.12rem; }
+}
