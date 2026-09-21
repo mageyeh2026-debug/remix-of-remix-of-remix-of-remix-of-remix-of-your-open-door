@@ -192,7 +192,7 @@ export function PayModal({
           method,
           origin: window.location.origin,
           ...(title ? { title } : {}),
-          ...(phone.trim() ? { phone: phone.trim() } : {}),
+          ...(isMomo && phone.trim() ? { phone: phone.trim() } : {}),
           ...(guestEmail ? { email: guestEmail } : {}),
         },
       });
@@ -238,6 +238,13 @@ export function PayModal({
 
         {isCheckoutOpen ? (
           <div className="pay-checkout-body">
+            <p className={`pay-method-hint${isMomo ? " pay-method-hint-momo" : " pay-method-hint-card"}`}>
+              {isMomo ? (
+                <>Choose <strong>MTN</strong> or <strong>Airtel</strong> at the top of the payment page, then approve {amountLabel} on your phone.</>
+              ) : (
+                <>Choose the <strong>Visa / Mastercard</strong> option at the top of the payment page to pay {amountLabel} by card.</>
+              )}
+            </p>
             <div className="pay-frame pay-frame-standalone">
               <iframe
                 src={frameUrl ?? undefined}

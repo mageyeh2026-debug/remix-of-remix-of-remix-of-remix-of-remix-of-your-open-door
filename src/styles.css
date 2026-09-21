@@ -474,6 +474,9 @@ footer > p:last-child { justify-self: end; }
 .pay-frame iframe { display: block; width: 100%; height: 520px; border: 0; }
 @media (max-width: 720px) { .pay-frame iframe { height: 440px; } }
 .pay-checkout-body { padding: 18px 24px 24px; }
+.pay-method-hint { margin: 0 0 10px; padding: 10px 12px; border-radius: 10px; font-size: .82rem; line-height: 1.35; border: 1px solid color-mix(in srgb, currentColor 30%, transparent); background: color-mix(in srgb, currentColor 8%, transparent); }
+.pay-method-hint-card { color: #1d4ed8; }
+.pay-method-hint-momo { color: #b45309; }
 .pay-frame-standalone { margin-top: 0; }
 .pay-frame-standalone iframe { height: min(680px, calc(100dvh - 190px)); min-height: 480px; }
 .pay-checkout-actions { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 12px; }
