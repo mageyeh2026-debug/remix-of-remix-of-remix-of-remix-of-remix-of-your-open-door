@@ -49,6 +49,45 @@ const iconMap: Record<string, typeof Play> = {
   Wrench,
 };
 
+const upcomingDetails: Record<
+  string,
+  { genre: string; synopsis: string; support: string }
+> = {
+  "the-silence-we-flee": {
+    genre: "Drama | Thriller | International",
+    synopsis:
+      "After fleeing her homeland with evidence connected to her father’s murder, a young woman seeks safety in America—only to discover that distance cannot silence the forces hunting her. The Silence We Flee is a tense drama about survival, displacement, truth, and the price of carrying a secret across borders.",
+    support:
+      "Help us complete the film and bring it to audiences worldwide. Your support helps us take this story from production to the screen.",
+  },
+  "modern-road": {
+    genre: "Drama | Human Story | Contemporary",
+    synopsis:
+      "The Modern Road explores the lives, choices, and struggles of people navigating a rapidly changing world, where ambition, relationships, and survival collide. It is a human story about the roads we choose, the people we meet along the way, and the consequences that follow us.",
+    support:
+      "Help us bring The Modern Road to life. Your support helps move this story from vision to screen.",
+  },
+  "john-bullock": {
+    genre: "Psychological Thriller | Drama",
+    synopsis:
+      "A young African student takes a caregiving job inside a quiet family home, where locked doors, strange routines, and a mother’s obsessive control begin to reveal something deeply unsettling. John Bullock is a psychological thriller about family, control, memory, and the terrifying things people can justify in the name of love.",
+    support:
+      "Become part of our next production. Your support helps us move John Bullock from script to screen.",
+  },
+};
+
+const supportLevels = [
+  { amount: "$25", label: "Supporter", className: "support-tier-base" },
+  { amount: "$50", label: "Film Friend", className: "support-tier-friend" },
+  { amount: "$100", label: "Production Supporter", className: "support-tier-production" },
+] as const;
+
+function supportMailto(email: string, film: string, level: string) {
+  const subject = encodeURIComponent(`${level} — ${film}`);
+  const body = encodeURIComponent(`I would like to support ${film} as a ${level}. Please send me the next steps.`);
+  return `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
 function ProjectCard({
   project,
   slug,
@@ -224,33 +263,64 @@ function Index() {
       </section>
 
       <section className="upcoming-section" id="upcoming" aria-labelledby="upcoming-title">
-        <p className="eyebrow">{content.upcomingHeading.eyebrow}</p>
-        <h2 id="upcoming-title">{content.upcomingHeading.title}</h2>
+        <div className="upcoming-heading">
+          <p className="eyebrow"><span>{content.upcomingHeading.eyebrow}</span></p>
+          <h2 id="upcoming-title">{content.upcomingHeading.title}</h2>
+          <p className="upcoming-tagline">New stories. Bigger impact.</p>
+        </div>
         <div className="upcoming-carousel">
           <button className="carousel-arrow carousel-arrow-left rail-arrow" type="button" aria-label="Previous upcoming projects" onClick={() => scrollRail(upcomingRailRef.current, -1)}>
             <ChevronLeft size={20} />
           </button>
           <div className="upcoming-grid" ref={upcomingRailRef}>
-            {content.upcoming.map((project) => (
+            {content.upcoming.map((project, index) => {
+              const detail = upcomingDetails[project.slug];
+              const synopsis = detail?.synopsis ?? project.synopsis;
+              const genre = detail?.genre ?? project.genre;
+              const support = detail?.support ?? `Help us bring ${project.name} to life and move this story from vision to screen.`;
+              return (
               <article className="upcoming-card" key={project.slug}>
-                <span className="upcoming-thumb">
+                <div className="upcoming-thumb">
                   <img
                     src={project.image}
                     alt={`${project.name} — upcoming film still`}
-                    width={900}
-                    height={506}
-                    loading="lazy" decoding="async" fetchPriority="low"
+                    width={1200}
+                    height={675}
+                    loading="eager" decoding="async" fetchPriority={index < 3 ? "high" : "auto"}
                     onError={hideBrokenImage}
                   />
                   <span className="upcoming-status">{project.status ?? "Coming soon"}</span>
-                  <a className="upcoming-details" href="#contact">Details</a>
-                </span>
-                <span className="project-label">
-                  <strong>{project.name}</strong>
-                  <span className="upcoming-date">{project.status ?? "Coming soon"}</span>
-                </span>
+                </div>
+                <div className="upcoming-copy">
+                  <h3>{project.name}</h3>
+                  <p className="upcoming-genre">{genre}</p>
+                  <p className="upcoming-synopsis">{synopsis}</p>
+                  <div className="upcoming-support">
+                    <h4>Support this film</h4>
+                    <p>{support}</p>
+                    <div className="support-options">
+                      {supportLevels.map((level) => (
+                        <a
+                          className={`support-tier ${level.className}`}
+                          href={supportMailto(content.contact.email, project.name, `${level.amount} ${level.label}`)}
+                          key={level.amount}
+                        >
+                          <strong>{level.amount}</strong>
+                          <span>{level.label}</span>
+                        </a>
+                      ))}
+                      <a
+                        className="support-tier support-tier-follow"
+                        href={supportMailto(content.contact.email, project.name, "Follow for free")}
+                      >
+                        <strong>Follow for free</strong>
+                        <span>Get film updates</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </article>
-            ))}
+            );})}
           </div>
           <button className="carousel-arrow carousel-arrow-right rail-arrow" type="button" aria-label="Next upcoming projects" onClick={() => scrollRail(upcomingRailRef.current, 1)}>
             <ChevronRight size={20} />
