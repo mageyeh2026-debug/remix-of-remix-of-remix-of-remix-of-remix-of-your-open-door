@@ -7,15 +7,48 @@ import { PlayerModal, prefetchTrailer } from "@/components/PlayerModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import type { FilmItem } from "@/lib/site-content";
 
+const SITE_URL = "https://hassanmageye.com";
+
+function titleFromSlug(slug: string) {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 export const Route = createFileRoute("/films/$slug")({
-  head: () => ({ meta: [
-    { title: "Film | Mageye" },
-    { name: "description", content: "Watch film details and trailers from Mageye." },
-    { property: "og:title", content: "Film | Mageye" },
-    { property: "og:description", content: "Watch film details and trailers from Mageye." },
-    { property: "og:type", content: "video.movie" },
-    { name: "twitter:card", content: "summary_large_image" },
-  ] }),
+  head: ({ params }) => {
+    const name = titleFromSlug(params.slug);
+    const title = `${name} | A film by Hassan Mageye`;
+    const description = `${name} — watch the trailer, read the story and stream this film by director Hassan Mageye.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { name: "robots", content: "index, follow, max-image-preview:large" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "video.movie" },
+        { property: "og:url", content: `${SITE_URL}/films/${params.slug}` },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [{ rel: "canonical", href: `${SITE_URL}/films/${params.slug}` }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Movie",
+            name,
+            url: `${SITE_URL}/films/${params.slug}`,
+            director: { "@type": "Person", name: "Hassan Mageye", url: SITE_URL },
+            producer: { "@type": "Person", name: "Hassan Mageye", url: SITE_URL },
+          }),
+        },
+      ],
+    };
+  },
   notFoundComponent: FilmNotFound,
   component: FilmDetail,
 });
