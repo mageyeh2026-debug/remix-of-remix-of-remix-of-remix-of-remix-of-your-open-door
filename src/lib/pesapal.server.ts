@@ -9,6 +9,21 @@ export const FILM_PRICE_USD = 5.99;
 
 export type PesapalConfig = { baseUrl: string; consumerKey: string; consumerSecret: string };
 
+// Built-in Pesapal credentials (live). Environment variables, when present,
+// still win so the keys can be rotated without a code change.
+const BUILT_IN_CONSUMER_KEY = "L1Fu9h9T+fZ06/heIsMvfCF4jnoVDXNr";
+const BUILT_IN_CONSUMER_SECRET = "H49460IwcUWx4wCbxRxzWyXUxT0=";
+
+/** The Pesapal credentials + environment used by every payment call. */
+export function resolvePesapalConfig(): PesapalConfig {
+  const env = (process.env["PESAPAL_ENV"] ?? "live").trim().toLowerCase();
+  return {
+    baseUrl: env === "demo" || env === "sandbox" ? PESAPAL_DEMO_BASE : PESAPAL_LIVE_BASE,
+    consumerKey: (process.env["PESAPAL_CONSUMER_KEY"] || BUILT_IN_CONSUMER_KEY).trim(),
+    consumerSecret: (process.env["PESAPAL_CONSUMER_SECRET"] || BUILT_IN_CONSUMER_SECRET).trim(),
+  };
+}
+
 type TokenCache = { token: string; expiresAt: number; cacheKey: string };
 let tokenCache: TokenCache | null = null;
 const ipnCache = new Map<string, string>();
