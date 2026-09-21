@@ -192,7 +192,7 @@ export function PayModal({
           method,
           origin: window.location.origin,
           ...(title ? { title } : {}),
-          ...(phone.trim() ? { phone: phone.trim() } : {}),
+          ...(isMomo && phone.trim() ? { phone: phone.trim() } : {}),
           ...(guestEmail ? { email: guestEmail } : {}),
         },
       });
