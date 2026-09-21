@@ -11,15 +11,9 @@ function normalizeCountryCode(value?: string | null) {
   return /^[A-Z]{2}$/.test(country) ? country : null;
 }
 
-function pesapalConfig() {
-  return {
-    baseUrl:
-      (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
-        ? "https://cybqa.pesapal.com/pesapalv3"
-        : "https://pay.pesapal.com/v3",
-    consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
-    consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
-  };
+async function pesapalConfig() {
+  const { resolvePesapalConfig } = await import("./pesapal.server");
+  return resolvePesapalConfig();
 }
 
 async function requestCountryCode() {
