@@ -4,6 +4,12 @@ import { z } from "zod";
 export const FILM_PRICE_UGX = 5000;
 export const FILM_PRICE_USD = 5.99;
 
+function normalizeCountryCode(value?: string | null) {
+  const country = value?.trim().toUpperCase();
+  if (!country || country === "XX" || country === "T1") return null;
+  return /^[A-Z]{2}$/.test(country) ? country : null;
+}
+
 /** Opens a real Pesapal order and returns the secure payment page to embed. */
 export const startPesapalPayment = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
@@ -20,11 +26,28 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { submitOrder, FILM_PRICE_UGX: ugx, FILM_PRICE_USD: usd } = await import("./pesapal.server");
+    const { getRequest } = await import("@tanstack/react-start/server");
 
     const isMomo = data.method === "mobile_money";
     const origin = data.origin.replace(/\/+$/, "");
     const safeSlug = data.slug.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
     const reference = `MAGEYE-${safeSlug || "film"}-${Date.now()}`;
+    const request = getRequest() as Request & { cf?: { country?: string } };
+    const countryCode =
+      normalizeCountryCode(request.cf?.country) ??
+      normalizeCountryCode(request.headers.get("cf-ipcountry")) ??
+      normalizeCountryCode(request.headers.get("x-vercel-ip-country")) ??
+      normalizeCountryCode(request.headers.get("cloudfront-viewer-country")) ??
+      normalizeCountryCode(request.headers.get("x-country-code")) ??
+      "UG";
+    const config = {
+      baseUrl:
+        (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
+          ? "https://cybqa.pesapal.com/pesapalv3"
+          : "https://pay.pesapal.com/v3",
+      consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
+      consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
+    };
 
     const result = await submitOrder({
       merchantReference: reference,
@@ -35,7 +58,8 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
       ipnUrl: `${origin}/api/public/pesapal-ipn`,
       phone: data.phone,
       email: data.email,
-    });
+      countryCode,
+    }, config);
 
     if (!result.ok) return { ok: false as const, message: result.message };
 
@@ -46,6 +70,7 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
       redirectUrl: result.data.redirectUrl,
       amount: isMomo ? ugx : usd,
       currency: isMomo ? "UGX" : "USD",
+      countryCode,
     };
   });
 
@@ -62,7 +87,15 @@ export const checkPesapalPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { transactionStatus } = await import("./pesapal.server");
-    const res = await transactionStatus(data.orderTrackingId);
+    const config = {
+      baseUrl:
+        (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
+          ? "https://cybqa.pesapal.com/pesapalv3"
+          : "https://pay.pesapal.com/v3",
+      consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
+      consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
+    };
+    const res = await transactionStatus(data.orderTrackingId, config);
 
     if (!res.ok) {
       return { status: "pending" as const, message: "Waiting for confirmation" };

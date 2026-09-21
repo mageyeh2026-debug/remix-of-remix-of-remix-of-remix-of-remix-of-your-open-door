@@ -1,15 +1,15 @@
 // Server-only Pesapal API 3.0 client (live + sandbox).
 // Keys live in backend secrets and never reach the browser.
 
-const LIVE = "https://pay.pesapal.com/v3";
-const DEMO = "https://cybqa.pesapal.com/pesapalv3";
-
-export const PESAPAL_BASE = (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo" ? DEMO : LIVE;
+export const PESAPAL_LIVE_BASE = "https://pay.pesapal.com/v3";
+export const PESAPAL_DEMO_BASE = "https://cybqa.pesapal.com/pesapalv3";
 
 export const FILM_PRICE_UGX = 5000;
 export const FILM_PRICE_USD = 5.99;
 
-type TokenCache = { token: string; expiresAt: number };
+export type PesapalConfig = { baseUrl: string; consumerKey: string; consumerSecret: string };
+
+type TokenCache = { token: string; expiresAt: number; cacheKey: string };
 let tokenCache: TokenCache | null = null;
 const ipnCache = new Map<string, string>();
 
@@ -17,11 +17,12 @@ type Ok<T> = { ok: true; data: T };
 type Err = { ok: false; message: string };
 
 async function pesapalFetch<T>(
+  config: PesapalConfig,
   path: string,
   init?: { method?: string; body?: unknown; token?: string },
 ): Promise<Ok<T> | Err> {
   try {
-    const res = await fetch(`${PESAPAL_BASE}${path}`, {
+    const res = await fetch(`${config.baseUrl}${path}`, {
       method: init?.method ?? "GET",
       headers: {
         Accept: "application/json",
@@ -63,45 +64,46 @@ async function pesapalFetch<T>(
   }
 }
 
-async function accessToken(): Promise<Ok<string> | Err> {
-  if (tokenCache && tokenCache.expiresAt > Date.now() + 30_000) {
+async function accessToken(config: PesapalConfig): Promise<Ok<string> | Err> {
+  const cacheKey = `${config.baseUrl}:${config.consumerKey}`;
+  if (tokenCache && tokenCache.cacheKey === cacheKey && tokenCache.expiresAt > Date.now() + 30_000) {
     return { ok: true, data: tokenCache.token };
   }
-  const key = process.env["PESAPAL_CONSUMER_KEY"];
-  const secret = process.env["PESAPAL_CONSUMER_SECRET"];
-  if (!key || !secret) {
+  if (!config.consumerKey || !config.consumerSecret) {
     return { ok: false, message: "Payments are not configured yet." };
   }
-  const res = await pesapalFetch<{ token?: string; expiryDate?: string }>("/api/Auth/RequestToken", {
+  const res = await pesapalFetch<{ token?: string; expiryDate?: string }>(config, "/api/Auth/RequestToken", {
     method: "POST",
-    body: { consumer_key: key, consumer_secret: secret },
+    body: { consumer_key: config.consumerKey, consumer_secret: config.consumerSecret },
   });
   if (!res.ok) return res;
   const token = res.data.token;
   if (!token) return { ok: false, message: "Payments could not be authorised." };
   const expiresAt = res.data.expiryDate ? Date.parse(res.data.expiryDate) : Date.now() + 4 * 60_000;
-  tokenCache = { token, expiresAt: Number.isFinite(expiresAt) ? expiresAt : Date.now() + 4 * 60_000 };
+  tokenCache = { token, expiresAt: Number.isFinite(expiresAt) ? expiresAt : Date.now() + 4 * 60_000, cacheKey };
   return { ok: true, data: token };
 }
 
 /** Registers (once per URL) the notification endpoint Pesapal calls on settlement. */
-async function notificationId(token: string, ipnUrl: string): Promise<Ok<string> | Err> {
-  const cached = ipnCache.get(ipnUrl);
+async function notificationId(config: PesapalConfig, token: string, ipnUrl: string): Promise<Ok<string> | Err> {
+  const ipnCacheKey = `${config.baseUrl}:${ipnUrl}`;
+  const cached = ipnCache.get(ipnCacheKey);
   if (cached) return { ok: true, data: cached };
 
   const list = await pesapalFetch<Array<{ url?: string; ipn_id?: string }>>(
+    config,
     "/api/URLSetup/GetIpnList",
     { token },
   );
   if (list.ok && Array.isArray(list.data)) {
     const match = list.data.find((row) => row.url === ipnUrl && row.ipn_id);
     if (match?.ipn_id) {
-      ipnCache.set(ipnUrl, match.ipn_id);
+      ipnCache.set(ipnCacheKey, match.ipn_id);
       return { ok: true, data: match.ipn_id };
     }
   }
 
-  const registered = await pesapalFetch<{ ipn_id?: string }>("/api/URLSetup/RegisterIPN", {
+  const registered = await pesapalFetch<{ ipn_id?: string }>(config, "/api/URLSetup/RegisterIPN", {
     method: "POST",
     token,
     body: { url: ipnUrl, ipn_notification_type: "GET" },
@@ -109,7 +111,7 @@ async function notificationId(token: string, ipnUrl: string): Promise<Ok<string>
   if (!registered.ok) return registered;
   const id = registered.data.ipn_id;
   if (!id) return { ok: false, message: "Payments could not be set up." };
-  ipnCache.set(ipnUrl, id);
+  ipnCache.set(ipnCacheKey, id);
   return { ok: true, data: id };
 }
 
@@ -122,20 +124,23 @@ export type SubmitOrderInput = {
   ipnUrl: string;
   phone?: string | undefined;
   email?: string | undefined;
+  countryCode?: string | undefined;
   firstName?: string | undefined;
   lastName?: string | undefined;
 };
 
 export async function submitOrder(
   input: SubmitOrderInput,
+  config: PesapalConfig,
 ): Promise<Ok<{ orderTrackingId: string; redirectUrl: string }> | Err> {
-  const auth = await accessToken();
+  const auth = await accessToken(config);
   if (!auth.ok) return auth;
 
-  const ipn = await notificationId(auth.data, input.ipnUrl);
+  const ipn = await notificationId(config, auth.data, input.ipnUrl);
   if (!ipn.ok) return ipn;
 
   const res = await pesapalFetch<{ order_tracking_id?: string; redirect_url?: string }>(
+    config,
     "/api/Transactions/SubmitOrderRequest",
     {
       method: "POST",
@@ -150,7 +155,7 @@ export async function submitOrder(
         billing_address: {
           email_address: input.email ?? "",
           phone_number: input.phone ?? "",
-          country_code: "UG",
+          country_code: input.countryCode ?? "UG",
           first_name: input.firstName ?? "Mageye",
           last_name: input.lastName ?? "Viewer",
           line_1: "",
@@ -183,11 +188,13 @@ export type PesapalStatus = {
 
 export async function transactionStatus(
   orderTrackingId: string,
+  config: PesapalConfig,
 ): Promise<Ok<PesapalStatus> | Err> {
-  const auth = await accessToken();
+  const auth = await accessToken(config);
   if (!auth.ok) return auth;
 
   const res = await pesapalFetch<Record<string, unknown>>(
+    config,
     `/api/Transactions/GetTransactionStatus?orderTrackingId=${encodeURIComponent(orderTrackingId)}`,
     { token: auth.data },
   );

@@ -17,7 +17,9 @@ export type PendingMomo = {
   slug: string;
   internalReference: string;
   startedAt: number;
+  method?: "mobile_money" | "card";
   phone?: string;
+  redirectUrl?: string;
 };
 
 const hasWindow = () => typeof window !== "undefined";

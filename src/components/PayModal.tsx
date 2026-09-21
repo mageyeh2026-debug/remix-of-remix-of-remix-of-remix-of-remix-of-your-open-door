@@ -83,9 +83,19 @@ export function PayModal({
   const guestEmail = useMemo(() => (guestId ? getGuestEmail(guestId) : ""), [guestId]);
 
   const isMomo = method === "mobile_money";
+  const isCheckoutOpen = Boolean(frameUrl);
   const amountLabel = isMomo
     ? `UGX ${FILM_PRICE_UGX.toLocaleString()}`
     : `USD ${FILM_PRICE_USD.toFixed(2)}`;
+
+  function cancelPayment() {
+    clearPendingMomo();
+    setOrderId(null);
+    setFrameUrl(null);
+    setBusy(false);
+    setStatus(null);
+    setError("Payment cancelled. Choose a method and try again.");
+  }
 
   // Resume a payment that was started before a refresh and never settled.
   useEffect(() => {
@@ -97,11 +107,13 @@ export function PayModal({
 
     const pending = loadPendingMomo(slug);
     if (pending) {
+      if (pending.method === "mobile_money" || pending.method === "card") setMethod(pending.method);
       if (pending.phone) setPhone(pending.phone);
       startedAt.current = pending.startedAt;
       setOrderId(pending.internalReference);
+      if (pending.redirectUrl) setFrameUrl(pending.redirectUrl);
       setBusy(true);
-      setStatus("Checking your last payment…");
+      setStatus(pending.redirectUrl ? "Complete the payment to start watching." : "Checking your last payment…");
     } else {
       setOrderId(null);
     }
@@ -189,7 +201,9 @@ export function PayModal({
         slug,
         internalReference: result.orderTrackingId,
         startedAt: startedAt.current,
+        method,
         phone,
+        redirectUrl: result.redirectUrl,
       });
       setFrameUrl(result.redirectUrl);
       setOrderId(result.orderTrackingId);
@@ -203,14 +217,38 @@ export function PayModal({
 
   return (
     <div className="pay-overlay" role="dialog" aria-modal="true" aria-label="Pay to watch">
-      <div className="pay-modal">
+      <div className={`pay-modal${isCheckoutOpen ? " pay-modal-checkout" : ""}`}>
         <div className="pay-modal-head">
-          <h2>Pay to watch {title ?? "this movie"}</h2>
-          <button type="button" className="pay-close" onClick={onBack} aria-label="Go back">
+          <h2>{isCheckoutOpen ? "Complete payment" : `Pay to watch ${title ?? "this movie"}`}</h2>
+          <button
+            type="button"
+            className="pay-close"
+            onClick={isCheckoutOpen ? cancelPayment : onBack}
+            aria-label={isCheckoutOpen ? "Cancel payment" : "Go back"}
+          >
             <X size={20} />
           </button>
         </div>
 
+        {isCheckoutOpen ? (
+          <div className="pay-checkout-body">
+            <div className="pay-frame pay-frame-standalone">
+              <iframe
+                src={frameUrl ?? undefined}
+                title="Secure payment"
+                allow="payment"
+                loading="eager"
+              />
+            </div>
+            <div className="pay-checkout-actions">
+              <button type="button" className="pay-cancel-button" onClick={cancelPayment}>
+                Cancel payment
+              </button>
+              {status ? <p className="pay-note">{status}</p> : null}
+              {error ? <p className="pay-error">{error}</p> : null}
+            </div>
+          </div>
+        ) : (
         <div className="pay-modal-body">
           <div className="pay-methods">
             <p className="pay-label">Payment details</p>
@@ -220,8 +258,11 @@ export function PayModal({
                   type="radio"
                   name="pay-method"
                   checked={method === m.id}
-                  disabled={Boolean(frameUrl)}
-                  onChange={() => setMethod(m.id)}
+                  onChange={() => {
+                    setMethod(m.id);
+                    setError(null);
+                    setStatus(null);
+                  }}
                 />
                 <span className="pay-logos">{m.logos}</span>
                 <span className="pay-method-name">
@@ -237,20 +278,10 @@ export function PayModal({
               cards in US dollars.
             </p>
 
-            {frameUrl ? (
-              <div className="pay-frame">
-                <iframe
-                  src={frameUrl}
-                  title="Secure payment"
-                  allow="payment"
-                  loading="eager"
-                />
-              </div>
-            ) : null}
           </div>
 
           <aside className="pay-summary">
-            {isMomo && !frameUrl ? (
+            {isMomo ? (
               <div className="pay-momo">
                 <label className="pay-field">
                   <span>MTN or Airtel number</span>
@@ -282,21 +313,20 @@ export function PayModal({
               <strong>{amountLabel}</strong>
             </div>
 
-            {!frameUrl ? (
-              <button
-                type="button"
-                className="pay-button"
-                onClick={() => void pay()}
-                disabled={busy || (isMomo && !phone.trim())}
-              >
-                {busy ? "Opening…" : `Pay ${amountLabel}`}
-              </button>
-            ) : null}
+            <button
+              type="button"
+              className="pay-button"
+              onClick={() => void pay()}
+              disabled={busy || (isMomo && !phone.trim())}
+            >
+              {busy ? "Opening…" : `Pay ${amountLabel}`}
+            </button>
 
             {status ? <p className="pay-note">{status}</p> : null}
             {error ? <p className="pay-error">{error}</p> : null}
           </aside>
         </div>
+        )}
       </div>
     </div>
   );
