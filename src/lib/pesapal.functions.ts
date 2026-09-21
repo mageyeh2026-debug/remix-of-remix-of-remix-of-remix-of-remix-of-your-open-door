@@ -23,7 +23,8 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
 
     const isMomo = data.method === "mobile_money";
     const origin = data.origin.replace(/\/+$/, "");
-    const reference = `MAGEYE-${data.slug}-${Date.now()}`;
+    const safeSlug = data.slug.replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+    const reference = `MAGEYE-${safeSlug || "film"}-${Date.now()}`;
 
     const result = await submitOrder({
       merchantReference: reference,
