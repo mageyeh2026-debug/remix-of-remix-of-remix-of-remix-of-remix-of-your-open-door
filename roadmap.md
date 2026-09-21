@@ -10,3 +10,5 @@
 - [x] Route upcoming film support buttons through Pesapal instead of email
 - [x] Fit the Pesapal checkout window cleanly on desktop and mobile
 - [x] Verify successful, failed, and cancelled payment handling
+- [x] Add social profile links, sitemap and search metadata
+- [x] Preload all site images on open
