@@ -103,6 +103,14 @@ export function useSiteContent() {
     const stored = readStoredCache();
     if (stored) setContent(stored);
     warmImageCache(stored ?? EMPTY_LIVE_CONTENT);
+    let live = false;
+    // Whichever read answers first paints; the realtime one always wins later.
+    void fetchSiteContentFast().then((fast) => {
+      if (!active || live || !fast) return;
+      setContent(fast);
+      setLoaded(true);
+      setLoadError(false);
+    });
     try {
       unsub = onValue(
         ref(firebaseDb(), SITE_PATH),
