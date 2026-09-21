@@ -18,6 +18,7 @@ import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FilmsIndexRouteImport } from './routes/films.index'
 import { Route as FilmsSlugRouteImport } from './routes/films.$slug'
 import { Route as WatchSlugRouteImport } from './routes/watch.$slug'
+import { Route as ApiPublicPesapalIpnRouteImport } from './routes/api/public/pesapal-ipn'
 import { Route as ApiPublicStreamTokenRouteImport } from './routes/api/public/stream.$token'
 
 const IndexRoute = IndexRouteImport.update({
@@ -65,6 +66,11 @@ const WatchSlugRoute = WatchSlugRouteImport.update({
   path: '/watch/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPesapalIpnRoute = ApiPublicPesapalIpnRouteImport.update({
+  id: '/api/public/pesapal-ipn',
+  path: '/api/public/pesapal-ipn',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicStreamTokenRoute = ApiPublicStreamTokenRouteImport.update({
   id: '/api/public/stream/$token',
   path: '/api/public/stream/$token',
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/films/$slug': typeof FilmsSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
   '/films/': typeof FilmsIndexRoute
+  '/api/public/pesapal-ipn': typeof ApiPublicPesapalIpnRoute
   '/api/public/stream/$token': typeof ApiPublicStreamTokenRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/films/$slug': typeof FilmsSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
   '/films': typeof FilmsIndexRoute
+  '/api/public/pesapal-ipn': typeof ApiPublicPesapalIpnRoute
   '/api/public/stream/$token': typeof ApiPublicStreamTokenRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/films/$slug': typeof FilmsSlugRoute
   '/watch/$slug': typeof WatchSlugRoute
   '/films/': typeof FilmsIndexRoute
+  '/api/public/pesapal-ipn': typeof ApiPublicPesapalIpnRoute
   '/api/public/stream/$token': typeof ApiPublicStreamTokenRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/films/$slug'
     | '/watch/$slug'
     | '/films/'
+    | '/api/public/pesapal-ipn'
     | '/api/public/stream/$token'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/films/$slug'
     | '/watch/$slug'
     | '/films'
+    | '/api/public/pesapal-ipn'
     | '/api/public/stream/$token'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/films/$slug'
     | '/watch/$slug'
     | '/films/'
+    | '/api/public/pesapal-ipn'
     | '/api/public/stream/$token'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   FilmsSlugRoute: typeof FilmsSlugRoute
   WatchSlugRoute: typeof WatchSlugRoute
   FilmsIndexRoute: typeof FilmsIndexRoute
+  ApiPublicPesapalIpnRoute: typeof ApiPublicPesapalIpnRoute
   ApiPublicStreamTokenRoute: typeof ApiPublicStreamTokenRoute
 }
 
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WatchSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/pesapal-ipn': {
+      id: '/api/public/pesapal-ipn'
+      path: '/api/public/pesapal-ipn'
+      fullPath: '/api/public/pesapal-ipn'
+      preLoaderRoute: typeof ApiPublicPesapalIpnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/stream/$token': {
       id: '/api/public/stream/$token'
       path: '/api/public/stream/$token'
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   FilmsSlugRoute: FilmsSlugRoute,
   WatchSlugRoute: WatchSlugRoute,
   FilmsIndexRoute: FilmsIndexRoute,
+  ApiPublicPesapalIpnRoute: ApiPublicPesapalIpnRoute,
   ApiPublicStreamTokenRoute: ApiPublicStreamTokenRoute,
 }
 export const routeTree = rootRouteImport

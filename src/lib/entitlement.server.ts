@@ -7,7 +7,7 @@ const encoder = new TextEncoder();
 export type Entitlement = {
   slug: string;
   guestId: string;
-  provider: "whop" | "momo";
+  provider: "whop" | "momo" | "pesapal";
   ref: string;
   exp: number;
 };
