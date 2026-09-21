@@ -103,6 +103,19 @@ export function PayModal({
     setError("Payment cancelled. Choose a method and try again.");
   }
 
+  function handleCheckoutLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
+    try {
+      const href = event.currentTarget.contentWindow?.location.href;
+      if (!href) return;
+      const callback = new URL(href);
+      if (callback.origin === window.location.origin && callback.searchParams.get("payment") === "cancelled") {
+        cancelPayment();
+      }
+    } catch {
+      // Pesapal is cross-origin until it returns to our callback URL.
+    }
+  }
+
   // Resume a payment that was started before a refresh and never settled.
   useEffect(() => {
     if (!open) return;
@@ -251,6 +264,7 @@ export function PayModal({
                 title="Secure payment"
                 allow="payment"
                 loading="eager"
+                onLoad={handleCheckoutLoad}
               />
             </div>
             <div className="pay-checkout-actions">
@@ -443,6 +457,19 @@ export function SupportPayModal({
     setError("Payment cancelled. You can try again when ready.");
   }
 
+  function handleSupportCheckoutLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
+    try {
+      const href = event.currentTarget.contentWindow?.location.href;
+      if (!href) return;
+      const callback = new URL(href);
+      if (callback.origin === window.location.origin && callback.searchParams.get("payment") === "cancelled") {
+        cancelSupportPayment();
+      }
+    } catch {
+      // Pesapal is cross-origin until it returns to our callback URL.
+    }
+  }
+
   async function paySupport() {
     setError(null);
     setBusy(true);
@@ -492,7 +519,13 @@ export function SupportPayModal({
         {isCheckoutOpen ? (
           <div className="pay-checkout-body">
             <div className="pay-frame pay-frame-standalone">
-              <iframe src={frameUrl ?? undefined} title="Secure support payment" allow="payment" loading="eager" />
+              <iframe
+                src={frameUrl ?? undefined}
+                title="Secure support payment"
+                allow="payment"
+                loading="eager"
+                onLoad={handleSupportCheckoutLoad}
+              />
             </div>
             <div className="pay-checkout-actions">
               <button type="button" className="pay-cancel-button" onClick={cancelSupportPayment}>

@@ -8,3 +8,5 @@
 - [x] Make Pesapal card choice open card-first in the hosted checkout
 - [x] Add gallery image loading spinner overlays
 - [x] Route upcoming film support buttons through Pesapal instead of email
+- [x] Fit the Pesapal checkout window cleanly on desktop and mobile
+- [x] Verify successful, failed, and cancelled payment handling
