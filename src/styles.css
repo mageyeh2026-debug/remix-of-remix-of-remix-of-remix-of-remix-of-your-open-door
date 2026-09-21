@@ -967,3 +967,30 @@ footer > p:last-child { justify-self: end; }
 .media-card-link { display: block; cursor: pointer; }
 .media-card-link:hover img { transform: scale(1.04); }
 .media-card img { transition: transform .5s ease; }
+
+/* Social profiles */
+.social-section { padding: 64px 24px 72px; text-align: center; }
+.social-section h2 { margin: 6px 0 22px; }
+.social-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.social-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 18px; border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, .12); background: #fff;
+  font-size: .95rem; font-weight: 500; text-decoration: none; color: inherit;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.social-link:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 0, 0, .12); border-color: rgba(0, 0, 0, .22); }
+.social-icon { display: inline-flex; align-items: center; }
+.social-icon svg { height: 22px; width: auto; display: block; }
+@media (max-width: 720px) {
+  .social-section { padding: 44px 16px 52px; }
+  .social-link { padding: 9px 14px; font-size: .86rem; }
+  .social-icon svg { height: 18px; }
+}
+
+/* Desktop payment window fits the screen without page scrolling */
+@media (min-width: 721px) {
+  .pay-modal { max-height: calc(100dvh - 32px); }
+  .pay-modal-checkout { height: calc(100dvh - 32px); max-height: calc(100dvh - 32px); }
+  .pay-frame-standalone iframe { height: 100%; min-height: 0; }
+}
