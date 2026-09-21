@@ -67,7 +67,7 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
       phone: data.phone,
       email: data.email,
       countryCode,
-    }, pesapalConfig());
+    }, await pesapalConfig());
 
     if (!result.ok) return { ok: false as const, message: result.message };
 
@@ -95,7 +95,7 @@ export const checkPesapalPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { transactionStatus } = await import("./pesapal.server");
-    const res = await transactionStatus(data.orderTrackingId, pesapalConfig());
+    const res = await transactionStatus(data.orderTrackingId, await pesapalConfig());
 
     if (!res.ok) {
       return { status: "pending" as const, message: "Waiting for confirmation" };
@@ -152,7 +152,7 @@ export const startPesapalSupportPayment = createServerFn({ method: "POST" })
       ipnUrl: `${origin}/api/public/pesapal-ipn`,
       email: data.email,
       countryCode,
-    }, pesapalConfig());
+    }, await pesapalConfig());
 
     if (!result.ok) return { ok: false as const, message: result.message };
 
@@ -174,7 +174,7 @@ export const checkPesapalSupportPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { transactionStatus } = await import("./pesapal.server");
-    const res = await transactionStatus(data.orderTrackingId, pesapalConfig());
+    const res = await transactionStatus(data.orderTrackingId, await pesapalConfig());
 
     if (!res.ok) return { status: "pending" as const, message: "Waiting for confirmation" };
     if (res.data.status !== "success") return { status: res.data.status, message: res.data.message };
