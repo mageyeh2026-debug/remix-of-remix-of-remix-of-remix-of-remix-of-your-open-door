@@ -468,7 +468,10 @@ footer > p:last-child { justify-self: end; }
 .pay-method-sub { color: #6b7280; font-size: .82rem; }
 .pay-method-tag { display: inline-block; margin-left: 8px; font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #92400e; background: #fef3c7; border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
 .pay-express { min-height: 48px; position: relative; }
-.pay-express iframe, .pay-express whop-express-checkout-button { width: 100%; }
+.pay-express iframe { width: 100%; }
+.pay-frame { margin-top: 14px; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #fff; animation: checkout-reveal .2s ease-out; }
+.pay-frame iframe { display: block; width: 100%; height: 520px; border: 0; }
+@media (max-width: 720px) { .pay-frame iframe { height: 440px; } }
 .pay-express-preload { position: absolute; width: 1px; height: 1px; min-height: 0; overflow: hidden; opacity: 0; pointer-events: none; }
 .pay-express-hidden { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
 .pay-express-ready { animation: checkout-reveal .2s ease-out; }
