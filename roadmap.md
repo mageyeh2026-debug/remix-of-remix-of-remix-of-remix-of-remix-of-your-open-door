@@ -5,3 +5,6 @@
 - [x] Rebuild upcoming projects section from supplied reference
 - [x] Optimize upcoming posters for fast delivery
 - [x] Restore three compact mobile movie cards per view
+- [x] Make Pesapal card choice open card-first in the hosted checkout
+- [x] Add gallery image loading spinner overlays
+- [x] Route upcoming film support buttons through Pesapal instead of email

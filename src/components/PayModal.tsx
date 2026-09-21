@@ -3,10 +3,12 @@ import { X } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 
 import {
+  checkPesapalSupportPayment,
   checkPesapalPayment,
   FILM_PRICE_UGX,
   FILM_PRICE_USD,
   startPesapalPayment,
+  startPesapalSupportPayment,
 } from "@/lib/pesapal.functions";
 import {
   clearPendingMomo,
@@ -52,6 +54,10 @@ const METHODS: { id: Method; name: string; sub?: string; currency: string; logos
     ),
   },
 ];
+
+function formatUsd(amount: number) {
+  return `USD ${amount.toFixed(2)}`;
+}
 
 export function PayModal({
   open,
@@ -326,6 +332,203 @@ export function PayModal({
             {error ? <p className="pay-error">{error}</p> : null}
           </aside>
         </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function SupportPayModal({
+  open,
+  slug,
+  title,
+  amountUsd,
+  onClose,
+}: {
+  open: boolean;
+  slug: string;
+  title: string;
+  amountUsd: number;
+  onClose: () => void;
+}) {
+  const startSupportPayment = useServerFn(startPesapalSupportPayment);
+  const checkSupportPayment = useServerFn(checkPesapalSupportPayment);
+
+  const [frameUrl, setFrameUrl] = useState<string | null>(null);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [paid, setPaid] = useState(false);
+  const startedAt = useRef(0);
+
+  const guestId = useMemo(() => (typeof window === "undefined" ? "" : getGuestId()), []);
+  const guestEmail = useMemo(() => (guestId ? getGuestEmail(guestId) : ""), [guestId]);
+  const amountLabel = formatUsd(amountUsd);
+  const isCheckoutOpen = Boolean(frameUrl);
+
+  useEffect(() => {
+    if (!open) return;
+    setFrameUrl(null);
+    setOrderId(null);
+    setStatus(null);
+    setBusy(false);
+    setError(null);
+    setPaid(false);
+  }, [open, slug, amountUsd]);
+
+  useEffect(() => {
+    if (!orderId) return;
+    let stop = false;
+
+    const tick = async () => {
+      if (stop) return;
+      try {
+        const result = await checkSupportPayment({ data: { orderTrackingId: orderId } });
+        if (stop) return;
+        if (result.status === "success") {
+          stop = true;
+          clearInterval(timer);
+          setPaid(true);
+          setFrameUrl(null);
+          setBusy(false);
+          setStatus("Thank you. Your support payment was received.");
+          return;
+        }
+        if (result.status === "failed") {
+          stop = true;
+          clearInterval(timer);
+          setFrameUrl(null);
+          setOrderId(null);
+          setBusy(false);
+          setError(result.message || "Payment failed. Please try again.");
+          return;
+        }
+        setStatus(result.message || "Waiting for confirmation");
+        if (Date.now() - startedAt.current > 10 * 60 * 1000) {
+          stop = true;
+          clearInterval(timer);
+          setFrameUrl(null);
+          setOrderId(null);
+          setBusy(false);
+          setError("The payment timed out. Please try again.");
+        }
+      } catch {
+        setStatus("Waiting for confirmation");
+      }
+    };
+
+    const timer = setInterval(() => void tick(), 3000);
+    void tick();
+    return () => {
+      stop = true;
+      clearInterval(timer);
+    };
+  }, [orderId]);
+
+  if (!open) return null;
+
+  function cancelSupportPayment() {
+    setOrderId(null);
+    setFrameUrl(null);
+    setBusy(false);
+    setStatus(null);
+    setError("Payment cancelled. You can try again when ready.");
+  }
+
+  async function paySupport() {
+    setError(null);
+    setBusy(true);
+    setStatus("Opening the secure payment page…");
+    try {
+      const result = await startSupportPayment({
+        data: {
+          slug,
+          title,
+          amountUsd: amountUsd === 25 || amountUsd === 50 || amountUsd === 100 ? amountUsd : 25,
+          origin: window.location.origin,
+          ...(guestEmail ? { email: guestEmail } : {}),
+        },
+      });
+      if (!result.ok) {
+        setError(result.message);
+        setBusy(false);
+        setStatus(null);
+        return;
+      }
+      startedAt.current = Date.now();
+      setFrameUrl(result.redirectUrl);
+      setOrderId(result.orderTrackingId);
+      setStatus("Complete the payment below to support this film.");
+    } catch {
+      setError("Payments are temporarily unavailable.");
+      setBusy(false);
+      setStatus(null);
+    }
+  }
+
+  return (
+    <div className="pay-overlay" role="dialog" aria-modal="true" aria-label="Support this film">
+      <div className={`pay-modal${isCheckoutOpen ? " pay-modal-checkout" : ""}`}>
+        <div className="pay-modal-head">
+          <h2>{isCheckoutOpen ? "Complete support payment" : `Support ${title}`}</h2>
+          <button
+            type="button"
+            className="pay-close"
+            onClick={isCheckoutOpen ? cancelSupportPayment : onClose}
+            aria-label={isCheckoutOpen ? "Cancel payment" : "Close"}
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {isCheckoutOpen ? (
+          <div className="pay-checkout-body">
+            <div className="pay-frame pay-frame-standalone">
+              <iframe src={frameUrl ?? undefined} title="Secure support payment" allow="payment" loading="eager" />
+            </div>
+            <div className="pay-checkout-actions">
+              <button type="button" className="pay-cancel-button" onClick={cancelSupportPayment}>
+                Cancel payment
+              </button>
+              {status ? <p className="pay-note">{status}</p> : null}
+              {error ? <p className="pay-error">{error}</p> : null}
+            </div>
+          </div>
+        ) : (
+          <div className="pay-modal-body pay-support-body">
+            <div className="pay-methods">
+              <p className="pay-label">Support this film</p>
+              <div className="support-checkout-copy">
+                <strong>{amountLabel}</strong>
+                <span>{title}</span>
+              </div>
+              {paid ? <p className="pay-note">Thank you. Your support payment was received.</p> : null}
+            </div>
+
+            <aside className="pay-summary">
+              <h3>{title}</h3>
+              <p className="pay-summary-sub">Upcoming film support</p>
+              <div className="pay-row">
+                <span>Support</span>
+                <span>{amountLabel}</span>
+              </div>
+              <div className="pay-total">
+                <span>Amount due</span>
+                <strong>{amountLabel}</strong>
+              </div>
+              <button type="button" className="pay-button" onClick={() => void paySupport()} disabled={busy || paid}>
+                {paid ? "Payment received" : busy ? "Opening…" : `Pay ${amountLabel}`}
+              </button>
+              {paid ? (
+                <button type="button" className="pay-cancel-button pay-done-button" onClick={onClose}>
+                  Done
+                </button>
+              ) : null}
+              {status && !paid ? <p className="pay-note">{status}</p> : null}
+              {error ? <p className="pay-error">{error}</p> : null}
+            </aside>
+          </div>
         )}
       </div>
     </div>

@@ -121,6 +121,7 @@ export type SubmitOrderInput = {
   currency: string;
   description: string;
   callbackUrl: string;
+  cancellationUrl?: string | undefined;
   ipnUrl: string;
   phone?: string | undefined;
   email?: string | undefined;
@@ -151,6 +152,7 @@ export async function submitOrder(
         amount: input.amount,
         description: input.description.slice(0, 100),
         callback_url: input.callbackUrl,
+        cancellation_url: input.cancellationUrl ?? input.callbackUrl,
         notification_id: ipn.data,
         billing_address: {
           email_address: input.email ?? "",
