@@ -4,17 +4,6 @@ import { z } from "zod";
 export const FILM_PRICE_UGX = 5000;
 export const FILM_PRICE_USD = 5.99;
 
-function pesapalConfig() {
-  return {
-    baseUrl:
-      (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
-        ? "https://cybqa.pesapal.com/pesapalv3"
-        : "https://pay.pesapal.com/v3",
-    consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
-    consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
-  };
-}
-
 function normalizeCountryCode(value?: string | null) {
   const country = value?.trim().toUpperCase();
   if (!country || country === "XX" || country === "T1") return null;
@@ -51,6 +40,14 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
       normalizeCountryCode(request.headers.get("cloudfront-viewer-country")) ??
       normalizeCountryCode(request.headers.get("x-country-code")) ??
       "UG";
+    const config = {
+      baseUrl:
+        (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
+          ? "https://cybqa.pesapal.com/pesapalv3"
+          : "https://pay.pesapal.com/v3",
+      consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
+      consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
+    };
 
     const result = await submitOrder({
       merchantReference: reference,
@@ -62,7 +59,7 @@ export const startPesapalPayment = createServerFn({ method: "POST" })
       phone: data.phone,
       email: data.email,
       countryCode,
-    }, pesapalConfig());
+    }, config);
 
     if (!result.ok) return { ok: false as const, message: result.message };
 
@@ -90,7 +87,15 @@ export const checkPesapalPayment = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { transactionStatus } = await import("./pesapal.server");
-    const res = await transactionStatus(data.orderTrackingId, pesapalConfig());
+    const config = {
+      baseUrl:
+        (process.env["PESAPAL_ENV"] ?? "live").toLowerCase() === "demo"
+          ? "https://cybqa.pesapal.com/pesapalv3"
+          : "https://pay.pesapal.com/v3",
+      consumerKey: process.env["PESAPAL_CONSUMER_KEY"] ?? "",
+      consumerSecret: process.env["PESAPAL_CONSUMER_SECRET"] ?? "",
+    };
+    const res = await transactionStatus(data.orderTrackingId, config);
 
     if (!res.ok) {
       return { status: "pending" as const, message: "Waiting for confirmation" };
