@@ -384,6 +384,8 @@ const bundledPosterUrls: Record<string, string> = {
 
 export function resolvePicture<T>(value: T): T {
   if (typeof value !== "string") return value;
+  const direct = bundledPosterUrls[value];
+  if (direct) return direct as unknown as T;
   const legacyMatch = /^(?:https?:\/\/[^/]+)?\/__l5e\/assets-v1\/[^/]+\/(.+)$/.exec(value);
   const builtMatch = /(?:^|\/)assets\/([^/?#]+?)-[A-Za-z0-9_]{6,}(\.[A-Za-z0-9]+)(?:[?#].*)?$/.exec(value);
   const filename = legacyMatch?.[1]
