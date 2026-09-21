@@ -104,6 +104,15 @@ export const checkPesapalPayment = createServerFn({ method: "POST" })
       return { status: res.data.status, message: res.data.message };
     }
 
+    const expectedReferencePart = safeReferencePart(data.slug, "film");
+    const belongsToFilm = res.data.reference.startsWith(`MAGEYE-${expectedReferencePart}-`);
+    const validAmount =
+      (res.data.currency === "UGX" && res.data.amount === FILM_PRICE_UGX) ||
+      (res.data.currency === "USD" && res.data.amount === FILM_PRICE_USD);
+    if (!belongsToFilm || !validAmount) {
+      return { status: "failed" as const, message: "This payment does not match this film." };
+    }
+
     const { signPlaybackToken } = await import("./stream-token.server");
     const { signEntitlement } = await import("./entitlement.server");
     const token = await signPlaybackToken({ slug: data.slug, kind: "film" }, 60 * 60 * 4);
@@ -178,6 +187,11 @@ export const checkPesapalSupportPayment = createServerFn({ method: "POST" })
 
     if (!res.ok) return { status: "pending" as const, message: "Waiting for confirmation" };
     if (res.data.status !== "success") return { status: res.data.status, message: res.data.message };
+
+    const expectedReferencePart = safeReferencePart(data.orderTrackingId, "");
+    if (!res.data.reference.startsWith("MAGEYE-SUPPORT-") || !res.data.confirmationCode) {
+      return { status: "failed" as const, message: "This support payment could not be verified." };
+    }
 
     return {
       status: "success" as const,
