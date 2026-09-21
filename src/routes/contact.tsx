@@ -2,26 +2,32 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BriefcaseBusiness, Mail, MapPin, Phone } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
+import { SocialProfiles } from "@/components/SocialLinks";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
+
+const SITE_URL = "https://hassanmageye.com";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact | Mageye" },
+      { title: "Contact Hassan Mageye | Film Projects & Collaborations" },
       {
         name: "description",
         content:
-          "Get in touch with Mageye to plan a wedding film, brand video, event coverage or documentary.",
+          "Get in touch with Hassan Mageye to plan a film, brand video, event coverage or documentary.",
       },
-      { property: "og:title", content: "Contact | Mageye" },
+      { name: "robots", content: "index, follow" },
+      { property: "og:title", content: "Contact Hassan Mageye | Film Projects & Collaborations" },
       {
         property: "og:description",
         content: "Have a story to tell? Let’s create something that matters.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE_URL}/contact` },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/contact` }],
   }),
   component: ContactPage,
 });
@@ -63,6 +69,8 @@ function ContactPage() {
           ))}
         </div>
       </section>
+
+      <SocialProfiles />
 
       <SiteFooter />
     </main>

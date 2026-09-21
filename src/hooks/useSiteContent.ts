@@ -13,22 +13,27 @@ let memoryCache: SiteContent | null = null;
 const warmedImages = new Set<string>();
 
 /**
- * Quietly fill the browser cache after the visible page has started loading.
- * Small batches keep gallery images from competing with the first screen.
+ * Download every picture once, right when the site opens, and keep it in
+ * memory for the rest of the visit. Later pages then paint instantly and the
+ * same file is never fetched twice.
  */
+const warmedElements: HTMLImageElement[] = [];
+
 function warmImageCache(content: SiteContent) {
   if (typeof window === "undefined") return;
   const queue = collectImageUrls(content).filter((url) => !warmedImages.has(url));
   if (!queue.length) return;
 
   const warmBatch = () => {
-    queue.splice(0, 8).forEach((url) => {
+    queue.splice(0, 24).forEach((url) => {
       warmedImages.add(url);
       const image = new Image();
       image.decoding = "async";
+      // Holding a reference keeps the decoded picture alive for the session.
+      warmedElements.push(image);
       image.src = url;
     });
-    if (queue.length) globalThis.setTimeout(warmBatch, 40);
+    if (queue.length) globalThis.setTimeout(warmBatch, 0);
   };
 
   warmBatch();
