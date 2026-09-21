@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BriefcaseBusiness, Mail, MapPin, Phone } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
+import { SocialProfiles } from "@/components/SocialLinks";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
 
@@ -63,6 +64,8 @@ function ContactPage() {
           ))}
         </div>
       </section>
+
+      <SocialProfiles />
 
       <SiteFooter />
     </main>

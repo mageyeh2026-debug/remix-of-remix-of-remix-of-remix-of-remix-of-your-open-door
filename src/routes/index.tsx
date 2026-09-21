@@ -16,6 +16,7 @@ import { hideBrokenImage } from "@/lib/utils";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal } from "@/components/PlayerModal";
 import { SupportPayModal } from "@/components/PayModal";
+import { SocialProfiles, socialProfiles } from "@/components/SocialLinks";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
@@ -418,6 +419,9 @@ function Index() {
           {content.contact.buttonLabel}
         </a>
       </section>
+
+      <SocialProfiles />
+
 
       <PlayerModal
         slug={trailerSlug}
