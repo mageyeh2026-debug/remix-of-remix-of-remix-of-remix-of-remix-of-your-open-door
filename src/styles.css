@@ -131,8 +131,8 @@ img { display: block; max-width: 100%; }
 .more-thumb svg { width: 20px; height: 20px; padding: 15px; border-radius: 999px; border: 1.5px solid color-mix(in oklab, var(--muted-foreground) 45%, transparent); box-sizing: content-box; }
 .more-card:hover .more-thumb { transform: scale(1.045); color: var(--foreground); }
 .project-thumb { position: relative; display: block; aspect-ratio: 16 / 9; min-height: 0; overflow: hidden; border-radius: var(--radius); background: var(--muted); box-shadow: 0 16px 32px -22px oklch(0.4 0.02 75 / .3); }
-.project-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .65s cubic-bezier(.2,.75,.25,1); }
-.project-card:hover .project-thumb img { transform: scale(1.045); }
+.project-thumb img { width: 100%; height: 100%; object-fit: contain; transition: none; }
+.project-card:hover .project-thumb img { transform: none; }
 .project-overlay { position: absolute; inset: auto 0 0 0; display: flex; align-items: flex-end; justify-content: flex-start; padding: 26px 12px 12px; background: linear-gradient(to top, oklch(0.2 0.02 260 / .72), transparent); }
 .project-actions { display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; min-width: 0; }
 .film-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex: 0 1 auto; white-space: nowrap; padding: 8px clamp(9px, 1.2vw, 16px); border-radius: 8px; font-size: clamp(8.5px, 0.85vw, 10px); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; transition: transform .2s ease, background-color .2s ease; }
@@ -237,10 +237,10 @@ footer > p:last-child { justify-self: end; }
   .portfolio-section { padding: 22px 0 22px; }
   .portfolio-title { padding-inline: 12px; }
   .project-grid { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: calc((100% - 2 * 6px) / 3); padding-inline: 10px; gap: 6px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; }
-  .project-thumb { min-height: 0; aspect-ratio: 2 / 3; border-radius: 4px; }
+  .project-thumb { min-height: 0; aspect-ratio: 3 / 4; border-radius: 4px; }
   .project-thumb img { object-fit: contain; transform: none; }
   .project-card:hover .project-thumb img { transform: none; }
-  .more-thumb { aspect-ratio: 2 / 3; border-radius: 4px; }
+  .more-thumb { aspect-ratio: 3 / 4; border-radius: 4px; }
   .project-overlay { display: flex; opacity: 1; padding: 20px 8px 8px; }
   .project-actions { display: flex; gap: 4px; }
   .project-actions .film-btn-ghost { display: none; }
