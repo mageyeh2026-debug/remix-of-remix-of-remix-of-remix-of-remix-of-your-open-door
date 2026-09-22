@@ -90,6 +90,13 @@ function FilmDetail() {
   }
 
   const related = all.filter((item) => item.slug !== film.slug).slice(0, 4);
+  const detail = upcomingDetails[film.slug];
+  const isUpcoming = Boolean(film.status);
+  const synopsis = detail?.synopsis ?? film.synopsis;
+  const genre = detail?.genre ?? film.genre;
+  const supportCopy =
+    detail?.support ?? `Help us bring ${film.name} to life and move this story from vision to screen.`;
+  const customValue = Math.round(Number(customAmount) * 100) / 100;
 
   return (
     <main>
