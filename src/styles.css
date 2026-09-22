@@ -168,6 +168,12 @@ img { display: block; max-width: 100%; }
 .upcoming-copy { display: flex; flex: 1; flex-direction: column; padding: 10px 12px 0; }
 .upcoming-copy h3 { margin: 0; font-size: 16px; line-height: 1.2; font-weight: 700; }
 .upcoming-genre { margin: 5px 0 0; color: var(--muted-foreground); font-size: 9px; font-weight: 600; text-transform: uppercase; }
+
+@media (min-width: 721px) {
+  .project-thumb,
+  .more-thumb { aspect-ratio: 1 / 1; }
+  .upcoming-thumb { aspect-ratio: 16 / 9; }
+}
 .upcoming-synopsis { margin: 7px 0 0; color: var(--foreground); font-size: 11px; line-height: 1.42; }
 .upcoming-support { margin-top: auto; padding-top: 10px; }
 .upcoming-support::before { content: ""; display: block; height: 1px; margin-bottom: 10px; background: var(--border); }
