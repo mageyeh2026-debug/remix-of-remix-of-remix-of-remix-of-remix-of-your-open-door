@@ -457,10 +457,12 @@ export function mergeContent(stored: unknown): SiteContent {
 /** Every image URL used anywhere on the site, for warm-up preloading. */
 export function collectImageUrls(content: SiteContent): string[] {
   const urls = [
+    // Warm dashboard-uploaded gallery pictures first so opening Gallery can
+    // reuse them directly from the browser's memory cache.
+    ...content.gallery.items.map((i) => i.src),
     content.hero.image,
     ...content.films.flatMap((f) => [f.image]),
     ...content.upcoming.map((f) => f.image),
-    ...content.gallery.items.map((i) => i.src),
     ...content.media.items.map((i) => i.src),
   ];
   return Array.from(new Set(urls.filter((u): u is string => typeof u === "string" && u.length > 0)));

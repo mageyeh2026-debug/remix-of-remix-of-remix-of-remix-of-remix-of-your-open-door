@@ -24,19 +24,16 @@ function warmImageCache(content: SiteContent) {
   const queue = collectImageUrls(content).filter((url) => !warmedImages.has(url));
   if (!queue.length) return;
 
-  const warmBatch = () => {
-    queue.splice(0, 24).forEach((url) => {
-      warmedImages.add(url);
-      const image = new Image();
-      image.decoding = "async";
-      // Holding a reference keeps the decoded picture alive for the session.
-      warmedElements.push(image);
-      image.src = url;
-    });
-    if (queue.length) globalThis.setTimeout(warmBatch, 0);
-  };
-
-  warmBatch();
+  // Start every saved image immediately. Keeping these Image objects alive
+  // lets gallery and lightbox views reuse the browser's downloaded copy.
+  queue.forEach((url) => {
+    warmedImages.add(url);
+    const image = new Image();
+    image.decoding = "async";
+    image.fetchPriority = "high";
+    warmedElements.push(image);
+    image.src = url;
+  });
 }
 
 /** Only safe after hydration — reading storage during render breaks SSR matching. */

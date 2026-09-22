@@ -37,13 +37,8 @@ function GalleryPage() {
   const gallery = content.gallery;
   const items = gallery.items;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
-  const [lightboxLoaded, setLightboxLoaded] = useState(false);
 
   const close = useCallback(() => setOpenIndex(null), []);
-  const markLoaded = useCallback((key: string) => {
-    setLoadedImages((current) => (current[key] ? current : { ...current, [key]: true }));
-  }, []);
   const step = useCallback(
     (direction: -1 | 1) =>
       setOpenIndex((current) =>
@@ -69,10 +64,6 @@ function GalleryPage() {
 
   const active = openIndex === null ? null : items[openIndex];
 
-  useEffect(() => {
-    setLightboxLoaded(false);
-  }, [active?.src]);
-
   return (
     <main>
       <SiteHeader />
@@ -86,23 +77,17 @@ function GalleryPage() {
       <section className="gallery-page-grid" aria-label="All gallery pictures">
         {items.map((item, index) => {
           const imageKey = item.id ?? `${item.src}-${index}`;
-          const loaded = Boolean(loadedImages[imageKey]);
           return (
-          <figure className={`gallery-page-item${loaded ? "" : " is-loading"}`} key={imageKey}>
-            {!loaded ? <span className="gallery-loading-overlay" aria-hidden="true"><span /></span> : null}
+          <figure className="gallery-page-item" key={imageKey}>
             <img
               src={item.src}
               alt={item.alt}
               loading="eager"
               decoding="async"
-              fetchPriority={index < 6 ? "high" : "auto"}
+              fetchPriority="high"
               width={1200}
               height={800}
-              onLoad={() => markLoaded(imageKey)}
-              onError={(event) => {
-                markLoaded(imageKey);
-                hideBrokenImage(event);
-              }}
+              onError={hideBrokenImage}
               onClick={() => setOpenIndex(index)}
               style={{ cursor: "zoom-in" }}
             />
@@ -128,17 +113,12 @@ function GalleryPage() {
             <ChevronLeft size={28} />
           </button>
           <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
-            <div className={`lightbox-image-wrap${lightboxLoaded ? "" : " is-loading"}`}>
-              {!lightboxLoaded ? <span className="gallery-loading-overlay lightbox-loading" aria-hidden="true"><span /></span> : null}
+            <div className="lightbox-image-wrap">
               <img
                 src={active.src}
                 alt={active.alt}
                 decoding="async"
-                onLoad={() => setLightboxLoaded(true)}
-                onError={(event) => {
-                  setLightboxLoaded(true);
-                  hideBrokenImage(event);
-                }}
+                onError={hideBrokenImage}
               />
             </div>
             <figcaption>

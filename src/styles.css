@@ -614,9 +614,6 @@ footer > p:last-child { justify-self: end; }
 .gallery-page-item { position: relative; margin: 0; min-height: 180px; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius); background: var(--muted); }
 .gallery-page-item:nth-child(6n + 1), .gallery-page-item:nth-child(6n + 4) { grid-column: span 2; grid-row: span 2; }
 .gallery-page-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2,.75,.25,1); }
-.gallery-page-item.is-loading img { filter: blur(7px) brightness(.72); transform: scale(1.025); }
-.gallery-loading-overlay { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; background: color-mix(in oklab, var(--foreground) 24%, transparent); backdrop-filter: blur(5px); pointer-events: none; }
-.gallery-loading-overlay span { width: 34px; height: 34px; border-radius: 999px; border: 3px solid color-mix(in oklab, var(--primary-foreground) 42%, transparent); border-top-color: var(--primary-foreground); animation: player-spin .85s linear infinite; }
 .gallery-page-item figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 34px 14px 12px; color: var(--primary-foreground); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; background: linear-gradient(to top, color-mix(in oklab, var(--foreground) 78%, transparent), transparent); }
 .gallery-page-item:hover img { transform: scale(1.05); }
 
@@ -941,9 +938,6 @@ footer > p:last-child { justify-self: end; }
   max-width: 100%; max-height: 78vh; object-fit: contain;
   border-radius: 10px; display: block; margin: 0 auto;
 }
-.lightbox-image-wrap.is-loading { min-width: min(720px, 82vw); min-height: min(460px, 60vh); border-radius: 10px; overflow: hidden; background: var(--foreground); }
-.lightbox-image-wrap.is-loading img { opacity: .24; filter: blur(8px) brightness(.58); }
-.lightbox-loading { border-radius: 10px; }
 .lightbox-figure figcaption {
   margin-top: 12px; color: #f3f3f5; font-size: 0.95rem;
   display: flex; gap: 12px; justify-content: center; align-items: baseline;
