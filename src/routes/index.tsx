@@ -15,9 +15,7 @@ import {
 import { hideBrokenImage } from "@/lib/utils";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal } from "@/components/PlayerModal";
-import { SupportPayModal } from "@/components/PayModal";
 import { SocialProfiles, socialProfiles } from "@/components/SocialLinks";
-import { FollowModal } from "@/components/FollowModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
@@ -91,42 +89,6 @@ const iconMap: Record<string, typeof Play> = {
   Wrench,
 };
 
-const modernRoadCopy = {
-  genre: "Drama | Human Story | Contemporary",
-  synopsis:
-    "The Modern Road explores the lives, choices, and struggles of people navigating a rapidly changing world, where ambition, relationships, and survival collide. It is a human story about the roads we choose, the people we meet along the way, and the consequences that follow us.",
-  support:
-    "Help us bring The Modern Road to life. Your support helps move this story from vision to screen.",
-};
-
-const upcomingDetails: Record<
-  string,
-  { genre: string; synopsis: string; support: string }
-> = {
-  "the-silence-we-flee": {
-    genre: "Drama | Thriller | International",
-    synopsis:
-      "After fleeing her homeland with evidence connected to her father’s murder, a young woman seeks safety in America—only to discover that distance cannot silence the forces hunting her. The Silence We Flee is a tense drama about survival, displacement, truth, and the price of carrying a secret across borders.",
-    support:
-      "Help us complete the film and bring it to audiences worldwide. Your support helps us take this story from production to the screen.",
-  },
-  // "mordern-road" is the slug saved in the dashboard for Modern Road.
-  "modern-road": modernRoadCopy,
-  "mordern-road": modernRoadCopy,
-  "john-bullock": {
-    genre: "Psychological Thriller | Drama",
-    synopsis:
-      "A young African student takes a caregiving job inside a quiet family home, where locked doors, strange routines, and a mother’s obsessive control begin to reveal something deeply unsettling. John Bullock is a psychological thriller about family, control, memory, and the terrifying things people can justify in the name of love.",
-    support:
-      "Become part of our next production. Your support helps us move John Bullock from script to screen.",
-  },
-};
-
-const supportLevels = [
-  { amount: "$25", amountUsd: 25, label: "Supporter", className: "support-tier-base" },
-  { amount: "$50", amountUsd: 50, label: "Film Friend", className: "support-tier-friend" },
-  { amount: "$100", amountUsd: 100, label: "Production Supporter", className: "support-tier-production" },
-] as const;
 
 function ProjectCard({
   project,
@@ -214,13 +176,6 @@ function Index() {
   const upcomingRailRef = useRef<HTMLDivElement>(null);
   const [activeFilm, setActiveFilm] = useState<number | null>(null);
   const [trailerSlug, setTrailerSlug] = useState<string | null>(null);
-  const [supportIntent, setSupportIntent] = useState<{
-    slug: string;
-    title: string;
-    amountUsd: number;
-  } | null>(null);
-  const [followedProject, setFollowedProject] = useState<string | null>(null);
-  const [followIntent, setFollowIntent] = useState<{ slug: string; title: string } | null>(null);
 
   const films = content.films;
   const projects = films.map((film) => ({
@@ -320,14 +275,14 @@ function Index() {
             <ChevronLeft size={20} />
           </button>
           <div className="upcoming-grid" ref={upcomingRailRef}>
-            {content.upcoming.map((project, index) => {
-              const detail = upcomingDetails[project.slug];
-              const synopsis = detail?.synopsis ?? project.synopsis;
-              const genre = detail?.genre ?? project.genre;
-              const support = detail?.support ?? `Help us bring ${project.name} to life and move this story from vision to screen.`;
-              return (
+            {content.upcoming.map((project, index) => (
               <article className="upcoming-card" key={project.slug}>
-                <div className="upcoming-thumb">
+                <Link
+                  className="upcoming-thumb"
+                  to="/films/$slug"
+                  params={{ slug: project.slug }}
+                  aria-label={`${project.name} — read the story and support this film`}
+                >
                   <img
                     src={project.image}
                     alt={`${project.name} — upcoming film still`}
@@ -337,39 +292,14 @@ function Index() {
                     onError={hideBrokenImage}
                   />
                   <span className="upcoming-status">{project.status ?? "Coming soon"}</span>
-                </div>
+                </Link>
                 <div className="upcoming-copy">
-                  <h3>{project.name}</h3>
-                  <p className="upcoming-genre">{genre}</p>
-                  <p className="upcoming-synopsis">{synopsis}</p>
-                  <div className="upcoming-support">
-                    <h4>Support this film</h4>
-                    <p>{support}</p>
-                    <div className="support-options">
-                      {supportLevels.map((level) => (
-                        <button
-                          type="button"
-                          className={`support-tier ${level.className}`}
-                          onClick={() => setSupportIntent({ slug: project.slug, title: project.name, amountUsd: level.amountUsd })}
-                          key={level.amount}
-                        >
-                          <strong>{level.amount}</strong>
-                          <span>{level.label}</span>
-                        </button>
-                      ))}
-                      <button
-                        type="button"
-                        className="support-tier support-tier-follow"
-                        onClick={() => setFollowIntent({ slug: project.slug, title: project.name })}
-                      >
-                        <strong>{followedProject === project.slug ? "Following" : "Follow for free"}</strong>
-                        <span>{followedProject === project.slug ? "Updates on" : "Get film updates"}</span>
-                      </button>
-                    </div>
-                  </div>
+                  <h3>
+                    <Link to="/films/$slug" params={{ slug: project.slug }}>{project.name}</Link>
+                  </h3>
                 </div>
               </article>
-            );})}
+            ))}
           </div>
           <button className="carousel-arrow carousel-arrow-right rail-arrow" type="button" aria-label="Next upcoming projects" onClick={() => scrollRail(upcomingRailRef.current, 1)}>
             <ChevronRight size={20} />
@@ -471,23 +401,6 @@ function Index() {
         onClose={() => setTrailerSlug(null)}
       />
 
-      <FollowModal
-        open={Boolean(followIntent)}
-        slug={followIntent?.slug ?? ""}
-        title={followIntent?.title}
-        onClose={() => setFollowIntent(null)}
-        onSubscribed={(slug) => setFollowedProject(slug)}
-      />
-
-      {supportIntent ? (
-        <SupportPayModal
-          open={Boolean(supportIntent)}
-          slug={supportIntent.slug}
-          title={supportIntent.title}
-          amountUsd={supportIntent.amountUsd}
-          onClose={() => setSupportIntent(null)}
-        />
-      ) : null}
 
       <SiteFooter />
     </main>
