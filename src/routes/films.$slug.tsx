@@ -75,6 +75,9 @@ function FilmDetail() {
   const all: FilmItem[] = [...content.films, ...content.upcoming];
   const film = all.find((f) => f.slug === slug) ?? null;
   const [trailerOpen, setTrailerOpen] = useState(false);
+  const [supportAmount, setSupportAmount] = useState<number | null>(null);
+  const [customAmount, setCustomAmount] = useState("");
+
 
   // Warm the playback link while the page is being read, so the trailer starts
   // as soon as the button is pressed.
