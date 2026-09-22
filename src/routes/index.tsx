@@ -178,13 +178,6 @@ function Index() {
   const upcomingRailRef = useRef<HTMLDivElement>(null);
   const [activeFilm, setActiveFilm] = useState<number | null>(null);
   const [trailerSlug, setTrailerSlug] = useState<string | null>(null);
-  const [supportIntent, setSupportIntent] = useState<{
-    slug: string;
-    title: string;
-    amountUsd: number;
-  } | null>(null);
-  const [followedProject, setFollowedProject] = useState<string | null>(null);
-  const [followIntent, setFollowIntent] = useState<{ slug: string; title: string } | null>(null);
 
   const films = content.films;
   const projects = films.map((film) => ({
