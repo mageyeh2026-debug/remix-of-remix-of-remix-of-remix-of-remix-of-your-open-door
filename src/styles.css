@@ -239,7 +239,7 @@ footer > p:last-child { justify-self: end; }
   .portfolio-section { padding: 22px 0 22px; }
   .portfolio-title { padding-inline: 12px; }
   .project-grid { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: calc((100% - 2 * 6px) / 3); padding-inline: 8px; gap: 6px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; }
-  .project-thumb { aspect-ratio: 2 / 3; min-height: 0; border-radius: 4px; }
+  .project-thumb { aspect-ratio: 1 / 1; min-height: 0; border-radius: 4px; }
   .more-thumb { border-radius: 4px; }
   .project-overlay { display: flex; opacity: 1; padding: 20px 8px 8px; }
   .project-actions { display: flex; gap: 4px; }
@@ -263,7 +263,7 @@ footer > p:last-child { justify-self: end; }
   .upcoming-grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc(100% - 32px); gap: 12px; margin-top: 20px; padding-inline: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .upcoming-grid::-webkit-scrollbar { display: none; }
   .upcoming-card { scroll-snap-align: start; }
-  .upcoming-thumb { border-radius: 6px; }
+  .upcoming-thumb { aspect-ratio: 16 / 9; border-radius: 6px; }
   .upcoming-copy { padding-inline: 4px; }
   .upcoming-copy h3 { font-size: 17px; }
   .upcoming-synopsis { font-size: 11px; line-height: 1.5; }
@@ -322,7 +322,7 @@ footer > p:last-child { justify-self: end; }
 .film-back { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted-foreground); margin-bottom: 22px; }
 .film-detail-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(22px, 3vw, 46px); align-items: start; }
 .film-detail-media { position: relative; border-radius: 14px; overflow: hidden; }
-.film-detail-media img { width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: var(--muted); }
+.film-detail-media img { display: block; width: 100%; height: auto; object-fit: contain; background: var(--muted); }
 .film-detail-copy h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 3.6vw, 46px); margin: 8px 0 8px; }
 .film-detail-copy p { font-size: 14px; line-height: 1.75; color: var(--muted-foreground); }
 .upcoming-status.static { position: static; display: inline-block; }
@@ -345,7 +345,7 @@ footer > p:last-child { justify-self: end; }
   .film-item h2, .film-item h3 { font-size: 14px; margin: 8px 8px 2px; }
   .film-meta { font-size: 11px; margin: 0 8px; }
   .film-item-thumb { border-radius: 8px; }
-  .film-item-thumb img { aspect-ratio: 16 / 10; }
+  .film-item-thumb img { aspect-ratio: 1 / 1; }
   .film-item-play { width: 38px; height: 38px; }
 }
 
