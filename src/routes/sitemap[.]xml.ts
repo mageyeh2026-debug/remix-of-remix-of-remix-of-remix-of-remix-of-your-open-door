@@ -39,16 +39,15 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const today = new Date().toISOString().slice(0, 10);
         const films = await filmPaths();
         const entries = [
           ...STATIC_PATHS.map(
             (entry) =>
-              `<url><loc>${SITE_URL}${entry.path}</loc><lastmod>${today}</lastmod><changefreq>${entry.changefreq}</changefreq><priority>${entry.priority}</priority></url>`,
+              `<url><loc>${SITE_URL}${entry.path}</loc><changefreq>${entry.changefreq}</changefreq><priority>${entry.priority}</priority></url>`,
           ),
           ...films.map(
             (path) =>
-              `<url><loc>${escapeXml(SITE_URL + path)}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+              `<url><loc>${escapeXml(SITE_URL + path)}</loc><changefreq>hourly</changefreq><priority>0.8</priority></url>`,
           ),
         ].join("");
 
