@@ -16,7 +16,6 @@ import { hideBrokenImage } from "@/lib/utils";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal } from "@/components/PlayerModal";
 import { SocialProfiles, socialProfiles } from "@/components/SocialLinks";
-import { FollowModal } from "@/components/FollowModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 import contactBackground from "@/assets/hassan-mageye-coming-soon.avif";
