@@ -320,14 +320,14 @@ function Index() {
             <ChevronLeft size={20} />
           </button>
           <div className="upcoming-grid" ref={upcomingRailRef}>
-            {content.upcoming.map((project, index) => {
-              const detail = upcomingDetails[project.slug];
-              const synopsis = detail?.synopsis ?? project.synopsis;
-              const genre = detail?.genre ?? project.genre;
-              const support = detail?.support ?? `Help us bring ${project.name} to life and move this story from vision to screen.`;
-              return (
+            {content.upcoming.map((project, index) => (
               <article className="upcoming-card" key={project.slug}>
-                <div className="upcoming-thumb">
+                <Link
+                  className="upcoming-thumb"
+                  to="/films/$slug"
+                  params={{ slug: project.slug }}
+                  aria-label={`${project.name} — read the story and support this film`}
+                >
                   <img
                     src={project.image}
                     alt={`${project.name} — upcoming film still`}
@@ -337,39 +337,14 @@ function Index() {
                     onError={hideBrokenImage}
                   />
                   <span className="upcoming-status">{project.status ?? "Coming soon"}</span>
-                </div>
+                </Link>
                 <div className="upcoming-copy">
-                  <h3>{project.name}</h3>
-                  <p className="upcoming-genre">{genre}</p>
-                  <p className="upcoming-synopsis">{synopsis}</p>
-                  <div className="upcoming-support">
-                    <h4>Support this film</h4>
-                    <p>{support}</p>
-                    <div className="support-options">
-                      {supportLevels.map((level) => (
-                        <button
-                          type="button"
-                          className={`support-tier ${level.className}`}
-                          onClick={() => setSupportIntent({ slug: project.slug, title: project.name, amountUsd: level.amountUsd })}
-                          key={level.amount}
-                        >
-                          <strong>{level.amount}</strong>
-                          <span>{level.label}</span>
-                        </button>
-                      ))}
-                      <button
-                        type="button"
-                        className="support-tier support-tier-follow"
-                        onClick={() => setFollowIntent({ slug: project.slug, title: project.name })}
-                      >
-                        <strong>{followedProject === project.slug ? "Following" : "Follow for free"}</strong>
-                        <span>{followedProject === project.slug ? "Updates on" : "Get film updates"}</span>
-                      </button>
-                    </div>
-                  </div>
+                  <h3>
+                    <Link to="/films/$slug" params={{ slug: project.slug }}>{project.name}</Link>
+                  </h3>
                 </div>
               </article>
-            );})}
+            ))}
           </div>
           <button className="carousel-arrow carousel-arrow-right rail-arrow" type="button" aria-label="Next upcoming projects" onClick={() => scrollRail(upcomingRailRef.current, 1)}>
             <ChevronRight size={20} />
