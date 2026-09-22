@@ -159,7 +159,52 @@ function FilmDetail() {
             </div>
           </div>
         </div>
+
+        {isUpcoming ? (
+          <div className="upcoming-support detail-support">
+            <h2>Support this film</h2>
+            <p>{supportCopy}</p>
+            <div className="support-options">
+              {supportLevels.map((level) => (
+                <button
+                  type="button"
+                  className={`support-tier ${level.className}`}
+                  onClick={() => setSupportAmount(level.amountUsd)}
+                  key={level.amount}
+                >
+                  <strong>{level.amount}</strong>
+                  <span>{level.label}</span>
+                </button>
+              ))}
+            </div>
+            <form
+              className="support-custom"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (customValue >= 1) setSupportAmount(customValue);
+              }}
+            >
+              <label htmlFor="support-amount">Support with any amount (USD)</label>
+              <div className="support-custom-row">
+                <input
+                  id="support-amount"
+                  type="number"
+                  min="1"
+                  step="1"
+                  inputMode="decimal"
+                  placeholder="Enter amount"
+                  value={customAmount}
+                  onChange={(e) => setCustomAmount(e.target.value)}
+                />
+                <button className="film-btn film-btn-primary" type="submit" disabled={!(customValue >= 1)}>
+                  Support
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : null}
       </section>
+
 
       <section className="films-list films-list-muted" aria-labelledby="more-films">
         <h2 id="more-films" className="films-section-title">More films</h2>
