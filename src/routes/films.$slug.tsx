@@ -4,7 +4,9 @@ import { ArrowLeft, Play } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal, prefetchTrailer } from "@/components/PlayerModal";
+import { SupportPayModal } from "@/components/PayModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { supportLevels, upcomingDetails } from "@/lib/upcoming-copy";
 import type { FilmItem } from "@/lib/site-content";
 
 const SITE_URL = "https://hassanmageye.com";
