@@ -235,6 +235,16 @@ function FilmDetail() {
         </div>
       </section>
 
+      {supportAmount ? (
+        <SupportPayModal
+          open
+          slug={film.slug}
+          title={film.name}
+          amountUsd={supportAmount}
+          onClose={() => setSupportAmount(null)}
+        />
+      ) : null}
+
       <PlayerModal
         slug={trailerOpen ? film.slug : null}
         title={film.name}
