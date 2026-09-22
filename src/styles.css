@@ -238,7 +238,7 @@ footer > p:last-child { justify-self: end; }
   .project-carousel .carousel-arrow { display: none; }
   .portfolio-section { padding: 22px 0 22px; }
   .portfolio-title { padding-inline: 12px; }
-  .project-grid { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: calc((100% - 2 * 6px) / 3); padding-inline: 8px; gap: 6px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; }
+  .project-grid { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: calc((100% - 2 * 6px) / 2.5); padding-inline: 10px; gap: 6px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; }
   .project-thumb { aspect-ratio: 1 / 1; min-height: 0; border-radius: 4px; }
   .more-thumb { border-radius: 4px; }
   .project-overlay { display: flex; opacity: 1; padding: 20px 8px 8px; }
