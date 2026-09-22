@@ -4,11 +4,11 @@ const SITE_URL = "https://hassanmageye.com";
 const DB_URL = "https://mageye-hassan-8a3ee-default-rtdb.firebaseio.com/site.json";
 
 const STATIC_PATHS = [
-  { path: "/", priority: "1.0", changefreq: "daily" },
-  { path: "/films", priority: "0.9", changefreq: "daily" },
-  { path: "/gallery", priority: "0.8", changefreq: "weekly" },
-  { path: "/about", priority: "0.8", changefreq: "monthly" },
-  { path: "/contact", priority: "0.7", changefreq: "monthly" },
+  { path: "/", priority: "1.0", changefreq: "hourly" },
+  { path: "/films", priority: "0.9", changefreq: "hourly" },
+  { path: "/gallery", priority: "0.8", changefreq: "hourly" },
+  { path: "/about", priority: "0.8", changefreq: "hourly" },
+  { path: "/contact", priority: "0.7", changefreq: "hourly" },
 ];
 
 function escapeXml(value: string) {
