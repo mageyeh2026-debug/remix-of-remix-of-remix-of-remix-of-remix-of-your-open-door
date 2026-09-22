@@ -410,23 +410,6 @@ function Index() {
         onClose={() => setTrailerSlug(null)}
       />
 
-      <FollowModal
-        open={Boolean(followIntent)}
-        slug={followIntent?.slug ?? ""}
-        title={followIntent?.title}
-        onClose={() => setFollowIntent(null)}
-        onSubscribed={(slug) => setFollowedProject(slug)}
-      />
-
-      {supportIntent ? (
-        <SupportPayModal
-          open={Boolean(supportIntent)}
-          slug={supportIntent.slug}
-          title={supportIntent.title}
-          amountUsd={supportIntent.amountUsd}
-          onClose={() => setSupportIntent(null)}
-        />
-      ) : null}
 
       <SiteFooter />
     </main>
