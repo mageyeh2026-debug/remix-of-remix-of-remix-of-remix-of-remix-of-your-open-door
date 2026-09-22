@@ -120,12 +120,12 @@ function FilmDetail() {
           <div className="film-detail-copy">
             {film.status && <span className="upcoming-status static">{film.status}</span>}
             <h1>{film.name}</h1>
-            <p className="film-meta">{film.runtime} · {film.year} · {film.genre}</p>
+            <p className="film-meta">{film.runtime} · {film.year} · {genre}</p>
             <p className="film-logline">{film.logline}</p>
-            <p>{film.synopsis}</p>
+            <p>{synopsis}</p>
             <dl className="film-facts">
               <div><dt>Cast</dt><dd>{(film.cast ?? []).join(", ")}</dd></div>
-              <div><dt>Genre</dt><dd>{film.genre}</dd></div>
+              <div><dt>Genre</dt><dd>{genre}</dd></div>
               <div><dt>Release</dt><dd>{film.year}</dd></div>
             </dl>
             <div className="film-detail-actions">
