@@ -15,7 +15,6 @@ import {
 import { hideBrokenImage } from "@/lib/utils";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
 import { PlayerModal } from "@/components/PlayerModal";
-import { SupportPayModal } from "@/components/PayModal";
 import { SocialProfiles, socialProfiles } from "@/components/SocialLinks";
 import { FollowModal } from "@/components/FollowModal";
 import { useSiteContent } from "@/hooks/useSiteContent";
