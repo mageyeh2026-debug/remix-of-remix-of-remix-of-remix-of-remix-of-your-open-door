@@ -237,9 +237,10 @@ footer > p:last-child { justify-self: end; }
   .portfolio-section { padding: 22px 0 22px; }
   .portfolio-title { padding-inline: 12px; }
   .project-grid { grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: calc((100% - 2 * 6px) / 3); padding-inline: 10px; gap: 6px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; }
-  .project-thumb { min-height: 0; border-radius: 4px; }
-  .project-thumb img { object-fit: contain; }
-  .more-thumb { border-radius: 4px; }
+  .project-thumb { min-height: 0; aspect-ratio: 2 / 3; border-radius: 4px; }
+  .project-thumb img { object-fit: contain; transform: none; }
+  .project-card:hover .project-thumb img { transform: none; }
+  .more-thumb { aspect-ratio: 2 / 3; border-radius: 4px; }
   .project-overlay { display: flex; opacity: 1; padding: 20px 8px 8px; }
   .project-actions { display: flex; gap: 4px; }
   .project-actions .film-btn-ghost { display: none; }
